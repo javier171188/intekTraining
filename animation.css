@@ -1,0 +1,30 @@
+.title{
+    text-align: center;
+    font-size: 10vh;
+    animation-name: size_title;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+.moving_div{
+    height: 10vh;
+    width: 10vh;
+    background-color: red;
+    position: absolute;
+    bottom: 10vh;
+    animation-name: moving;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    left: 5vh;
+}
+
+
+  @keyframes size_title {
+    0%, 100% {left: 10vh;}
+    50% {font-size: 30vh;}
+  }
+
+  @keyframes moving {
+    0%, 100% {left: 5vh;border-radius: 0%;}
+    50% {left: 90vw;border-radius: 50%;}
+  }
