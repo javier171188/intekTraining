@@ -1,0 +1,56 @@
+.title {
+    font-size: 60px;
+    text-align: center;
+}
+
+.horizontal-menu{
+    display: flex;
+    height: 300px;
+    width: 1000px;
+        
+}
+
+.horizontal-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-element {
+    border: 3px solid #aaa;
+    background-color: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25%;
+    text-align: center;
+    height: 100%;
+    border-radius: 5%;
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.menu-element:hover {
+    text-decoration: underline;
+    color: blue;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    }
+
+.vertical{
+    width: 100%;
+    height: 25%;
+}
+
+.vertical-container {
+    margin: 10em;
+    height: 1000px;
+    width: 300px;
+}
+
+.vertical-menu{
+    height: 100%;
+}

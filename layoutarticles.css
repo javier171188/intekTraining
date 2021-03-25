@@ -1,0 +1,48 @@
+.title {
+    text-align: center;
+    font-size: 5vh;
+}
+
+
+
+.header{
+    border: solid;
+    height: 200px;
+    text-align: center;
+    font-size: 60px;
+    font-weight: bold;
+        
+} 
+
+.content-aside{
+    display: flex;
+    align-items: stretch;
+    height: calc(100vh - 200px);
+}
+
+
+.content, .aside{
+    border: solid;
+    width: 40vw;
+    text-align: center;
+    font-size: 10vh;
+    font-weight: bold;
+    align-items: center;
+
+    
+}
+.aside{
+    
+    width: 20vw;
+    
+}
+
+.footer{
+    height: 200px;
+    border: solid;
+    text-align: center;
+    font-size: 70px;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+}

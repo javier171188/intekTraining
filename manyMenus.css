@@ -1,0 +1,57 @@
+.title{
+    text-align: center;
+    font-size: 10vh;
+}
+
+label{
+    display: none;
+    border: solid;
+    position: absolute;
+}
+
+ul{
+    list-style: none;
+    padding: 0;
+}
+
+
+
+.left, .right{
+    height: 100vh;
+    width: 20vw;
+}
+
+.right{
+    right: 0;
+}
+
+.top{
+    height: 5vh;
+    width: 100vw;
+    display: none;
+    
+}
+
+.top_menu{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.options input:checked + label {
+    display: block;
+}
+
+li{
+    border: solid;
+}
+
+.options input:checked + label ul li div{
+    display: none;
+}
+
+.options input:checked + label ul li:hover div{
+    color: red;
+    display: block;
+    
+}

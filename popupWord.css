@@ -1,0 +1,27 @@
+body{
+    background: gray;
+}
+.title{
+    text-align: center;
+    font-size: 10vh;
+}
+
+
+
+.word{
+    text-align: center;
+    font-size: 15vh;
+    cursor: pointer;
+    height: 60vh;
+           
+}
+
+
+.letter:hover{
+    font-size: 30vh;
+    color: blue;
+    position: relative;
+    top: -10vh;
+    text-shadow: 0 1vh 2vh blue;;
+
+}
