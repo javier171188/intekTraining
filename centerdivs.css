@@ -1,0 +1,16 @@
+.title{
+    text-align: center;
+    font-weight: bold;
+    font-size: 10vh;
+}
+
+.container{
+    display: flex;justify-content: center;
+    flex-direction: row;
+}
+
+.center{
+    border: solid;
+    height: 40vh;
+    width: 20%;
+}
