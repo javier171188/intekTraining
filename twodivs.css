@@ -1,0 +1,23 @@
+.title{
+    text-align: center;
+    font-size: 10vh;
+}
+
+.parent{
+    border: solid;
+    width: calc(100vw - 6px);
+    height: 60vh;
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    left: 0;
+}
+
+.child{
+    border: solid;
+    border-color: blue;
+    border-width: 5vh;
+    height: 40vh;
+    width: 50%;
+    padding: 5vh;
+}
