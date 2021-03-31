@@ -1,3 +1,8 @@
+:root {
+    --left-margin:38vw;
+    --letter-space: 3vw;
+  }
+
 body{
     background: gray;
 }
@@ -10,18 +15,53 @@ body{
 
 .word{
     text-align: center;
-    font-size: 15vh;
+    font-size: 5vw;
+ 
+}
+
+.letter{
     cursor: pointer;
-    height: 60vh;
-           
+    position: absolute;
+}
+
+
+.t{
+    left: calc(var(--left-margin));
+}    
+
+.h{
+    left: calc(var(--left-margin) + var(--letter-space));
+    
+}
+.e{
+    left: calc(var(--left-margin) + 2*var(--letter-space));
+}
+
+.s{
+    left: calc(var(--left-margin) + 3*var(--letter-space));
+}
+.w{
+    left: calc(var(--left-margin) + 4*var(--letter-space));
+}
+.o{
+    left: calc(var(--left-margin) + 5*var(--letter-space) + 1vw);
+}
+.r{
+    left: calc(var(--left-margin) + 6*var(--letter-space) + 1vw);
+}
+.d{
+    left: calc(var(--left-margin) + 7*var(--letter-space));
 }
 
 
 .letter:hover{
-    font-size: 30vh;
+    font-size: 10vw;
     color: blue;
-    position: relative;
-    top: -10vh;
-    text-shadow: 0 1vh 2vh blue;;
-
+    position: absolute;
+    top: 8vw;
+    text-shadow: 0 1vh 2vh blue;
+    
 }
+
+
+
