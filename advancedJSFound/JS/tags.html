@@ -3,7 +3,13 @@
 	<body>
 		<script type='text/javascript'>
 			// make functionality goes here
+			var tags = ["a","div","span","form","h1","h2","h3","h4"];
 			make = {};
+
+			for (let tag of tags){
+				make[tag] = function() {return document.createElement(tag)};
+			}
+
 		</script>
 		<script type='text/javascript'>
 			var h1 = make.h1();
@@ -18,5 +24,6 @@
 
 			document.body.appendChild(a);
 		</script>
+		
 	</body>
 </html>
