@@ -421,10 +421,10 @@ console.log(myActions('undo')); // => should log 'nothing to undo'
 console.log('Challenge 19###############');
 function blackjack(array) {
 	let index = 0;
-  let second = false;
-  let bust = '';
-  let count = 0;
   function dealer(n1,n2){
+    let second = false;
+  	let bust = '';
+  	let count = 0;
     function player(){
       if(bust == 'bust'){
         return 'you are done!'
