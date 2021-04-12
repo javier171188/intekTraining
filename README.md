@@ -1,0 +1,2 @@
+# intekTraining
+Training in intekglobal
