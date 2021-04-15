@@ -9,6 +9,4 @@ function setAtributes(className = 'title',color='blue',fontSize=10, bgColor='red
     }
     obj.fun()
 }
-
-
 setAtributes('exercise', 'blue', 20, 'black');
