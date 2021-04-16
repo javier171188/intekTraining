@@ -28,11 +28,12 @@ for (let r in tree){
     }
 }
 ypos+=yspace;
+checker = true;
+ctx.font = "25px Arial";
 //Create the tree
-while(level < 5){ //  <-----remember to change
+while(checker){ 
     level++;
     ypos+=yspace;
-    //numNodes = Object.keys(branchesObj[level-1]).length;
     branchesObj[level] = {};
     for (let node in branchesObj[level-1]){
         numNodes = Object.keys(branchesObj[level-1][node]).length;
@@ -45,24 +46,16 @@ while(level < 5){ //  <-----remember to change
         ctx.stroke();
         let c=1;
         for (let subNode in branchesObj[level-1][node]){
-            console.log(node, subNode);
             branchesObj[level][subNode] = branchesObj[level-1][node][subNode];
             positions[subNode] = {'x_parent':positions[node]['x']};
             positions[subNode]['y_parent'] = positions[node]['y'];
             positions[subNode]['y'] = ypos;
             positions[subNode]['space'] = sep;
-            xpos = positions[subNode]['x_parent'] + positions[node]['space']*(c/(1+numNodes)-0.5);
+            xpos = positions[subNode]['x_parent'] + positions[subNode]['space']*(c/(1+numNodes)-0.5);
             positions[subNode]['x'] = xpos;
             c++;
         }
         
     }
-
-
-    
-    
-    console.log(level);
+    if (Object.keys(branchesObj[level]).length ==0) checker = false;
 }
-
-console.log(branchesObj);
-console.log(positions);
