@@ -18,14 +18,26 @@ while (checker){
     for (let node in branchesObj[level]){
         xpos += sep;
         ctx.fillText(node, xpos, ypos);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(1000, 1000);
+        ctx.closePath();
+        
         if(!branchesObj[level][node]) branchesObj[level][node] = {};
-        positions[node] = {};
+        if (!positions[node]) positions[node] = {};
         positions[node]['x'] = xpos;
         positions[node]['y'] = ypos;
+        if (positions[node]['y_parent']){
+            ctx.beginPath();
+            ctx.moveTo(positions[node]['x_parent']+10, positions[node]['y_parent']);
+            ctx.lineTo(xpos+10, ypos-20);
+            ctx.closePath();
+            ctx.stroke();
+        }
         for (let subnode in branchesObj[level][node]){
             branchesObj[level+1][subnode] = branchesObj[level][node][subnode];
-            if(!positions[subnode]) positions[subnode] = {};
-            positions[subnode]['x_parent'] = positions[node]['x']
+            positions[subnode] = {'x_parent':xpos, 'y_parent': ypos};
+            
         }
     }
 if (Object.keys(branchesObj[level+1]).length == 0) checker = false;
