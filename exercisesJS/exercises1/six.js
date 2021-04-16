@@ -9,23 +9,25 @@ let sep;
 let ypos = 50;
 let xpos = 0;
 let level = 0;
+let checker = true;
 
-while (level  <5 ){
+while (checker){
     sep = 1000/(Object.keys(branchesObj[level]).length+1)
     branchesObj[level+1] = {};
     for (let node in branchesObj[level]){
-        console.log(node);
         xpos += sep;
         ctx.fillText(node, xpos, ypos);
         for (let subnode in branchesObj[level][node]){
             branchesObj[level+1][subnode] = branchesObj[level][node][subnode];
         }
     }
+if (Object.keys(branchesObj[level+1]).length == 0) checker = false;
 level++;
 ypos+=100;
 xpos=0;
-
 }
+
+
 
 
 
