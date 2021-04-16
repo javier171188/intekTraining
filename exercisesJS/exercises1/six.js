@@ -32,12 +32,18 @@ ypos+=yspace;
 while(level < 5){ //  <-----remember to change
     level++;
     ypos+=yspace;
-    numNodes = Object.keys(branchesObj[level-1]).length;
-    let c=0;
+    //numNodes = Object.keys(branchesObj[level-1]).length;
     branchesObj[level] = {};
     for (let node in branchesObj[level-1]){
-        sep = positions[node]['space']/numNodes;
-        ctx.fillText(level, positions[node]['x'], positions[node]['y']);
+        numNodes = Object.keys(branchesObj[level-1][node]).length;
+        sep = positions[node]['space']/(numNodes+1);
+        ctx.fillText(node, positions[node]['x'], positions[node]['y']);
+        ctx.beginPath();
+        ctx.moveTo(positions[node]['x_parent']+10, positions[node]['y_parent']);
+        ctx.lineTo(positions[node]['x']+10, positions[node]['y']-20);
+        ctx.closePath();
+        ctx.stroke();
+        let c=1;
         for (let subNode in branchesObj[level-1][node]){
             console.log(node, subNode);
             branchesObj[level][subNode] = branchesObj[level-1][node][subNode];
