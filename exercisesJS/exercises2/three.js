@@ -29,10 +29,51 @@ let originalText = t.innerHTML;
 function replaceWord(){
     w = document.getElementById('userword').value;
     let s = '\\b'+w+'\\b';
-    regex = new RegExp(s,"gm");
+    let regex = new RegExp(s,"gm");
     newText = originalText.replaceAll(regex, `<a href="https://twitter.com/search?q=${w}">#${w}</a>`);
     t.innerHTML = newText;
     
 }
 b = document.getElementById("wordb");
 b.addEventListener("click", replaceWord, false);
+// ####################################################################
+let c = document.getElementsByClassName('exercisec')[0]
+let someText = 'Some words: new, cat, repaper, rotator, advanced, company, rotor, sagas, solos, stats, tenet, house, car, run';
+c.innerHTML += someText;
+
+
+function isPalindrome(s){
+    s = s.toLowerCase();
+    let len = Math.floor(s.length/2);
+    let exp='';
+    for (let i = 0; i < len; i++){
+        exp += '(.)';
+    }
+    if ( !(len === s.length/2)) exp += '(.)';
+    for(let i = len; i>0; i--){
+        exp += `\\${i}`;
+    }
+    let regex = new RegExp(exp,"gm");
+    let palindrome = s.match(regex);
+    return Boolean(palindrome);
+}
+
+function getPalindromes(t){
+    t = t.replaceAll(',', '').replaceAll('.','').replaceAll(':','').replaceAll(';','');
+    t = t.replaceAll('!','').replaceAll('?','');
+    let words = t.split(' ');
+    let palindromes = [];
+    for(word of words){
+        if (isPalindrome(word)) palindromes.push(word);
+    }
+    return palindromes;
+}
+
+c.innerHTML += '<br/>';
+c.innerHTML += 'From which we have the palidromes: '
+if (getPalindromes(someText)){
+    for (word of getPalindromes(someText)){
+        c.innerHTML += `${word}, `
+    }
+}
+c.innerHTML = c.innerHTML.slice(0,c.innerHTML.length-2);
