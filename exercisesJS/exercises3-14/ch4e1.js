@@ -9,4 +9,3 @@ function fibonacci(n){
 
 e.innerHTML = `Element 4: ${fibonacci(4)} <br/>`;
 e.innerHTML += `Element 9: ${fibonacci(9)} <br/>`;
-
