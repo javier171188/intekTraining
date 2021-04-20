@@ -8,6 +8,7 @@ e.innerHTML += a + ', ' + b;
 function toBaseT(n){
     let digits = [];
     let r;
+    let baseT = '';
     while(n>0){
         r = n%13;
         if (r==12){
@@ -23,13 +24,18 @@ function toBaseT(n){
         
         n = Math.floor(n/13);
     }
-    
-    console.log(digits);
+        
+    for (let l in digits){
+        baseT += String(digits[digits.length-l-1]);
+    }
+    return(baseT);
+
 }
 
 function mul(x1,x2){
     let r = x1*x2;
-
+    return toBaseT(r);
 }
 
-toBaseT(947)
+e.innerHTML += '<br/>'
+e.innerHTML += 'The multipication in base 13 is: ' + mul(a,b);
