@@ -62,4 +62,19 @@ clientB.deposit('0', 500);
 console.log(`David final: ${clientA.showBalance()}`);
 console.log(`Diana final: ${clientB.showBalance()}`);
 
-e.innerHTML += `Clients:`;
+e.innerHTML += `Clients: `;
+for (c of bank){
+    e.innerHTML += c['name']+ ', ';
+}
+e.innerHTML = e.innerHTML.slice(0, e.innerHTML.length -2);
+
+e.innerHTML += '<br/> <br/>Initial balance: <br/>';
+for (c of bank){
+    e.innerHTML += c['name']+ ': ' + c.showBalance() + '<br/>';
+}
+
+e.innerHTML += '<br/> Diana transfers 100 to David <br/>';
+clientB.deposit('0', 100);
+for (c of bank){
+    e.innerHTML += c['name']+ ': ' + c.showBalance() + '<br/>';
+}   
