@@ -31,6 +31,8 @@ e.innerHTML += `delta1: ${delta1} <br/>`;
 e.innerHTML += '<br/> var delta2 = distance (x1, y1, z1, x2, y2, z2); <br/>';
 e.innerHTML += `delta2: ${delta2} <br/>`;
 
+e.innerHTML += `<br/> distance (x1, x2): Uncaught Insufficient parameters`;
+
 console.log(delta1);
 console.log(delta2)
 distance (x1, x2);
