@@ -12,7 +12,7 @@ function giveNumber(value){
         let number = Math.log10(value)+1;
         return Math.floor(number);
     } else{
-        console.log('This function only accepts strings and integers.')
+        throw new TypeError('This function only accepts strings and integers.');
     }
 }
 
@@ -24,3 +24,4 @@ e.innerHTML += '<br/>';
 e.innerHTML += '<br/>';
 
 e.innerHTML += 'The number 700 has ' + String(giveNumber(700)) +' digits.';
+
