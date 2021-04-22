@@ -17,7 +17,7 @@ for (let i in objB){
 }
 e.innerHTML = e.innerHTML.slice(0, e.innerHTML.length -2) + '}';
 
-function copyProp(obj1, obj2, props = false){
+function copyProp(obj1, obj2, props){
     if (!props){
         for (let p in obj2){
             obj1[p] = obj2[p];
