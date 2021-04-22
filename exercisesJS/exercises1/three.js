@@ -1,12 +1,9 @@
-function setAtributes(className = 'title',color='blue',fontSize=10, bgColor='red'){
-    let obj = {element:document.getElementsByClassName(className)[0],
-                fun: function(){
-                        this.element.style.color = color;
-                        this.element.style.backgroundColor = bgColor;
-                        this.element.style.fontSize = String(fontSize) +  'px';
-                }
-
-    }
-    obj.fun()
+function setAtributes(color='blue',fontSize=10, bgColor='red'){
+    this.style.color = color;
+    this.style.backgroundColor = bgColor;
+    this.style.fontSize = String(fontSize) +  'px';
 }
-setAtributes('exercise', 'blue', 20, 'black');
+
+
+let e = document.getElementsByClassName('exercise')[0];
+setAtributes.call(e, 'red', 50, 'blue');  
