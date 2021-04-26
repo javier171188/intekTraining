@@ -1,0 +1,18 @@
+.title{
+    text-align: center;
+    color: red;
+    font-size: 300%;
+}
+.element{
+    border: solid;
+    align-items: flex-end;
+    float: left;
+    width: calc( 20% - 10px);
+    text-align: center;
+    border-radius: 10%;
+    height: 15vh;
+    font-size: 150%;
+    padding-top: 2vw;
+    background-color: aquamarine;
+    cursor: pointer;
+}
