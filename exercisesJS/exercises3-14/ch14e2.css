@@ -1,0 +1,9 @@
+.title{
+    color: green;
+    font-size: 300%;
+    text-align: center;
+}
+
+.content{
+    column-count: 2;
+}
