@@ -1,0 +1,18 @@
+.title{
+    text-align: center;
+    font-size: 300%;
+    color: #777;
+}
+
+.userg{
+    border: solid;
+    align-items: flex-end;
+    float: left;
+    box-sizing: border-box;
+    /*width: calc( 20% - 10px);*/
+    text-align: center;
+    border-radius: 10%;
+    height: 15vh;
+    font-size: 150%;
+    padding-top: 2vw;
+}
