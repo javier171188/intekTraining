@@ -4,6 +4,10 @@
     text-align: center;
 }
 
+body {
+    counter-reset: section;
+  }
+
 .container{
     display: flex;
     margin-top: 5%;
@@ -11,14 +15,22 @@
 }
 
 .container::before {
-    counter-increment: n;
-    content: counter(n);
+    counter-increment: section;
+    content: counter(section);
+    font-size: larger;
+    font-weight: bold;
+    border-radius: 150%;
+    border: outset;
+    height: fit-content;
+    z-index:100;
+    margin-top: 2%;
+    
   }
 
 
 img{
     margin-right: 1%;
-    margin-top: 8%;
+    margin-top: 2%;
 }
 
 .text{
