@@ -1,0 +1,16 @@
+.title{
+    color: green;
+    font-size: 300%;
+    text-align: center;
+}
+
+.container{
+    display: flex;
+    margin-top: 5%;
+    cursor: pointer;
+}
+
+img{
+    margin-top: 5%;
+    margin-right: 2%;
+}
