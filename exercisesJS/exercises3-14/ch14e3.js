@@ -30,6 +30,24 @@ function templateTwo(topic){
   url_ob.hash = `#${topic}`;
   let new_url = url_ob.href;
   document.location.href = new_url;
+  e.innerHTML = '';
+  container = document.createElement('div');
+  imageContainer = document.createElement('div');
+  image = document.createElement('img');
+  image.setAttribute('height', "28%");
+  image.setAttribute('width', "22%");
+  image.setAttribute('class',"imagetwo");
+  image.setAttribute('src',data[topic]['image']);
+  imageContainer.appendChild(image);
+  container.appendChild(imageContainer);
+  e.appendChild(container);
+  title = document.createElement('h1');
+  title.textContent += data[topic]['title'];
+  e.appendChild(title);
+  text = document.createElement('p');
+  text.textContent += data[topic]['text'];
+  e.appendChild(text);
+  e.innerHTML += '<a href="">Go back</a>'
 }
 
 
@@ -40,8 +58,9 @@ function onLanding(){
     div.setAttribute('id', topic);
     div.setAttribute('class', 'container')
     img = document.createElement('img');
-    img.setAttribute('width','20%');
-    img.setAttribute('height','25%');
+    img.setAttribute('width','25%');
+    img.setAttribute('height','30%');
+    img.setAttribute('class','imageone');
     img.setAttribute('src', data[topic]['image']);
     img.setAttribute('class', topic)
     div.appendChild(img);
