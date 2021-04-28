@@ -14,15 +14,21 @@ var data = {"topic1":{"title":"Title 1",
 let topics = Object.keys(data);
 
 //When opening
-onLanding();
+var hash = new URL(document.URL).hash;
+hash = hash.slice(1,);
+if (topics.indexOf(hash)>=0){
+  templateTwo(hash);
+}else{
+  onLanding();
+  e.addEventListener('click',function(ev){
+    let clicked = ev.target.getAttribute('class');
+    
+    if (topics.indexOf(clicked) >= 0){
+        templateTwo(clicked);
+    }
+  });
+}
 
-e.addEventListener('click',function(ev){
-  let clicked = ev.target.getAttribute('class');
-  
-  if (topics.indexOf(clicked) >= 0){
-      templateTwo(clicked);
-  }
-});
 
 //functions
 function templateTwo(topic){
