@@ -1,6 +1,6 @@
 let e = document.getElementsByClassName('exercise')[0];
 
-var data = {"topic1":{"title":"Title 1", 
+/*var data = {"topic1":{"title":"Title 1", 
 "text":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quisquam perspiciatis dolore fugit magni aspernatur at, quo vero modi tempora excepturi ut ipsa impedit, ratione, eos reprehenderit cumque doloremque earum! Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quisquam perspiciatis dolore fugit magni aspernatur at, quo vero modi tempora excepturi ut ipsa impedit, ratione, eos reprehenderit cumque doloremque earum! Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quisquam perspiciatis dolore fugit magni aspernatur at, quo vero modi tempora excepturi ut ipsa impedit, ratione, eos reprehenderit cumque doloremque earum! Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quisquam perspiciatis dolore fugit magni aspernatur at, quo vero modi tempora excepturi ut ipsa impedit, ratione, eos reprehenderit cumque doloremque earum! Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quisquam perspiciatis dolore fugit magni aspernatur at, quo vero modi tempora excepturi ut ipsa impedit, ratione, eos reprehenderit cumque doloremque earum! Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quisquam perspiciatis dolore fugit magni aspernatur at, quo vero modi tempora excepturi ut ipsa impedit, ratione, eos reprehenderit cumque doloremque earum! Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quisquam perspiciatis dolore fugit magni aspernatur at, quo vero modi tempora excepturi ut ipsa impedit, ratione, eos reprehenderit cumque doloremque earum! Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quisquam perspiciatis dolore fugit magni aspernatur at, quo vero modi tempora excepturi ut ipsa impedit, ratione, eos reprehenderit cumque doloremque earum!",
 "image": "https://images.pexels.com/photos/7571030/pexels-photo-7571030.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"},
 "topic2": {"title":"Title 2", 
@@ -9,10 +9,20 @@ var data = {"topic1":{"title":"Title 1",
 "topic3":{"title": "Title 3", 
 "text":"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta quam sunt sed. Asperiores officiis cum qui tempora possimus distinctio fugit omnis itaque eum assumenda libero facere optio aspernatur, labore molestiae! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta quam sunt sed. Asperiores officiis cum qui tempora possimus distinctio fugit omnis itaque eum assumenda libero facere optio aspernatur, labore molestiae! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta quam sunt sed. Asperiores officiis cum qui tempora possimus distinctio fugit omnis itaque eum assumenda libero facere optio aspernatur, labore molestiae! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta quam sunt sed. Asperiores officiis cum qui tempora possimus distinctio fugit omnis itaque eum assumenda libero facere optio aspernatur, labore molestiae! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta quam sunt sed. Asperiores officiis cum qui tempora possimus distinctio fugit omnis itaque eum assumenda libero facere optio aspernatur, labore molestiae! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta quam sunt sed. Asperiores officiis cum qui tempora possimus distinctio fugit omnis itaque eum assumenda libero facere optio aspernatur, labore molestiae! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta quam sunt sed. Asperiores officiis cum qui tempora possimus distinctio fugit omnis itaque eum assumenda libero facere optio aspernatur, labore molestiae! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta quam sunt sed. Asperiores officiis cum qui tempora possimus distinctio fugit omnis itaque eum assumenda libero facere optio aspernatur, labore molestiae!",
 "image":"https://images.pexels.com/photos/332834/pexels-photo-332834.png?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"}}
-// remember to replace var data for a json file
+*/
 
-let topics = Object.keys(data);
 
+// TRYING THIS ->https://stackoverflow.com/questions/58777484/how-to-access-outside-the-js-fetch-api-the-returned-value
+fetch("./data.json")
+  .then(function(resp){
+    return resp.json();
+  })
+  .then(function(data){
+    createPage(data);
+});
+
+
+var topics = Object.keys(data);
 //When opening
 var hash = new URL(document.URL).hash;
 hash = hash.slice(1,);
@@ -28,6 +38,9 @@ if (topics.indexOf(hash)>=0){
     }
   });
 }
+
+
+
 
 
 //functions
@@ -79,4 +92,10 @@ function onLanding(){
     fragment.appendChild(div);
   }
   e.appendChild(fragment);
+}
+
+function getData(json){
+  var data = json;
+  console.log(json);
+  console.log(data);
 }

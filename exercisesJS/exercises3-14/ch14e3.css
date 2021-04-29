@@ -27,7 +27,9 @@ body {
     
   }
 
-
+.saving{
+    color: white;
+}
 img{
     margin-right: 1%;
     margin-top: 2%;
