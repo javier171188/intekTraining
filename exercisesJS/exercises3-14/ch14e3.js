@@ -1,6 +1,6 @@
 let e = document.getElementsByClassName('exercise')[0];
 
-var data = {"topic1":{"title":"Title 1", 
+/*var data = {"topic1":{"title":"Title 1", 
 "text":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quisquam perspiciatis dolore fugit magni aspernatur at, quo vero modi tempora excepturi ut ipsa impedit, ratione, eos reprehenderit cumque doloremque earum! Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quisquam perspiciatis dolore fugit magni aspernatur at, quo vero modi tempora excepturi ut ipsa impedit, ratione, eos reprehenderit cumque doloremque earum! Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quisquam perspiciatis dolore fugit magni aspernatur at, quo vero modi tempora excepturi ut ipsa impedit, ratione, eos reprehenderit cumque doloremque earum! Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quisquam perspiciatis dolore fugit magni aspernatur at, quo vero modi tempora excepturi ut ipsa impedit, ratione, eos reprehenderit cumque doloremque earum! Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quisquam perspiciatis dolore fugit magni aspernatur at, quo vero modi tempora excepturi ut ipsa impedit, ratione, eos reprehenderit cumque doloremque earum! Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quisquam perspiciatis dolore fugit magni aspernatur at, quo vero modi tempora excepturi ut ipsa impedit, ratione, eos reprehenderit cumque doloremque earum! Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quisquam perspiciatis dolore fugit magni aspernatur at, quo vero modi tempora excepturi ut ipsa impedit, ratione, eos reprehenderit cumque doloremque earum! Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quisquam perspiciatis dolore fugit magni aspernatur at, quo vero modi tempora excepturi ut ipsa impedit, ratione, eos reprehenderit cumque doloremque earum!",
 "image": "https://images.pexels.com/photos/7571030/pexels-photo-7571030.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"},
 "topic2": {"title":"Title 2", 
@@ -8,7 +8,7 @@ var data = {"topic1":{"title":"Title 1",
 "image": "https://images.pexels.com/photos/2268516/pexels-photo-2268516.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"},
 "topic3":{"title": "Title 3", 
 "text":"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta quam sunt sed. Asperiores officiis cum qui tempora possimus distinctio fugit omnis itaque eum assumenda libero facere optio aspernatur, labore molestiae! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta quam sunt sed. Asperiores officiis cum qui tempora possimus distinctio fugit omnis itaque eum assumenda libero facere optio aspernatur, labore molestiae! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta quam sunt sed. Asperiores officiis cum qui tempora possimus distinctio fugit omnis itaque eum assumenda libero facere optio aspernatur, labore molestiae! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta quam sunt sed. Asperiores officiis cum qui tempora possimus distinctio fugit omnis itaque eum assumenda libero facere optio aspernatur, labore molestiae! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta quam sunt sed. Asperiores officiis cum qui tempora possimus distinctio fugit omnis itaque eum assumenda libero facere optio aspernatur, labore molestiae! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta quam sunt sed. Asperiores officiis cum qui tempora possimus distinctio fugit omnis itaque eum assumenda libero facere optio aspernatur, labore molestiae! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta quam sunt sed. Asperiores officiis cum qui tempora possimus distinctio fugit omnis itaque eum assumenda libero facere optio aspernatur, labore molestiae! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta quam sunt sed. Asperiores officiis cum qui tempora possimus distinctio fugit omnis itaque eum assumenda libero facere optio aspernatur, labore molestiae!",
-"image":"https://images.pexels.com/photos/332834/pexels-photo-332834.png?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"}}
+"image":"https://images.pexels.com/photos/332834/pexels-photo-332834.png?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"}}*/
 
 
 
@@ -17,41 +17,41 @@ fetch("./data.json")
   .then(function(resp){
     return resp.json();
   })
-  .then(function(d){
-    
-
-});
-
-
-
-
-var topics = Object.keys(data);
-//When opening
-var hash = new URL(document.URL).hash;
-hash = hash.slice(1,);
-if (topics.indexOf(hash)>=0){
-  templateTwo(hash);
-}else{
-  onLanding();
-  e.addEventListener('click',function(ev){
-    let clicked = ev.target.getAttribute('class');
-    
-    if (topics.indexOf(clicked) >= 0){
-        templateTwo(clicked);
-    }
+  .then(function(data){
+    allProcess(data);
   });
-}
-
-window.addEventListener('hashchange', function() {
-  let currentHash = new URL(document.URL).hash;
-  let topic = currentHash.slice(1);
-  templateTwo(topic)
-});
 
 
 
 //functions
-function templateTwo(topic){
+function allProcess(data){
+  var topics = Object.keys(data);
+  //When opening
+  var hash = new URL(document.URL).hash;
+  hash = hash.slice(1,);
+  if (topics.indexOf(hash)>=0){
+    templateTwo(hash,data);
+  }else{
+    onLanding(data);
+    e.addEventListener('click',function(ev){
+      let clicked = ev.target.getAttribute('class');
+      
+      if (topics.indexOf(clicked) >= 0){
+          templateTwo(clicked,data);
+      }
+    });
+  }
+  
+  window.addEventListener('hashchange', function() {
+    let currentHash = new URL(document.URL).hash;
+    let topic = currentHash.slice(1);
+    templateTwo(topic,data)
+  });
+
+}
+
+
+function templateTwo(topic,data){
   let url_ob = new URL(document.URL);
   url_ob.hash = `#${topic}`;
   let new_url = url_ob.href;
@@ -76,7 +76,7 @@ function templateTwo(topic){
 }
 
 
-function onLanding(){
+function onLanding(data){
   let fragment = document.createDocumentFragment();
   for (let topic in data){
     div = document.createElement('div');
