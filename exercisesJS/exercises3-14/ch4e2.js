@@ -4,11 +4,12 @@ e.innerHTML = 'var arr = [ 1, 3, 5, 7]; <br/>';
 var arr = [ 1, 3, 5, 7];
 e.innerHTML += 'var sum = addRec (arr); <br/>';
 
-function addRec(arr){
-    if (arr.length === 0){
-        return 0;
+function addRec(arr, index=0, s=0){
+    s += arr[index];
+    if (arr.length -1 === index){
+        return s;
     }
-    return arr[0] + addRec(arr.slice(1));
+    return addRec(arr, index+1, s);
 }
 
 e.innerHTML += `sum: ${addRec(arr)}`;
