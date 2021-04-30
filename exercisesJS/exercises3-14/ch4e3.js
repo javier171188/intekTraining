@@ -1,23 +1,20 @@
 let e = document.getElementsByClassName('exercise')[0];
 
+let value = 'hello';
+let _value = typeof value === 'number' ? value : 0;
 
-class CustomObject{
-    constructor(value){
-        if(typeof value === 'number'){
-            this._n = value
-        }
+class CustomObject {
+    constructor(value) {
+        let _value = typeof value === 'number' ? value : 0;
+        Object.defineProperty(this, 'n', {
+            enumerable: true,
+            get() { return _value },
+            set(value) { _value = typeof value === 'number' ? value : _value; }
+        })
     }
-    get n(){
-        return this._n;
-    }
-    set n(value){
-        if (typeof value == 'number'){
-            this._n = value;
-        }
-    }
-        
-    
 }
+
+
 
 let custom = new CustomObject();
 custom.n = 'a';
