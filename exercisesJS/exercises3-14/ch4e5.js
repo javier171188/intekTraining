@@ -9,19 +9,15 @@ var x2 = 2, y2 = 2, z2 = 4;
 
 
 function distance(x,y,a,b,c,d){
-    let distance;
-    if (typeof d != 'number' && typeof c === 'number' ) {
-        throw 'Insufficient parameters';
+    let numParameters = arguments.length;
+    if (numParameters<4) throw 'Insufficient parameters';
+    if (numParameters !== 4 && numParameters !== 6) throw 'Incompatible number of parameters';
+    if (numParameters === 4){
+        return Math.sqrt((x-a)*(x-a) + (y-b)*(y-b));
     }
-    if (typeof b != 'number') {
-        throw 'Insufficient parameters';
+    if (numParameters === 6){
+        return Math.sqrt((x-b)*(x-b) + (y-c)*(y-c) +(a-d)*(a-d));
     }
-    if (typeof c != 'number' && typeof d != 'number') {
-        distance = Math.sqrt((x-a)*(x-a) + (y-b)*(y-b));
-        return distance;
-    }
-    distance = Math.sqrt((x-b)*(x-b) + (y-c)*(y-c) +(a-d)*(a-d))
-    return distance;
 }
 var delta1 = distance (x1, y1, x2, y2); // delta = 1
 var delta2 = distance (x1, y1, z1, x2, y2, z2); // delta = 3.1622…
