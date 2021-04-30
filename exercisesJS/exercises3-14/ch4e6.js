@@ -1,31 +1,28 @@
 let e = document.getElementsByClassName('exercise')[0];
 
 function distance(x,y,a,b,c,d){
-    let distance;
-    if (Array.isArray(x)){
-        if(x.length != y.length){
+    let numParameters = arguments.length;
+    if(Array.isArray(x)){
+        if (x.length === y.length){
+            let dis = 0;
+            for(let i in x){
+                dis += (x[i]-y[i])*(x[i]-y[i]);
+            }
+            dis = Math.sqrt(dis);
+            return dis;
+        }
+        else{
             throw 'incompatible point data';
         }
-        distance = 0;
-        for(let i in x){
-            distance += (x[i]-y[i])*(x[i]-y[i]);
-        }
-        distance = Math.sqrt(distance);
-        return distance;
     }
-
-    if (typeof d != 'number' && typeof c === 'number' ) {
-        throw 'Insufficient parameters';
+    if (numParameters<4) throw 'Insufficient parameters';
+    if (numParameters !== 4 && numParameters !== 6) throw 'Incompatible number of parameters';
+    if (numParameters === 4){
+        return Math.sqrt((x-a)*(x-a) + (y-b)*(y-b));
     }
-    if (typeof b != 'number') {
-        throw 'Insufficient parameters';
+    if (numParameters === 6){
+        return Math.sqrt((x-b)*(x-b) + (y-c)*(y-c) +(a-d)*(a-d));
     }
-    if (typeof c != 'number' && typeof d != 'number') {
-        distance = Math.sqrt((x-a)*(x-a) + (y-b)*(y-b));
-        return distance;
-    }
-    distance = Math.sqrt((x-b)*(x-b) + (y-c)*(y-c) +(a-d)*(a-d))
-    return distance;
 }
 
 
