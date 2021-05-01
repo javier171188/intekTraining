@@ -1,6 +1,32 @@
 let e = document.getElementsByClassName('exercise')[0];
 
 
+class Bank{
+    constructor(name, accounts){
+        this.name = name;
+        this.accounts = accounts;
+    }
+
+}
+
+class Client{
+    constructor(name, holdingMoney, account){
+        this.name = name;
+        this.holdingMoney = holdingMoney;
+        this.account = account;
+    }
+    deposit(quantity){
+        
+    }
+    retrieve(quantity){
+
+    }
+    viewBalance(){
+
+    }
+}
+
+/*
 var bank = [];
 function createClient(name, accountNumber,money){
     var client = {'name':name, 'accountNumber':accountNumber}
@@ -77,4 +103,4 @@ e.innerHTML += '<br/> Diana transfers 100 to David <br/>';
 clientB.deposit('0', 100);
 for (c of bank){
     e.innerHTML += c['name']+ ': ' + c.showBalance() + '<br/>';
-}   
+}   */
