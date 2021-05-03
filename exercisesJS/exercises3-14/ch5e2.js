@@ -1,65 +1,72 @@
 let e = document.getElementsByClassName('exercise')[0];
 
 
-let building = {'floors':[{'floor': 'Ll', 'rooms':[{'A':{'workers':[], 'equipment':[]}}]}], 
-            'workers':[{'name':'','ubication':'', 'equipment':[]}],
-            'equipment':[{'description':'', 'ubication':'', 'worker':''}]};
 
-building = {'floors':[{'floor': 'Ll', 'rooms':[{'A':{'workers':['001'], 'equipment':['computerA', 'printerA']}}]}], 
-            'workers':[{'name':'001','ubication':{'floor':'Ll', 'room':'A'}, 'equipment':['computerA']}],
-            'equipment':[{'description':'computerA', 'ubication':{'floor':'Ll', 'room':'A'}, 'worker':'001'},
-                          {'description':'printerA', 'ubication':{'floor':'Ll', 'room':'A'}, 'worker':''}  ],
-            findWorkerByName: function(name){
-                let searched = this['workers'].filter(worker => worker.name === name)
-                if (searched.length >0 ){
-                    return searched[0];
-                }
-                return {};
-            },
-            findWorkersByUbication: function(floor, room){
-                let searched = this['workers'].filter(worker => (worker.ubication.floor === floor && worker.ubication.room === room));
-                return searched;
-            },
-            findWorkersByEquipment: function(equipment){
-                let searched = this['workers'].filter(worker => (worker.equipment.includes(equipment)));
-                return searched;
-            },
-            findEquipmentByName:function(name){
-                let searched = this['equipment'].filter(equipment => (equipment.description === name));
-                return searched;
-            },
-            findEquipmentByUbication: function(floor,room){
-                let searched = this['equipment'].filter(equipment => (equipment.ubication.floor === floor && equipment.ubication.room === room));
-                return searched;
-            },
-            findEquipmentByWorker:function(worker){
-                let searched = this['equipment'].filter(equipment => (equipment.worker === worker));
-                return searched;
-            }
-        };
-console.log('a')
-console.log(building.findWorkerByName('001'));
-console.log(building.findWorkerByName('002'));
-console.log(building.findWorkersByUbication('Ll', 'A'));
-console.log(building.findWorkersByUbication('Ll', 'B'));
-console.log(building.findWorkersByEquipment('computerA'));
-console.log(building.findWorkersByEquipment('computerB'));
-console.log(building.findEquipmentByName('computerA'));
-console.log(building.findEquipmentByName('computerB'));
-console.log(building.findEquipmentByUbication('Ll', 'B'));
-console.log(building.findEquipmentByUbication('Ll', 'A'));
-console.log(building.findEquipmentByWorker('001'));
-console.log(building.findEquipmentByWorker('002'));
+let building = {'floors':{'ll':{'workers':['1','2','3'], 'equipment':['camera1','camera2','pc1'], 'rooms':['D','A']},
+                          'ff':{'workers':['4','5','6','7','8'], 'equipment':['pc2','pc3','pc4','pc5','printer'], 'rooms':['1A','1B','1C','1D']},
+                          'sf':{'workers':['9','10'], 'equipment':['camera3','camera4', 'pc5','pc7'], 'rooms':['2A','2B']}
+                        }, 
+                'workers':{'1':{'floor':'ll','room':'D', 'equipment':'pc1'},
+                           '2':{'floor':'ll','room':'D', 'equipment':''},
+                           '3':{'floor':'ll','room':'A', 'equipment':''},
+                           '4':{'floor':'ff','room':'1A', 'equipment':'pc2'},
+                           '5':{'floor':'ff','room':'1B', 'equipment':'pc3'},
+                           '6':{'floor':'ff','room':'1C', 'equipment':'pc4'},
+                           '7':{'floor':'ff','room':'1D', 'equipment':'pc5'},
+                           '8':{'floor':'ff','room':'1D', 'equipment':'pc6'},
+                           '9':{'floor':'sf','room':'2A', 'equipment':'pc7'},
+                           '10':{'floor':'sf','room':'2B', 'equipment':'pc8'}
+                            },
+                'equipment':{'camera1':{'floor':'ll','room':'D','worker':''},
+                             'camera1':{'floor':'ll','room':'D','worker':''},
+                             'camera2':{'floor':'ll','room':'A','worker':''},
+                             'camera3':{'floor':'sf','room':'2A','worker':''},
+                             'camera4':{'floor':'sf','room':'2B','worker':''},
+                             'pc1':{'floor':'ll','room':'D','worker':'1'},
+                             'pc2':{'floor':'ff','room':'1A','worker':'4'},
+                             'pc3':{'floor':'ff','room':'1B','worker':'5'},
+                             'pc4':{'floor':'ff','room':'1C','worker':'6'},
+                             'pc5':{'floor':'ff','room':'1D','worker':'7'},
+                             'pc6':{'floor':'ff','room':'1D','worker':'8'},
+                             'pc7':{'floor':'sf','room':'2A','worker':'9'},
+                             'pc8':{'floor':'sf','room':'2B','worker':'10'},
+                             'printer':{'floor':'ff','room':'1D','worker':''},
+                            }
+                };
 
-e.innerHTML += 'The structure of the building is as follows: <br/>';
-e.innerHTML += "building = {'floors':[{'floor': 'Ll', 'rooms':[{'A':{'workers':['001'], 'equipment':['computerA', 'printerA']}}]}], <br/>";
-e.innerHTML += "'workers':[{'name':'001','ubication':{'floor':'Ll', 'room':'A'}, 'equipment':['computerA']}], <br/>";
-e.innerHTML += "'equipment':[{'description':'computerA', 'ubication':{'floor':'Ll', 'room':'A'}, 'worker':'001'}, <br/>";
-e.innerHTML += "{'description':'printerA', 'ubication':{'floor':'Ll', 'room':'A'}, 'worker':''}  ]} <br/>";
-e.innerHTML += "<br/> The building has the methods: findWorkerByName, findWorkersByUbication, findWorkersByEquipment, <br/>";
-e.innerHTML += " findEquipmentByName,  findEquipmentByUbication and findEquipmentByWorker <br/>";
-e.innerHTML += "<br/> For example, you the method building.findEquipmentByUbication('Ll', 'A') returns: "
-for (let eq of building.findEquipmentByUbication('Ll', 'A')){
-    e.innerHTML += eq.description +', '
+function findInTheBuilding(){
+    let cache = {};
+    function innerFunction(lookedKey){
+        if (Object.keys(cache).indexOf(lookedKey)>=0){
+            return cache[lookedKey]
+        }
+        let item = {};
+        if (Object.keys(building['workers']).indexOf(lookedKey)>=0){
+            item = building['workers'][lookedKey];
+        } else if (Object.keys(building['equipment']).indexOf(lookedKey)>=0){
+            item = building['equipment'][lookedKey];
+        }
+        if (Object.keys(item).length>0){
+            cache[lookedKey] = item;
+        }
+        return item;
+    }
+    return innerFunction;
 }
-e.innerHTML = e.innerHTML.slice(0, e.innerHTML.length-2);
+
+let searchInBuilding = findInTheBuilding();
+console.log(searchInBuilding('3'));
+console.log(searchInBuilding('9'));
+console.log(searchInBuilding('printer'));
+console.log(searchInBuilding('camera1'));
+console.log(searchInBuilding('car'));
+
+e.innerHTML += `We first look for the worker 3: `;
+e.innerHTML += `floor: ${searchInBuilding('3')['floor']},  `;
+e.innerHTML += `room: ${searchInBuilding('3')['room']}.`;
+
+e.innerHTML += '<br/>';
+e.innerHTML += 'Now we look for the printer: ';
+e.innerHTML += `floor: ${searchInBuilding('printer')['floor']}, `;
+e.innerHTML += `room: ${searchInBuilding('printer')['room']}.`;  
+e.innerHTML += '<br/>';
