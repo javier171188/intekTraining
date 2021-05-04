@@ -88,44 +88,126 @@ for (p in s){
 }
 
 class Vehicle{
-    constructor(passengers, speed, size, name){
+    constructor(passengers, topSpeed, size, name, currentSpeed=0){
         this.passengers = passengers;
-        this.topSpeed = speed;
+        this.topSpeed = topSpeed;
         this.size = size;
         this.name = name;
+        this.currentSpeed = currentSpeed;
     }
     move(speed){
-        if (speed>this.speed){
-            speed = this.speed;
+        if (speed>this.topSpeed){
+            speed = this.topSpeed;
         }
-        console.log(`The vehicle ${this.name} is now moving with speed of ${speed}`);
+        this.currentSpeed = speed;
+        console.log(`The vehicle ${this.name} is now moving with speed of ${this.currentSpeed}`);
+    }
+    stop(){
+        this.currentSpeed = 0;
+        console.log(`The vehicle ${this.name} has stopped.`)
     }
 }
 
-class  landVehicle extends Vehicle{
-    constructor(passengers, speed, size, name){
-        super(passengers, speed, size, name)
+class  LandVehicle extends Vehicle{
+    constructor(passengers, topSpeed, size, name, currentSpeed=0){
+        super(passengers, topSpeed, size, name, currentSpeed)
     }
 }
 
-class aerialVehicle extends Vehicle{
-    constructor(passengers, speed, size, name){
-        super(passengers, speed, size, name)
-    }
-}
-
-class waterVehicle extends Vehicle{
-    constructor(passengers, speed, size, name){
-        super(passengers, speed, size, name)
-    }
-}
-
-class Train extends landVehicle{
-    constructor(passengers, speed, size, name, railroad){
-        super(passengers, speed, size, name)
+class Train extends LandVehicle{
+    constructor(passengers, topSpeed, size, name, railroad, currentSpeed=0){
+        super(passengers, topSpeed, size, name, currentSpeed);
         this.railroad = railroad;
     }
     changeRailroad(newRailroad){
-        console.log(`The train ${this.name} has changed Lane to ${this.railroad}`)
+        this.railroad = newRailroad;
+        console.log(`The train ${this.name} has changed Lane to ${newRailroad}`)
     }
+}
+
+class WheeledVehicle extends LandVehicle{
+    constructor(passengers, topSpeed, size, name, numberWheels, currentSpeed=0){
+        super(passengers, topSpeed, size, name, currentSpeed);
+        this.numberWheels = numberWheels;
+    }
+    changeTires(){
+        console.log(`${this.name} has now new tires.`)
+    }
+}
+
+class AerialVehicle extends Vehicle{
+    constructor(passengers, topSpeed, size, name, currentSpeed=0, height=0){
+        super(passengers, topSpeed, size, name, currentSpeed=0)
+        this.height = height;
+    }
+    rise(meters){
+        this.height += meters;
+        console.log(`The new height is ${this.height}`);
+    }
+
+    descend(meters){
+        this.height -= meters;
+        console.log(`The new height is ${this.height}`);
+    }
+}
+
+class Airplane extends AerialVehicle{
+    constructor(passengers, topSpeed, size, name, typeWing, currentSpeed=0){
+        super(passengers, topSpeed, size, name, currentSpeed)
+        this.typeWing = typeWing;
+    }
+}
+
+class Helicopter extends AerialVehicle{
+    constructor(passengers, topSpeed, size, name, numberPropeller, currentSpeed=0){
+        super(passengers, topSpeed, size, name, currentSpeed)
+        this.numberPropeller = numberPropeller;
+    }
+}
+
+class WaterVehicle extends Vehicle{
+    constructor(passengers, topSpeed, size, name, currentSpeed=0){
+        super(passengers, topSpeed, size, name, currentSpeed)
+    }
+}
+
+class Boat extends WaterVehicle{
+    constructor(passengers, topSpeed, size, name, currentSpeed=0){
+        super(passengers, topSpeed, size, name, currentSpeed)
+    }
+}
+
+class Yacht extends Boat{
+    constructor(passengers, topSpeed, size, name, pool, currentSpeed=0){
+        super(passengers, topSpeed, size, name, currentSpeed)
+        this.pool = pool;
+    }
+}
+
+class Submarine extends WaterVehicle{
+    constructor(passengers, topSpeed, size, name, depth=0, currentSpeed=0){
+        super(passengers, topSpeed, size, name, currentSpeed)
+        this.depth = depth;
+    }
+    dive(meters){
+        this.depth -= meters;
+        console.log(`The new depth is ${this.depth}`);
+    }
+    goUp(meters){
+        this.depth += meters;
+        console.log(`The new depth is ${this.depth}`);
+    }
+}
+
+e.innerHTML += '<br/>';
+e.innerHTML += '<br/> We have the class Yacht, which inherits from Boat, which inherits from WaterVehicle which inherits from Vehicle. <br/>';
+let y = new Yacht(25, 100, 'big', 'y', true);
+e.innerHTML += "<br/>Example: let y = new Yacht(25, 100, 'big', 'y', true); results in a tacht with properties:<br/>";
+for (p in y){
+    e.innerHTML += `${p}: ${y[p]} <br/>`;
+}
+e.innerHTML += '<br/> Now we increase the speed with  y.move(200), and the result is: <br/>';
+y.move(200);
+for (p in y){
+    e.innerHTML += `${p}: ${y[p]} <br/>`;
 }
