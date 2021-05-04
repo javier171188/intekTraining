@@ -86,3 +86,46 @@ e.innerHTML += '<br/> <br/>Example: let s = new Square(3); results in a square w
 for (p in s){
     e.innerHTML += `${p}: ${s[p]} <br/>`;
 }
+
+class Vehicle{
+    constructor(passengers, speed, size, name){
+        this.passengers = passengers;
+        this.topSpeed = speed;
+        this.size = size;
+        this.name = name;
+    }
+    move(speed){
+        if (speed>this.speed){
+            speed = this.speed;
+        }
+        console.log(`The vehicle ${this.name} is now moving with speed of ${speed}`);
+    }
+}
+
+class  landVehicle extends Vehicle{
+    constructor(passengers, speed, size, name){
+        super(passengers, speed, size, name)
+    }
+}
+
+class aerialVehicle extends Vehicle{
+    constructor(passengers, speed, size, name){
+        super(passengers, speed, size, name)
+    }
+}
+
+class waterVehicle extends Vehicle{
+    constructor(passengers, speed, size, name){
+        super(passengers, speed, size, name)
+    }
+}
+
+class Train extends landVehicle{
+    constructor(passengers, speed, size, name, railroad){
+        super(passengers, speed, size, name)
+        this.railroad = railroad;
+    }
+    changeRailroad(newRailroad){
+        console.log(`The train ${this.name} has changed Lane to ${this.railroad}`)
+    }
+}
