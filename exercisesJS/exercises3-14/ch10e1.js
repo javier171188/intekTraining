@@ -5,13 +5,15 @@ var myLib = {
 	math: {
 		real: {
 			add: function (a, b){ /*code goes here*/},
-			sub: function (a, b){ /*code goes here*/},
+			sub: function (a, b){ /*code goes here*/
+								console.log('executing real sub');},
 			mul: function (a, b){ /*code goes here*/}
 		},
 		complex: {
             Num: function (real, img){/*code goes here*/},
 			add: function (a, b){ /*code goes here*/},
-			sub: function (a, b){ /*code goes here*/},
+			sub: function (a, b){ /*code goes here*/
+									console.log('executing complex sub');},
 			mul: function (a, b){ /*code goes here*/}
               },
         matrix: {
@@ -24,19 +26,7 @@ var myLib = {
 	       }
 	}
 };
-/*
-var answer = myLib.math.real.sub(
-	myLib.math.real.add (20, 22), 
-	myLib.math.real.mul(2,5));
-var ans = myLib.math.matrix.times(
-	myLib.math.matrix.eye (4), 
-	myLib.math.complex.sub (
-			new myLib.math.complex.Num (
-				   myLib.math.real.add(5,2),
-				   -3), 
-			new myLib.math.complex.Num (3,4)
-	)
-);*/
+
 // with "with" 
 var answer;
 var ans;
@@ -58,18 +48,19 @@ e.innerHTML += "};";
 // without with
 var answer;
 var ans;
-let comp =myLib.math
 
-answer = comp.real.sub(comp.real.add(20,22), comp.real.mul(2,5));
-ans = comp.matrix.times(comp.matrix.eye(4), comp.complex.sub(new comp.complex.Num(comp.real.add(5,2), -3),
-						new comp.complex.Num(3,4) ));
+var { add, sub, mul} = myLib.math.real;
+answer = sub(add(20,22), mul(2,5))
 
+var { matrix: {times, eye}, complex:{Num, sub}} = myLib.math;
+ans = times(eye(4), sub(new Num(add(5,2), -3),
+						new Num(3,4) ));
 
-e.innerHTML += "<br/> <br/>";
+						e.innerHTML += "<br/> <br/>";
 e.innerHTML += "<p class = 'subtitle' > Without the with statement <p/>";
 e.innerHTML += "var answer; <br/>";
 e.innerHTML += "var ans; <br/>";
-e.innerHTML += "let comp =myLib.math <br/>";
-
-e.innerHTML += "answer = comp.real.sub(comp.real.add(20,22), comp.real.mul(2,5)); <br/>";
-e.innerHTML += "ans = comp.matrix.times(comp.matrix.eye(4), comp.complex.sub(new comp.complex.Num(comp.real.add(5,2), -3), new comp.complex.Num(3,4) ));";
+e.innerHTML += "var { add, sub, mul} = myLib.math.real;<br/>";
+e.innerHTML += "answer = sub(add(20,22), mul(2,5))<br/>";
+e.innerHTML += "var { matrix: {times, eye}, complex:{Num, sub}} = myLib.math;<br/>";
+e.innerHTML += "ans = times(eye(4), sub(new Num(add(5,2), -3), new Num(3,4) ));<br/>";
