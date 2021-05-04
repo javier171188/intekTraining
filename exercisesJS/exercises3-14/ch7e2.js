@@ -17,12 +17,10 @@ let france = {
 };
 
 function toFrance(date){
-    let expMD = /\d{1,2}/g;
-    let expYear = /\d{4}/;
-    let monthDay = date.match(expMD).slice(0,2);
-    let year = date.match(expYear);
-    let fdate = monthDay[1]+'/'+monthDay[0] 
-    let fullDate = fdate + '/'+year[0];
+    let expr = /\d{1,4}/g;
+    let nums = date.match(expr);
+    let fdate = nums[1]+'/'+nums[0];
+    let fullDate = fdate + '/' + nums[2];
     if (Boolean(france[fdate])){
         fullDate += ' ('+ france[fdate]+')';
     }
@@ -31,8 +29,8 @@ function toFrance(date){
 
 
 
-e.innerHTML += 'The date in US is 7/14/2014,';
-e.innerHTML += `whereas in France is${toFrance("7/14/2014")} <br/>`;
+e.innerHTML += 'The date in US is 7/14/2014, ';
+e.innerHTML += `whereas in France is ${toFrance("7/14/2014")} <br/>`;
 e.innerHTML += 'And the date 12/22/2014 in US, in France is ';
 e.innerHTML += `${toFrance("12/22/2014")}`;
 
