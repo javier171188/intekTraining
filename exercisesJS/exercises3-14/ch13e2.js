@@ -1,14 +1,16 @@
 let e = document.getElementsByClassName('exercise')[0];
 let out = document.getElementsByClassName('out')[0];
 
-e.innerHTML += '<br/>';
+
 
 function prinFunct(){
     let counter =1;
     function inner(){
         if (counter<=3){
             console.log(`Function executed ${counter} times.`);
-            out.innerHTML += `Function executed ${counter} times. <br/>`;
+            let p = document.createElement('p');
+            p.textContent = `Function executed ${counter} times.`
+            out.appendChild(p);
         }
         counter++;
     }
