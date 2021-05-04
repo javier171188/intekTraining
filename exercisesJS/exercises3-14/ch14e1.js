@@ -1,4 +1,4 @@
-let g = document.getElementsByClassName('grid')[0];
+let g = document.querySelector('.grid');
 let c, w;
 
 let nRows, nColumns;
@@ -7,10 +7,15 @@ function onClick(){
     nRows = Math.abs(nRows);
     nColumns = document.getElementById('columns').value;
     nColumns = Math.abs(nColumns);
-    g.innerHTML = ' ';
+    g.innerHTML = '';
+    let fragment = new DocumentFragment();
     for (let i=0; i<nColumns*nRows; i++){
-        g.innerHTML += `<div class = "userg"> ${i} </div>`;
+        let div = document.createElement('div');
+        div.setAttribute('class', "userg");
+        div.textContent = i;
+        fragment.appendChild(div);
     }
+    g.appendChild(fragment);
     w = 100/nColumns;
     c = document.getElementsByClassName('userg');
     for (let i of c){
