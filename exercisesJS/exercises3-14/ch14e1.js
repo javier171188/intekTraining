@@ -16,7 +16,7 @@ function onClick(){
         fragment.appendChild(div);
     }
     g.appendChild(fragment);
-    w = 100/nColumns;
+    w = 100/nColumns;   
     c = document.getElementsByClassName('userg');
     for (let i of c){
         i.style.width = String(w)+'%';

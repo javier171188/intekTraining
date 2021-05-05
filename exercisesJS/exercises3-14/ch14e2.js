@@ -1,6 +1,7 @@
-let options = document.getElementsByClassName('options')[0];
-let content = document.getElementsByClassName('content')[0];
-
+let options = document.querySelector('.options');
+let content = document.querySelector('.content');
+let two = document.querySelector('#two');
+two.checked = true;
 function onClick(ev){
     let two = document.getElementById('two').checked;
     let three = document.getElementById('three').checked;
