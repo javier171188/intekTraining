@@ -53,7 +53,6 @@ function allProcess(data){
       noTopic();
     }
   });
-
 }
 
 
@@ -63,45 +62,19 @@ function templateTwo(topic,data){
   let new_url = url_ob.href;
   document.location.href = new_url;
   e.innerHTML = '';
-  let temp = document.querySelector("#view1");
+  let temp = document.querySelector("#view2");
   let div = temp.content.querySelector('div');
-  div.setAttribute('class','second');
   let image = div.querySelector('img');
   image.setAttribute('height', "200px");
   image.setAttribute('class',"imagetwo");
   image.setAttribute('src',data[topic]['image']);
-  let textContent = div.querySelector('div');
-  let title = textContent.querySelector('h2');
+  image.setAttribute('alt',data[topic]['alt']);
+  let title = div.querySelector('h2');
   title.textContent = data[topic]['title'];
-  let p = textContent.querySelector('p');
-  p.innerHTML = '';
-  let text = document.createElement('p');
-  text.innerHTML = 'trying';
-  div.appendChild(text);
+  let text = div.querySelector('p');
+  text.textContent = data[topic]['text'];
   let a = document.importNode(div, true);
   e.appendChild(a);
-  
-  /*
-  container = document.createElement('div');
-  imageContainer = document.createElement('div');
-  image = document.createElement('img');
-  image.setAttribute('height', "200px");
-  image.setAttribute('class',"imagetwo");
-  image.setAttribute('src',data[topic]['image']);
-  imageContainer.appendChild(image);
-  container.appendChild(imageContainer);
-  e.appendChild(container);
-  title = document.createElement('h1');
-  title.textContent += data[topic]['title'];
-  e.appendChild(title);
-  text = document.createElement('p');
-  text.textContent += data[topic]['text'];
-  e.appendChild(text);*/
-  let link = document.createElement('a');
-  link.textContent = 'Go Home';
-  link.setAttribute('href', "");
-  e.appendChild(link);
-  
 }
 
 
