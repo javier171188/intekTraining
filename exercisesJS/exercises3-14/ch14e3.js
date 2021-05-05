@@ -28,24 +28,30 @@ function allProcess(data){
   var topics = Object.keys(data);
   //When opening
   var hash = new URL(document.URL).hash;
+  var fullHash =new URL(document.URL).hash;
   hash = hash.slice(1,);
   if (topics.indexOf(hash)>=0){
     templateTwo(hash,data);
   }else{
-    onLanding(data);
-    e.addEventListener('click',function(ev){
-      let clicked = ev.target.getAttribute('class');
-      
-      if (topics.indexOf(clicked) >= 0){
-          templateTwo(clicked,data);
-      }
-    });
+    if (fullHash.length>0){
+      noTopic();
+    } else {
+      onLanding(data, topics);
+    }
   }
   
   window.addEventListener('hashchange', function() {
     let currentHash = new URL(document.URL).hash;
+    let fullHash = new URL(document.URL).hash;
     let topic = currentHash.slice(1);
-    templateTwo(topic,data)
+    if (topics.indexOf(topic)>=0){
+      templateTwo(topic,data);
+    }else if(fullHash.length === 0){
+      e.innerHTML = '';
+      onLanding(data, topics);
+    } else{
+      noTopic();
+    }
   });
 
 }
@@ -57,6 +63,25 @@ function templateTwo(topic,data){
   let new_url = url_ob.href;
   document.location.href = new_url;
   e.innerHTML = '';
+  let temp = document.querySelector("#view1");
+  let div = temp.content.querySelector('div');
+  div.setAttribute('class','second');
+  let image = div.querySelector('img');
+  image.setAttribute('height', "200px");
+  image.setAttribute('class',"imagetwo");
+  image.setAttribute('src',data[topic]['image']);
+  let textContent = div.querySelector('div');
+  let title = textContent.querySelector('h2');
+  title.textContent = data[topic]['title'];
+  let p = textContent.querySelector('p');
+  p.innerHTML = '';
+  let text = document.createElement('p');
+  text.innerHTML = 'trying';
+  div.appendChild(text);
+  let a = document.importNode(div, true);
+  e.appendChild(a);
+  
+  /*
   container = document.createElement('div');
   imageContainer = document.createElement('div');
   image = document.createElement('img');
@@ -71,32 +96,54 @@ function templateTwo(topic,data){
   e.appendChild(title);
   text = document.createElement('p');
   text.textContent += data[topic]['text'];
-  e.appendChild(text);
-  e.innerHTML += '<a href="">Go Home</a>'
+  e.appendChild(text);*/
+  let link = document.createElement('a');
+  link.textContent = 'Go Home';
+  link.setAttribute('href', "");
+  e.appendChild(link);
+  
 }
 
 
-function onLanding(data){
-  let fragment = document.createDocumentFragment();
-  for (let topic in data){
-    div = document.createElement('div');
+function onLanding(data, topics){
+  for(let topic in data){
+    let temp = document.querySelector("#view1");
+    let div = temp.content.querySelector('div');
     div.setAttribute('id', topic);
-    div.setAttribute('class', 'container')
-    img = document.createElement('img');
+    div.setAttribute('class', 'container');
+    let img = div.querySelector('img');
     img.setAttribute('height','200px')
     img.setAttribute('class','imageone');
     img.setAttribute('src', data[topic]['image']);
-    img.setAttribute('class', topic)
-    div.appendChild(img);
-    divText = document.createElement('div');
+    img.setAttribute('alt', data[topic]['alt']);
+    img.setAttribute('class', topic);
+    let divText = div.querySelector('div');
     divText.setAttribute('class',topic);
-    title = document.createElement('h1');
+    let title = divText.querySelector('h2');
     title.setAttribute('class',topic);
-    title.textContent += data[topic]['title'];
-    divText.appendChild(title);
-    divText.innerHTML += data[topic]['text'];
-    div.appendChild(divText);
-    fragment.appendChild(div);
+    title.textContent = data[topic]['title'];
+    let content = divText.querySelector('p');
+    content.setAttribute('class',topic);
+    content.innerHTML = data[topic]['text'];
+    let a = document.importNode(div, true);
+    let exercise = document.querySelector(".exercise");
+    exercise.appendChild(a);
+    e.addEventListener('click',function(ev){
+      let clicked = ev.target.getAttribute('class');
+      if (topics.indexOf(clicked) >= 0){
+          templateTwo(clicked,data);
+      }
+    });
   }
-  e.appendChild(fragment);
+}
+
+function noTopic(){
+  let p = document.createElement('p');
+  p.innerHTML = "We do not have that topic";
+  e.innerHTML = "";
+  e.appendChild(p);
+  let a = document.createElement('a');
+  a.innerHTML = 'Go Home';
+  a.setAttribute('href','');
+  e.appendChild(a);
 }

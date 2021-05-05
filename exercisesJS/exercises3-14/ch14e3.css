@@ -45,3 +45,7 @@ img{
     margin-top: 1%;
 }
 
+p{
+    text-align: justify;
+    text-justify: inter-word;
+}
