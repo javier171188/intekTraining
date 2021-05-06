@@ -1,7 +1,7 @@
 //localStorage.clear();
 let textSpace = document.getElementsByName('textarea')[0];
-let button = document.getElementsByClassName('savingbutton')[0];
-let pastNotes = document.getElementsByClassName('pastnotes')[0];
+let button = document.querySelector('.savingbutton');
+let pastNotes = document.querySelector('.pastnotes');
 
 if (!localStorage.getItem(0)){
     localStorage.setItem(0,'0');
@@ -33,21 +33,36 @@ function saveCurrentNote(){
 function placeNotes(){
     pastNotes.innerHTML = '';
     let fragment = document.createDocumentFragment()
-    for (let i = indexes.length-1; i>=0;  i--){
-        if (i != '0'){
-            //pastNotes.innerHTML += '<br/>' + localStorage.getItem(i);
-            div = document.createElement('div');
-            div.setAttribute('class', 'pastnote');
-            div.textContent = localStorage.getItem(i).slice(0,10);
+    indexes.reverse();
+    for (let i of indexes){
+        if(i!=='0'){
+            let temp = document.querySelector('#notes');
+            let div = temp.content.querySelector('.pastnote');  
+            let p = div.querySelector('p');
+            let buttons = div.querySelector('.buttons');
+            let errase = buttons.querySelector('.dbutton');
+            errase.setAttribute('dbid', i);
+            p.textContent = localStorage.getItem(i).slice(0,10);
             if (localStorage.getItem(i).length > 10){
-                div.textContent +=  '...';
+                p.textContent +=  '...';
             }
-            buttons = document.createElement('div');
-            button.setAttribute('class','buttoncontainer');
-            editButton = document.createElement('button');
-            editButton.textContent = 'Edit';
-            fragment.appendChild(div);
+            let a = document.importNode(div, true);
+            fragment.appendChild(a);
         }
     }
     pastNotes.appendChild(fragment);
+    indexes.reverse();
+}
+
+function delNote(event){
+    console.log(localStorage.getItem(0));
+    let dbid = event.getAttribute('dbid');
+    let currentIndexes = localStorage.getItem(0) + ' ';
+    let exp = new RegExp(` ${dbid} `);
+    console.log(exp);   
+    currentIndexes = currentIndexes.replace(exp, ' ').slice(0,-1);
+    console.log(currentIndexes);
+    localStorage.setItem(0, currentIndexes);
+    indexes = localStorage.getItem(0).split(' ');
+    placeNotes();
 }
