@@ -13,9 +13,6 @@ let lastIndex = indexes[indexes.length-1];
 placeNotes();
 button.addEventListener('click',saveCurrentNote);
 
-
-
-
 //functions
 function saveCurrentNote(){
     if (Boolean(textSpace.value)){
@@ -26,6 +23,7 @@ function saveCurrentNote(){
         localStorage.setItem(0, renewIndexes);
         indexes = localStorage.getItem(0).split(' ')
         lastIndex = indexes[indexes.length-1];
+        
         placeNotes();
     }
 }
@@ -40,10 +38,12 @@ function placeNotes(){
             let div = temp.content.querySelector('.pastnote');  
             let p = div.querySelector('p');
             let buttons = div.querySelector('.buttons');
-            let errase = buttons.querySelector('.dbutton');
-            errase.setAttribute('dbid', i);
+            let erraseB = buttons.querySelector('.dbutton');
+            erraseB.setAttribute('dbid', i);
             let editB = buttons.querySelector('.ebutton');
             editB.setAttribute('dbid',i);
+            let viewB = buttons.querySelector('.vbutton');
+            viewB.setAttribute('dbid',i);
             p.textContent = localStorage.getItem(i).slice(0,10);
             if (localStorage.getItem(i).length > 10){
                 p.textContent +=  '...';
@@ -69,7 +69,54 @@ function delNote(event){
 function editNote(event){
     let dbid = event.getAttribute('dbid');
     let text = localStorage.getItem(dbid);
-    console.log(text);
+    let editButton = document.querySelector('.editingbutton');
+    let saveButton = document.querySelector('.savingbutton');
+    let activity = document.querySelector('.activity');
+    editButton.style.display = "inline";
+    saveButton.style.display = 'none';
+    pastNotes.style.display = "none";
+    activity.textContent = "Edit this note";
     textSpace.value = text;
-    //Try hiding and showing diferent buttons
+    textSpace.setAttribute('placeholder', 'Write a new version for the note');
+    editButton.addEventListener('click', ()=>{
+        editButton.style.display = "none";
+        saveButton.style.display = 'inline';
+        pastNotes.style.display = 'block';
+        if (Boolean(textSpace.value)){
+            localStorage.setItem(dbid, textSpace.value);
+        }
+        textSpace.value = '';
+        activity.textContent = 'Create a Note';
+        textSpace.setAttribute('placeholder', 'Write a note here');
+        placeNotes();
+        }, {once : true});
+}
+
+function viewNote(event){
+    let dbid = event.getAttribute('dbid');
+    let text = localStorage.getItem(dbid);
+    let editButton = document.querySelector('.editingbutton');
+    let saveButton = document.querySelector('.savingbutton');
+    let activity = document.querySelector('.activity');
+    let dates = document.querySelector(".hiddates");
+    editButton.style.display = "inline";
+    saveButton.style.display = 'none';
+    pastNotes.style.display = "none";
+    activity.textContent = "Current note";
+    textSpace.value = text;
+    textSpace.readOnly = true;
+    editButton.textContent = 'Go back';
+    dates.style.display = 'block';
+    editButton.addEventListener('click', ()=>{
+        editButton.style.display = "none";
+        editButton.textContent = 'Edit';
+        saveButton.style.display = 'inline';
+        pastNotes.style.display = 'block';
+        textSpace.value = '';
+        activity.textContent = 'Create a Note';
+        textSpace.setAttribute('placeholder', 'Write a note here');
+        textSpace.readOnly = false;
+        dates.style.display = 'none';
+        placeNotes();
+        }, {once : true});
 }

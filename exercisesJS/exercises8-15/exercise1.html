@@ -10,20 +10,28 @@
 <body>
     <h1 class="title">Exercise 1</h1>
     <div class="note">
+        <h2 class="activity">Create a Note</h2>
+        <div class="hiddates">11/17/1988 - 11/28/2001</div>
         <textarea name="textarea" rows="10" cols="50" placeholder='Write a note here'></textarea>
-        <button class="savingbutton">Save note!</button>
+        <div class="buttonsnotes">
+            <button class="savingbutton">Save note!</button>
+            <button class="editingbutton">Save the changes!</button>
+        </div>
+        
     </div>
 
     <div class="pastnotes"></div>
     <template id="notes">
         <div class="pastnote">
-            
+            <div class="dates">11/17/1988 - 11/28/2001</div>
             <p></p>
             <div class="buttons">
-                <button class="vbutton">View</button>
+                <button onclick="viewNote(this);" class="vbutton">View</button>
                 <button onclick="editNote(this);"class="ebutton">Edit</button>
                 <button onclick="delNote(this);" class="dbutton">Delete</button>
             </div>
+
+            
         </div>
     </template>
     <script src="exercise1.js"></script>

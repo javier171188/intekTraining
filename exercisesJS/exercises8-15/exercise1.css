@@ -13,6 +13,10 @@
 .savingbutton{
     width: 20%;
 }
+.editingbutton{
+    width: 20%;
+    display: none;
+}
 
 .pastnotes{
     display: block;
@@ -41,4 +45,16 @@ p{
 .buttons{
     display: flex;
     justify-content: center;
+}
+
+.activity{
+    color: brown;
+}
+
+.dates{
+    font-size: 45%;
+}
+
+.hiddates{
+    display: none;
 }
