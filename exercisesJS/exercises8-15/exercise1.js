@@ -42,6 +42,8 @@ function placeNotes(){
             let buttons = div.querySelector('.buttons');
             let errase = buttons.querySelector('.dbutton');
             errase.setAttribute('dbid', i);
+            let editB = buttons.querySelector('.ebutton');
+            editB.setAttribute('dbid',i);
             p.textContent = localStorage.getItem(i).slice(0,10);
             if (localStorage.getItem(i).length > 10){
                 p.textContent +=  '...';
@@ -55,14 +57,19 @@ function placeNotes(){
 }
 
 function delNote(event){
-    console.log(localStorage.getItem(0));
     let dbid = event.getAttribute('dbid');
     let currentIndexes = localStorage.getItem(0) + ' ';
     let exp = new RegExp(` ${dbid} `);
-    console.log(exp);   
     currentIndexes = currentIndexes.replace(exp, ' ').slice(0,-1);
-    console.log(currentIndexes);
     localStorage.setItem(0, currentIndexes);
     indexes = localStorage.getItem(0).split(' ');
     placeNotes();
+}
+
+function editNote(event){
+    let dbid = event.getAttribute('dbid');
+    let text = localStorage.getItem(dbid);
+    console.log(text);
+    textSpace.value = text;
+    //Try hiding and showing diferent buttons
 }
