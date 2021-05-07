@@ -69,6 +69,7 @@ function delNote(event){
     currentIndexes = currentIndexes.replace(exp, ' ').slice(0,-1);
     localStorage.setItem(0, currentIndexes);
     indexes = localStorage.getItem(0).split(' ');
+    lastIndex = indexes[indexes.length-1];
     placeNotes();
 }
 
@@ -82,6 +83,8 @@ function editNote(event){
     let creation = document.querySelector('.creation');
     let modified = document.querySelector('.modified');
     let dates = document.querySelector(".hiddates");
+    let cancelB = document.querySelector('.cancelingbutton');
+    cancelB.style.display = 'inline';
     editButton.style.display = "inline";
     saveButton.style.display = 'none';
     pastNotes.style.display = "none";
@@ -91,11 +94,12 @@ function editNote(event){
     creation.textContent = `Creation date: ${parsedData['creaDate']}.`;
     modified.textContent = `Last modification: ${parsedData['lastMDate']}`;
     dates.style.display = 'flex';
+    
     editButton.addEventListener('click', ()=>{
         editButton.style.display = "none";
         saveButton.style.display = 'inline';
         pastNotes.style.display = 'block';
-        if (Boolean(textSpace.value)){
+        if (Boolean(textSpace.value) && parsedData['note'] !== textSpace.value){
             let d = new Date;
             parsedData['note'] = textSpace.value;
             parsedData['lastMDate'] = d.toString()
@@ -106,6 +110,7 @@ function editNote(event){
         activity.textContent = 'Create a Note';
         textSpace.setAttribute('placeholder', 'Write a note here');
         dates.style.display = 'none';
+        cancelB.style.display = 'none';
         placeNotes();
         }, {once : true});
 }
@@ -133,7 +138,7 @@ function viewNote(event){
     modified.textContent = `Last modification: ${parsedData['lastMDate']}`;
     editButton.addEventListener('click', ()=>{
         editButton.style.display = "none";
-        editButton.textContent = 'Edit';
+        editButton.textContent = 'Save the changes!';
         saveButton.style.display = 'inline';
         pastNotes.style.display = 'block';
         textSpace.value = '';
@@ -156,4 +161,24 @@ function allowTabs(event){
         //To place the cursor in the right character
         this.selectionEnd = start + 1;
     }
+}
+
+function cancelEdit(){
+    let editButton = document.querySelector('.editingbutton');
+    editButton.removeEventListener('click');
+    let saveButton = document.querySelector('.savingbutton');
+    let activity = document.querySelector('.activity');
+    let dates = document.querySelector(".hiddates");
+    let cancelB = document.querySelector('.cancelingbutton');
+    cancelB.style.display = 'none';
+    editButton.style.display = "none";
+    editButton.textContent = 'Save the changes!';
+    saveButton.style.display = 'inline';
+    pastNotes.style.display = 'block';
+    textSpace.value = '';
+    activity.textContent = 'Create a Note';
+    textSpace.setAttribute('placeholder', 'Write a note here');
+    textSpace.readOnly = false;
+    dates.style.display = 'none';
+
 }

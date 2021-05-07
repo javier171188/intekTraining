@@ -16,6 +16,8 @@
 .editingbutton{
     width: 20%;
     display: none;
+    font-size: 0.8rem;
+    padding: 0.5%;
 }
 
 .pastnotes{
@@ -61,4 +63,14 @@ p{
 .creation, .modified{
     text-align: left;
     margin-top: 0;
+}
+
+.vbutton, .ebutton,.dbutton{
+    width: 25%;
+    font-size: 0.8rem;
+    padding-left: 0.5%;
+    border-width: 0.1rem;
+}
+.cancelingbutton{
+    display: none;
 }
