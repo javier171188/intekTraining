@@ -95,24 +95,33 @@ function editNote(event){
     modified.textContent = `Last modification: ${parsedData['lastMDate']}`;
     dates.style.display = 'flex';
     
-    editButton.addEventListener('click', ()=>{
-        editButton.style.display = "none";
-        saveButton.style.display = 'inline';
-        pastNotes.style.display = 'block';
-        if (Boolean(textSpace.value) && parsedData['note'] !== textSpace.value){
-            let d = new Date;
-            parsedData['note'] = textSpace.value;
-            parsedData['lastMDate'] = d.toString()
-            let strData = JSON.stringify(parsedData);
-            localStorage.setItem(dbid, strData);
-        }
-        textSpace.value = '';
-        activity.textContent = 'Create a Note';
-        textSpace.setAttribute('placeholder', 'Write a note here');
-        dates.style.display = 'none';
-        cancelB.style.display = 'none';
-        placeNotes();
-        }, {once : true});
+    editButton.addEventListener('click', saveEdition, {once : true});
+    editButton.parameters = {'editButton':editButton, 'saveButton':saveButton, 'pastNotes':pastNotes,
+                              'textSpace':textSpace, 'parsedData':parsedData, 'activity':activity,
+                               'dates':dates, 'cancelB':cancelB, 'dbid':dbid  }
+}
+
+function saveEdition(evt){
+    let parameters = evt.currentTarget.parameters;
+    let {editButton, saveButton, pastNotes, textSpace, parsedData, activity, dates, cancelB,
+        dbid} = parameters;
+    editButton.style.display = "none";
+    saveButton.style.display = 'inline';
+    pastNotes.style.display = 'block';
+    if (Boolean(textSpace.value) && parsedData['note'] !== textSpace.value){
+        let d = new Date;
+        parsedData['note'] = textSpace.value;
+        parsedData['lastMDate'] = d.toString()
+        let strData = JSON.stringify(parsedData);
+        localStorage.setItem(dbid, strData);
+    }
+    textSpace.value = '';
+    activity.textContent = 'Create a Note';
+    textSpace.setAttribute('placeholder', 'Write a note here');
+    dates.style.display = 'none';
+    cancelB.style.display = 'none';
+    placeNotes();
+        
 }
 
 function viewNote(event){
@@ -165,7 +174,7 @@ function allowTabs(event){
 
 function cancelEdit(){
     let editButton = document.querySelector('.editingbutton');
-    editButton.removeEventListener('click');
+    editButton.removeEventListener('click', saveEdition);
     let saveButton = document.querySelector('.savingbutton');
     let activity = document.querySelector('.activity');
     let dates = document.querySelector(".hiddates");
