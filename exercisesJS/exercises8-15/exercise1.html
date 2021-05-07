@@ -11,7 +11,7 @@
     <h1 class="title">Exercise 1</h1>
     <div class="note">
         <h2 class="activity">Create a Note</h2>
-        <div class="hiddates">11/17/1988 - 11/28/2001</div>
+        <div class="hiddates"><p class="creation"></p> <p class="modified"></p></div>
         <textarea name="textarea" rows="10" cols="50" placeholder='Write a note here'></textarea>
         <div class="buttonsnotes">
             <button class="savingbutton">Save note!</button>
@@ -23,7 +23,6 @@
     <div class="pastnotes"></div>
     <template id="notes">
         <div class="pastnote">
-            <div class="dates">11/17/1988 - 11/28/2001</div>
             <p></p>
             <div class="buttons">
                 <button onclick="viewNote(this);" class="vbutton">View</button>

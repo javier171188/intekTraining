@@ -51,10 +51,14 @@ p{
     color: brown;
 }
 
-.dates{
-    font-size: 45%;
-}
+
 
 .hiddates{
     display: none;
+    flex-direction: column;
+}
+
+.creation, .modified{
+    text-align: left;
+    margin-top: 0;
 }
