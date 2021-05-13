@@ -3,6 +3,8 @@ let textSpace = document.getElementsByName('textarea')[0];
 let button = document.querySelector('.savingbutton');
 let pastNotes = document.querySelector('.pastnotes');
 
+
+
 if (!localStorage.getItem(0)){
     localStorage.setItem(0,'0');
 }
@@ -13,6 +15,7 @@ let lastIndex = indexes[indexes.length-1];
 placeNotes();
 button.addEventListener('click',saveCurrentNote);
 textSpace.addEventListener('keydown', allowTabs);
+pastNotes.addEventListener('click', chooseAction);
 
 //functions
 function saveCurrentNote(){
@@ -166,7 +169,6 @@ function allowTabs(event){
         let start = this.selectionStart;
         let end = this.selectionEnd;
         this.value = this.value.slice(0, start) +  "\t" + this.value.slice(end);
-
         //To place the cursor in the right character
         this.selectionEnd = start + 1;
     }
@@ -190,4 +192,21 @@ function cancelEdit(){
     textSpace.readOnly = false;
     dates.style.display = 'none';
 
+}
+
+
+function chooseAction(ev){
+    let clicked = ev.target;
+    clickedClass = clicked.getAttribute('class');
+    switch (clickedClass){
+        case "vbutton":
+            viewNote(clicked);
+        break;
+        case "ebutton":
+            editNote(clicked);
+        break;
+        case "dbutton":
+            delNote(clicked);
+        break;
+    }
 }
