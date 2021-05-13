@@ -2,8 +2,7 @@
 let textSpace = document.getElementsByName('textarea')[0];
 let button = document.querySelector('.savingbutton');
 let pastNotes = document.querySelector('.pastnotes');
-
-
+let cancelB = document.querySelector('.cancelingbutton');
 
 if (!localStorage.getItem(0)){
     localStorage.setItem(0,'0');
@@ -16,6 +15,7 @@ placeNotes();
 button.addEventListener('click',saveCurrentNote);
 textSpace.addEventListener('keydown', allowTabs);
 pastNotes.addEventListener('click', chooseAction);
+cancelB.addEventListener('click',cancelEdit)
 
 //functions
 function saveCurrentNote(){
@@ -58,7 +58,6 @@ function placeNotes(){
             }
             let a = document.importNode(div, true);
             fragment.appendChild(a);
-
         }
     }
     pastNotes.appendChild(fragment);
@@ -86,7 +85,6 @@ function editNote(event){
     let creation = document.querySelector('.creation');
     let modified = document.querySelector('.modified');
     let dates = document.querySelector(".hiddates");
-    let cancelB = document.querySelector('.cancelingbutton');
     cancelB.style.display = 'inline';
     editButton.style.display = "inline";
     saveButton.style.display = 'none';
@@ -97,7 +95,6 @@ function editNote(event){
     creation.textContent = `Creation date: ${parsedData['creaDate']}.`;
     modified.textContent = `Last modification: ${parsedData['lastMDate']}`;
     dates.style.display = 'flex';
-    
     editButton.addEventListener('click', saveEdition, {once : true});
     editButton.parameters = {'editButton':editButton, 'saveButton':saveButton, 'pastNotes':pastNotes,
                               'textSpace':textSpace, 'parsedData':parsedData, 'activity':activity,
@@ -124,7 +121,6 @@ function saveEdition(evt){
     dates.style.display = 'none';
     cancelB.style.display = 'none';
     placeNotes();
-        
 }
 
 function viewNote(event){
@@ -180,7 +176,6 @@ function cancelEdit(){
     let saveButton = document.querySelector('.savingbutton');
     let activity = document.querySelector('.activity');
     let dates = document.querySelector(".hiddates");
-    let cancelB = document.querySelector('.cancelingbutton');
     cancelB.style.display = 'none';
     editButton.style.display = "none";
     editButton.textContent = 'Save the changes!';
@@ -190,10 +185,8 @@ function cancelEdit(){
     activity.textContent = 'Create a Note';
     textSpace.setAttribute('placeholder', 'Write a note here');
     textSpace.readOnly = false;
-    dates.style.display = 'none';
-
+        dates.style.display = 'none';
 }
-
 
 function chooseAction(ev){
     let clicked = ev.target;
