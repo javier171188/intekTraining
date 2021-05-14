@@ -17,6 +17,7 @@ function setText(){
     if (numCols === '4'){
         setCulumns(4);
     }
+    document.getElementById('info').value = '';
 }   
 
 
