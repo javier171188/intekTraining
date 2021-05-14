@@ -1,76 +1,20 @@
-var options = document.querySelector('.options');
 var content = document.querySelector('.content');
-var expl = document.querySelector('.expl');
+var button = document.querySelector('button');
 
-
-
-setButtons();
-options.addEventListener('click', setText);
+document.getElementById('info').value = '';
+button.addEventListener('click', setText);
 setText();
 
-function setButtons(){
-    var inTwo = document.createElement('input');
-    inTwo.setAttribute('type','radio');
-    inTwo.setAttribute('name','position');
-    inTwo.setAttribute('id','two');
-    inTwo.checked = false;
-    var labTwo = document.createElement('label');
-    labTwo.setAttribute('class','marker');
-    labTwo.setAttribute('for','two');
-    labTwo.textContent = 'Two';
-    var inThree = document.createElement('input');
-    inThree.setAttribute('type','radio');
-    inThree.setAttribute('name','position');
-    inThree.setAttribute('id','three');
-    inThree.checked = false;
-    var labThree = document.createElement('label');
-    labThree.setAttribute('class','marker');
-    labThree.setAttribute('for','three');
-    labThree.textContent = 'Three';
-    var inFour = document.createElement('input');
-    inFour.setAttribute('type','radio');
-    inFour.setAttribute('name','position');
-    inFour.setAttribute('id','four');
-    inFour.checked = false;
-    var labFour = document.createElement('label');
-    labFour.setAttribute('class','marker');
-    labFour.setAttribute('for','four');
-    labFour.textContent = 'Four';
-    options.appendChild(inTwo);
-    options.appendChild(labTwo);
-    options.appendChild(inThree);
-    options.appendChild(labThree);
-    options.appendChild(inFour);
-    options.appendChild(labFour);
-}
-
-
-/* <input type="radio" name="position" id="two" >
-        <label class="marker" for="two" >Two</label>
-           
-        <input type="radio" name="position" id="three" >
-        <label class="marker" for="three">Three</label>
-            
-
-        <input type="radio" name="position" id="four">
-        <label class="marker" for="four">Four</label> */
-
-
 function setText(){
-    var two = document.getElementById('two').checked;
-    var three = document.getElementById('three').checked;
-    var four = document.getElementById('four').checked;
-    expl.innerHTML = '';
-    expl.innerHTML += two +'<br/>';
-    expl.innerHTML += three +'<br/>';
-    expl.innerHTML += four +'<br/>';
-    if (two){
+    var numCols = document.getElementById('info').value;
+    console.log(numCols);
+    if (numCols === '2'){
         setCulumns(2);
     }
-    if (three){
+    if (numCols === '3'){
         setCulumns(3);
     }
-    if (four){
+    if (numCols === '4'){
         setCulumns(4);
     }
 }   
