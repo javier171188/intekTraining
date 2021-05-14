@@ -5,8 +5,14 @@
 }
 
 .content{
-    column-count: 2;
     text-align: justify;
     text-justify: inter-word;
     font-size: 1vw;
+    display: inline-block;
+}
+
+p{
+    margin: 1%;
+    display: inline-block;
+    max-height: fit-content;
 }
