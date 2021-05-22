@@ -1,0 +1,80 @@
+.title{
+    color: brown;
+    font-size: 300%;
+    text-align: center;
+}
+nav{
+    display: flex;
+    justify-content: center;
+}
+
+.note{
+    display: flex;
+    flex-direction: column;
+}
+
+.savingbutton{
+    width: 20%;
+}
+
+.editingbutton{
+    width: 20%;
+    display: none;
+    font-size: 0.8rem;
+    padding: 0.5%;
+}
+
+.pastnotes{
+    display: block;
+    margin-top: 5%;
+}
+
+.pastnote{
+    border: 3px solid #aaa;
+    background-color: #eee;
+    width: 200px;
+    display: table-column;
+    align-items: center;
+    justify-content: center;
+    float: left;
+    margin-right: 10px;
+    border-radius: 5px;
+    font-size: 30px;
+    margin-top: 3px;
+    padding-bottom: 1%;
+}
+
+p{
+    text-align: center;
+}
+
+.buttons{
+    display: flex;
+    justify-content: center;
+}
+
+.activity{
+    color: brown;
+}
+
+
+
+.hiddates{
+    display: none;
+    flex-direction: column;
+}
+
+.creation, .modified{
+    text-align: left;
+    margin-top: 0;
+}
+
+.vbutton, .ebutton,.dbutton{
+    width: 25%;
+    font-size: 0.8rem;
+    padding-left: 0.5%;
+    border-width: 0.1rem;
+}
+.cancelingbutton{
+    display: none;
+}
