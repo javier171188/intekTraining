@@ -1,63 +1,74 @@
 //localStorage.clear();
 //Mock notes********************
-let presenter = {'data':{
-        '0': '0 1 2',
-        '1': {'creaDate':'yesterday', 'lastMDate':'A month ago', "note":'This is just a mock note'},
-        '2': {'creaDate':'last month', 'lastMDate':'A week ago', "note":'This is just another mock note'},
-         }
-    };
+let mockData = {'1':{'creaDate':'yesterday', 'lastMDate':'A month ago', "note":'This is just a mock note', 'active':true},
+                '2':{'creaDate':'last month', 'lastMDate':'A week ago', "note":'This is just another mock note', 'active':true}
+}
+localStorage.setItem('0', JSON.stringify(mockData));
 //*******************************
-
-
 
 view(presenter).placeNotes();
 
 
-//Presenter
+//Model
+function model(){
+    let strData = localStorage.getItem('0');
+    let data = JSON.parse(strData);
+    return {
+        'data': data
+    }
+}
 
+//Presenter
+function presenter(model){
+    let data = model().data;
+    let activeNotes = {};
+    for (let i in data){
+        if (data[i].active){
+            activeNotes[i] = data[i];
+        }
+    }
+    return {
+        'data':activeNotes
+    }
+}
 
 //View
 function view(presenter){
     let pastNotes = document.querySelector('.pastnotes');
+    let activeNotes = presenter(model)['data'];
 
     function placeNotes(){
         pastNotes.innerHTML = '';
         let fragment = document.createDocumentFragment();
-        
-        let indexes = presenter.data['0'].split(' ');
-        
-        indexes.reverse();
-        for (let i of indexes){
-            if(i!=='0'){
-                //I should erase 0 from the indexes and always execute this bloque.
-                let temp = document.querySelector('#notes');
-                let div = temp.content.querySelector('.pastnote');  
-                let p = div.querySelector('p');
-                let buttons = div.querySelector('.buttons');
-                let erraseB = buttons.querySelector('.dbutton');
-                erraseB.setAttribute('dbid', i);
-                let editB = buttons.querySelector('.ebutton');
-                editB.setAttribute('dbid',i);
-                let viewB = buttons.querySelector('.vbutton');
-                viewB.setAttribute('dbid',i);
-                let noteData = presenter.data[i];
-                console.log(noteData);
-                p.textContent = noteData['note'].slice(0,10);
-                if (noteData['note'].length > 10){
-                    p.textContent +=  '...';
-                }
-                let a = document.importNode(div, true);
-                fragment.appendChild(a);
+                
+        for (let i in activeNotes){
+            let temp = document.querySelector('#notes');
+            let div = temp.content.querySelector('.pastnote');  
+            let p = div.querySelector('p');
+            let buttons = div.querySelector('.buttons');
+            let erraseB = buttons.querySelector('.dbutton');
+            erraseB.setAttribute('dbid', i);
+            let editB = buttons.querySelector('.ebutton');
+            editB.setAttribute('dbid',i);
+            let viewB = buttons.querySelector('.vbutton');
+            viewB.setAttribute('dbid',i);
+            let noteData = activeNotes[i];
+            console.log(activeNotes);
+            p.textContent = noteData['note'].slice(0,10);
+            if (noteData['note'].length > 10){
+                p.textContent +=  '...';
             }
+            let a = document.importNode(div, true);
+            fragment.appendChild(a);
         }
+        let temp = document.querySelector('#notes');
         pastNotes.appendChild(fragment);
-        indexes.reverse();
     }
 
-    presenter.subscribe( pastNotes );
-    pastNotes.addEventListener('click', presenter.handleEvent( "click", model ));
+    //presenter.subscribe( pastNotes );
+    //pastNotes.addEventListener('click', presenter.handleEvent( "click", model ));
 
-    return{'placeNotes':placeNotes}
+    return{'placeNotes':placeNotes};
 }
 
 
