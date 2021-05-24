@@ -27,8 +27,29 @@ function presenter(model){
             activeNotes[i] = data[i];
         }
     }
+
+    function onClick(ev){
+        let clicked = ev.target;
+        clickedClass = clicked.getAttribute('class');
+        console.log('entering');
+        switch (clickedClass){
+            case "vbutton":
+                //viewNote(clicked);
+                console.log('logic for view note', clicked);
+            break;
+            case "ebutton":
+                //editNote(clicked);
+                console.log('logic for edit note', clicked);
+            break;
+            case "dbutton":
+                //delNote(clicked);
+                console.log('logic for delete note', clicked);
+            break;
+        }
+    }
     return {
-        'data':activeNotes
+        'data':activeNotes,
+        'onClick': onClick
     }
 }
 
@@ -53,7 +74,6 @@ function view(presenter){
             let viewB = buttons.querySelector('.vbutton');
             viewB.setAttribute('dbid',i);
             let noteData = activeNotes[i];
-            console.log(activeNotes);
             p.textContent = noteData['note'].slice(0,10);
             if (noteData['note'].length > 10){
                 p.textContent +=  '...';
@@ -66,8 +86,8 @@ function view(presenter){
     }
 
     //presenter.subscribe( pastNotes );
-    //pastNotes.addEventListener('click', presenter.handleEvent( "click", model ));
-
+    pastNotes.addEventListener('click', presenter(model).onClick);
+    
     return{'placeNotes':placeNotes};
 }
 
