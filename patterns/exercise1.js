@@ -21,7 +21,9 @@ function model(){
 
     function updateNotes(data){
         localStorage.setItem('0', JSON.stringify(data) );
-        view(presenter).main(); //The model only should comunicate with view through presenter...
+        presenter(()=>{
+            return {'data': data}
+            }).setConfig('main');
     }
 
     return {
@@ -61,10 +63,27 @@ function presenter(model){
         model().updateNotes(data);
     }
     
+    function setConfig(option){
+        switch(option){
+            case "main":
+                view(presenter).main();
+            break;
+            case 'edit':
+                view(presenter).edit();
+            break;
+            case 'view':
+                view(presenter).view();
+            break;
+            default:
+                console.log(`The option ${option} was sent as a configuration`);
+                view(presenter).main();
+        }
+    }
     return {
         'data':activeNotes,
         'saveNote': saveNote,
-        'deleteNote':deleteNote
+        'deleteNote': deleteNote,
+        'setConfig': setConfig
     }
 }
 
@@ -91,11 +110,10 @@ function view(presenter){
         switch (clickedClass){
             case "vbutton":
                 //viewNote(clicked);
-                viewConf();
+                viewConf(clicked);
             break;
             case "ebutton":
                 //editNote(clicked);
-                //!!!!Check the saving button should not go back yet !!!!
                 editConf();
             break;
             case "dbutton":
@@ -136,18 +154,22 @@ function view(presenter){
         pastNotes.style.display = 'none';
         
     }
-    function viewConf(){
+    function viewConf(clicked){
         searchBox.style.display = 'none';
         activityTitle.textContent = 'Current note.';
         datesBox.style.display = 'inline';
         textSpace.readOnly = true;
-        textSpace.value = 'Add logic to get the note';
+        
         saveButton.style.display = 'none';
         editButton.style.display = 'inline';
         editButton.textContent = 'Go back.';
         cancelButton.style.display = 'none';
         pastNotes.style.display = 'none';
-        editButton.addEventListener('click', mainConf);
+        editButton.addEventListener('click', mainConf, {'once':true});
+        let dbid = clicked.getAttribute('dbid');
+        let activeNotes = presenter(model).data;
+        let note = activeNotes[dbid]['note'];
+        textSpace.value = note;
     }
 
     function placeNotes(){
