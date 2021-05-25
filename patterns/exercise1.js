@@ -9,24 +9,25 @@ function model(){
     let data = JSON.parse(strData);
 
     function saveNote(index, obj){
-        if (data){
-            data[index] = obj;
-        } else {
-            data = {'1':obj};
+        if (obj['note']!==''){
+            if (data){
+                data[index] = obj;
+            } else {
+                data = {'1':obj};
+            }
         }
-        localStorage.setItem('0', JSON.stringify(data) );
-        view(presenter).main(); //The model only should comunicate with view throg presenter...
+        updateNotes(data);
     }
 
-    function deleteNote(data){
+    function updateNotes(data){
         localStorage.setItem('0', JSON.stringify(data) );
-        view(presenter).main(); //The model only should comunicate with view throg presenter...
+        view(presenter).main(); //The model only should comunicate with view through presenter...
     }
 
     return {
         'data': data,
         'saveNote':saveNote,
-        'deleteNote': deleteNote
+        'updateNotes': updateNotes
     }
 }
 
@@ -57,7 +58,7 @@ function presenter(model){
 
     function deleteNote(dbid){
         data[dbid]['active'] = false;
-        model().deleteNote(data);
+        model().updateNotes(data);
     }
     
     return {
