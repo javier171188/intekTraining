@@ -1,10 +1,4 @@
 //localStorage.clear();
- //Mock notes********************
- /*let mockData = {'1':{'creaDate':'yesterday', 'lastMDate':'A month ago', "note":'This is just a mock note', 'active':true},
- '2':{'creaDate':'last month', 'lastMDate':'A week ago', "note":'This is just another mock note', 'active':true}
- }
- localStorage.setItem('0', JSON.stringify(mockData));*/
- //*******************************
 
 view(presenter).main();
 
@@ -54,30 +48,14 @@ function presenter(model){
         model().saveNote(strIndex, objectNote);
     }
 
-
-    function clickOnNote(ev){
-        let clicked = ev.target;
-        clickedClass = clicked.getAttribute('class');
-        console.log('entering');
-        switch (clickedClass){
-            case "vbutton":
-                //viewNote(clicked);
-                console.log('logic for view note', clicked);
-            break;
-            case "ebutton":
-                //editNote(clicked);
-                console.log('logic for edit note', clicked);
-            break;
-            case "dbutton":
-                //delNote(clicked);
-                console.log('logic for delete note', clicked);
-            break;
-        }
+    function deleteNote(dbid){
+        console.log('logic to delete', dbid);
     }
+    
     return {
         'data':activeNotes,
-        'clickOnNote': clickOnNote,
-        'saveNote': saveNote
+        'saveNote': saveNote,
+        'deleteNote':deleteNote
     }
 }
 
@@ -94,8 +72,29 @@ function view(presenter){
     let activeNotes = presenter(model)['data'];
     
 
-    pastNotes.addEventListener('click', presenter(model).clickOnNote);
+    pastNotes.addEventListener('click', clickOnNote);
     saveButton.addEventListener('click', saveNote, {'once':true});
+
+
+    function clickOnNote(ev){
+        let clicked = ev.target;
+        clickedClass = clicked.getAttribute('class');
+        switch (clickedClass){
+            case "vbutton":
+                //viewNote(clicked);
+                viewConf();
+            break;
+            case "ebutton":
+                //editNote(clicked);
+                editConf();
+            break;
+            case "dbutton":
+                //delNote(clicked);
+                let dbid = clicked.getAttribute('dbid');
+                presenter.deleteNote(dbid);
+            break;
+        }
+    }
 
     function mainConf(){
         searchBox.style.display = 'inline';
@@ -129,7 +128,7 @@ function view(presenter){
     }
     function viewConf(){
         searchBox.style.display = 'none';
-        activityTitle.textContent = 'Currento note.';
+        activityTitle.textContent = 'Current note.';
         datesBox.style.display = 'inline';
         textSpace.readOnly = true;
         textSpace.value = 'Add logic to get the note';
@@ -138,6 +137,7 @@ function view(presenter){
         editButton.textContent = 'Go back.';
         cancelButton.style.display = 'none';
         pastNotes.style.display = 'none';
+        editButton.addEventListener('click', mainConf);
     }
 
     function placeNotes(){
