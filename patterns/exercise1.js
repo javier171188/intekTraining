@@ -54,8 +54,22 @@ function presenter(model){
         } else{
             var strIndex = '1';
         }
-        let objectNote = {'createDate':'not yet', 'lastMDate':'not yet', 'note':note, 'active':true};
+        let d = new Date();
+        let objectNote = {'createDate':d.toString(), 'lastMDate':d.toString(), 'note':note, 'active':true};
         model().saveNote(strIndex, objectNote);
+    }
+
+    function editNote(note, dbid){
+        if (note){
+            if (data[dbid]['note'] !== note){
+                let d = new Date();
+                data[dbid]['lastMDate'] = d.toString();
+                data[dbid]['note'] = note;
+            }
+            
+            model().updateNotes(data);
+        }
+        
     }
 
     function deleteNote(dbid){
@@ -79,11 +93,23 @@ function presenter(model){
                 view(presenter).main();
         }
     }
+
+    function dates(dbid){
+        let creationDate = data[dbid]['createDate'];
+        let lastMDate = data[dbid]['lastMDate'];
+        return {
+            'creation': creationDate,
+            'modification': lastMDate
+        }
+    }
+
     return {
         'data':activeNotes,
         'saveNote': saveNote,
         'deleteNote': deleteNote,
-        'setConfig': setConfig
+        'setConfig': setConfig,
+        'editNote': editNote,
+        'dates': dates
     }
 }
 
@@ -98,11 +124,13 @@ function view(presenter){
     let cancelButton = document.querySelector('.cancelingbutton');
     let pastNotes = document.querySelector('.pastnotes');
     let activeNotes = presenter(model)['data'];
+    let creationDP = document.querySelector('.creation');
+    let lastMDP = document.querySelector('.modified');
     
 
     pastNotes.addEventListener('click', clickOnNote);
     saveButton.addEventListener('click', saveNote, {'once':true});
-
+    cancelButton.addEventListener('click', mainConf);
 
     function clickOnNote(ev){
         let clicked = ev.target;
@@ -114,7 +142,7 @@ function view(presenter){
             break;
             case "ebutton":
                 //editNote(clicked);
-                editConf();
+                editConf(clicked);
             break;
             case "dbutton":
                 //delNote(clicked);
@@ -137,21 +165,36 @@ function view(presenter){
         cancelButton.style.display = 'none';
         pastNotes.style.display = 'block';
         placeNotes();
-
     }
-    function editConf(){
+    function editConf(clicked){
         searchBox.style.display = 'none';
         activityTitle.textContent = 'Edit this note.';
         datesBox.style.display = 'inline';
         textSpace.setAttribute('placeholder', 'Write a new version of the note.');
         textSpace.readOnly = false;
-        textSpace.value = 'Add logic to get the note';
         saveButton.style.display = 'none';
         editButton.style.display = 'inline';
         editButton.textContent = 'Save the changes!';
         cancelButton.style.display = 'inline';
         cancelButton.textContent = 'Cancel.'
         pastNotes.style.display = 'none';
+        let dbid = clicked.getAttribute('dbid');
+        let activeNotes = presenter(model).data;
+        let note = activeNotes[dbid]['note'];
+        textSpace.value = note;
+        editButton.addEventListener('click', editNote(dbid).saveEdition, {'once':true});
+        let creationDate = presenter(model).dates(dbid).creation;
+        let lastMDate = presenter(model).dates(dbid).modification;
+        creationDP.textContent = `Created: ${creationDate}.`;
+        lastMDP.textContent = `Last modification: ${lastMDate}`;
+    }
+    function editNote(dbid){
+        return {
+            'saveEdition': ()=>{
+                let newNote = textSpace.value;
+                presenter(model).editNote(newNote, dbid);
+            }
+        }
         
     }
     function viewConf(clicked){
@@ -159,7 +202,6 @@ function view(presenter){
         activityTitle.textContent = 'Current note.';
         datesBox.style.display = 'inline';
         textSpace.readOnly = true;
-        
         saveButton.style.display = 'none';
         editButton.style.display = 'inline';
         editButton.textContent = 'Go back.';
@@ -170,6 +212,10 @@ function view(presenter){
         let activeNotes = presenter(model).data;
         let note = activeNotes[dbid]['note'];
         textSpace.value = note;
+        let creationDate = presenter(model).dates(dbid).creation;
+        let lastMDate = presenter(model).dates(dbid).modification;
+        creationDP.textContent = `Created: ${creationDate}.`;
+        lastMDP.textContent = `Last modification: ${lastMDate}`;
     }
 
     function placeNotes(){
@@ -200,11 +246,11 @@ function view(presenter){
     }
 
     function saveNote(){
-        //Logic to save the note
         let note = textSpace.value;
         presenter(model).saveNote(note);
-
     }
+
+    
 
     return{ 'main':mainConf,
             'edit':editConf,
