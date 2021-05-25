@@ -131,6 +131,7 @@ function view(presenter){
     pastNotes.addEventListener('click', clickOnNote);
     saveButton.addEventListener('click', saveNote, {'once':true});
     cancelButton.addEventListener('click', mainConf);
+    textSpace.addEventListener('keydown', allowTabs);
 
     function clickOnNote(ev){
         let clicked = ev.target;
@@ -250,7 +251,17 @@ function view(presenter){
         presenter(model).saveNote(note);
     }
 
-    
+    function allowTabs(event){  
+        //Source: https://stackoverflow.com/questions/6637341/use-tab-to-indent-in-textarea
+        if (event.key == 'Tab') {
+            event.preventDefault();
+            let start = this.selectionStart;
+            let end = this.selectionEnd;
+            this.value = this.value.slice(0, start) +  "\t" + this.value.slice(end);
+            //To place the cursor in the right character
+            this.selectionEnd = start + 1;
+        }
+    }
 
     return{ 'main':mainConf,
             'edit':editConf,
