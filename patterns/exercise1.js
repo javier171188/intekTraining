@@ -1,20 +1,31 @@
 //localStorage.clear();
-//Mock notes********************
-let mockData = {'1':{'creaDate':'yesterday', 'lastMDate':'A month ago', "note":'This is just a mock note', 'active':true},
-                '2':{'creaDate':'last month', 'lastMDate':'A week ago', "note":'This is just another mock note', 'active':true}
-}
-localStorage.setItem('0', JSON.stringify(mockData));
-//*******************************
+ //Mock notes********************
+ /*let mockData = {'1':{'creaDate':'yesterday', 'lastMDate':'A month ago', "note":'This is just a mock note', 'active':true},
+ '2':{'creaDate':'last month', 'lastMDate':'A week ago', "note":'This is just another mock note', 'active':true}
+ }
+ localStorage.setItem('0', JSON.stringify(mockData));*/
+ //*******************************
 
-view(presenter).placeNotes();
-
+view(presenter).main();
 
 //Model
 function model(){
+   
     let strData = localStorage.getItem('0');
     let data = JSON.parse(strData);
+
+    function saveNote(index, obj){
+        if (data){
+            data[index] = obj;
+        } else {
+            data = {'1':obj};
+        }
+        localStorage.setItem('0', JSON.stringify(data) );
+        view(presenter).main();
+    }
     return {
-        'data': data
+        'data': data,
+        'saveNote':saveNote
     }
 }
 
@@ -28,7 +39,23 @@ function presenter(model){
         }
     }
 
-    function onClick(ev){
+    function saveNote(note){
+        let indexes = data ? Object.keys(data) : '';
+        if (indexes !== ''){
+            indexes = indexes.map((n)=>{
+                return parseInt(n);
+            });
+            let newIndex = Math.max(...indexes)+1;
+            var strIndex =  String(newIndex);
+        } else{
+            var strIndex = '1';
+        }
+        let objectNote = {'createDate':'not yet', 'lastMDate':'not yet', 'note':note, 'active':true};
+        model().saveNote(strIndex, objectNote);
+    }
+
+
+    function clickOnNote(ev){
         let clicked = ev.target;
         clickedClass = clicked.getAttribute('class');
         console.log('entering');
@@ -49,14 +76,69 @@ function presenter(model){
     }
     return {
         'data':activeNotes,
-        'onClick': onClick
+        'clickOnNote': clickOnNote,
+        'saveNote': saveNote
     }
 }
 
 //View
 function view(presenter){
+    let searchBox = document.querySelector('#sarchingbox');
+    let activityTitle = document.querySelector('.activity');
+    let datesBox = document.querySelector('.hiddates');
+    let textSpace = document.getElementsByName('textarea')[0];
+    let saveButton = document.querySelector('.savingbutton');
+    let editButton = document.querySelector('.editingbutton');
+    let cancelButton = document.querySelector('.cancelingbutton');
     let pastNotes = document.querySelector('.pastnotes');
     let activeNotes = presenter(model)['data'];
+    
+
+    pastNotes.addEventListener('click', presenter(model).clickOnNote);
+    saveButton.addEventListener('click', saveNote, {'once':true});
+
+    function mainConf(){
+        searchBox.style.display = 'inline';
+        activityTitle.textContent = 'Create a note.';
+        datesBox.style.display = 'none';
+        textSpace.setAttribute('placeholder', 'Write a note here.');
+        textSpace.readOnly = false;
+        textSpace.value = '';
+        saveButton.style.display = 'inline';
+        saveButton.textContent = 'Save the note!';
+        editButton.style.display = 'none';
+        cancelButton.style.display = 'none';
+        pastNotes.style.display = 'block';
+        placeNotes();
+
+    }
+    function editConf(){
+        searchBox.style.display = 'none';
+        activityTitle.textContent = 'Edit this note.';
+        datesBox.style.display = 'inline';
+        textSpace.setAttribute('placeholder', 'Write a new version of the note.');
+        textSpace.readOnly = false;
+        textSpace.value = 'Add logic to get the note';
+        saveButton.style.display = 'none';
+        editButton.style.display = 'inline';
+        editButton.textContent = 'Save the changes!';
+        cancelButton.style.display = 'inline';
+        cancelButton.textContent = 'Cancel.'
+        pastNotes.style.display = 'none';
+        
+    }
+    function viewConf(){
+        searchBox.style.display = 'none';
+        activityTitle.textContent = 'Currento note.';
+        datesBox.style.display = 'inline';
+        textSpace.readOnly = true;
+        textSpace.value = 'Add logic to get the note';
+        saveButton.style.display = 'none';
+        editButton.style.display = 'inline';
+        editButton.textContent = 'Go back.';
+        cancelButton.style.display = 'none';
+        pastNotes.style.display = 'none';
+    }
 
     function placeNotes(){
         pastNotes.innerHTML = '';
@@ -81,65 +163,25 @@ function view(presenter){
             let a = document.importNode(div, true);
             fragment.appendChild(a);
         }
-        let temp = document.querySelector('#notes');
+        //let temp = document.querySelector('#notes');
         pastNotes.appendChild(fragment);
     }
 
-    //presenter.subscribe( pastNotes );
-    pastNotes.addEventListener('click', presenter(model).onClick);
-    
-    return{'placeNotes':placeNotes};
+    function saveNote(){
+        //Logic to save the note
+        let note = textSpace.value;
+        presenter(model).saveNote(note);
+
+    }
+
+    return{ 'main':mainConf,
+            'edit':editConf,
+            'view':viewConf};
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
 /*
-//View***********************************
-let textSpace = document.getElementsByName('textarea')[0];
-let button = document.querySelector('.savingbutton');
-let pastNotes = document.querySelector('.pastnotes');
-let cancelB = document.querySelector('.cancelingbutton');
-//***************************************
-
-//Presenter******************************
-button.addEventListener('click',saveCurrentNote);
-textSpace.addEventListener('keydown', allowTabs);
-pastNotes.addEventListener('click', chooseAction);
-cancelB.addEventListener('click',cancelEdit)
-//***************************************
-
-//Model**********************************
-if (!localStorage.getItem(0)){
-    localStorage.setItem(0,'0');
-}
-let indexes = localStorage.getItem(0).split(' ');
-let lastIndex = indexes[indexes.length-1];
-//***************************************
-
-
-placeNotes();//this should be an order to the presenter
-
-
-
-
-
-
-
-
 //functions
 function saveCurrentNote(){
     if (Boolean(textSpace.value)){
