@@ -15,11 +15,18 @@ function model(){
             data = {'1':obj};
         }
         localStorage.setItem('0', JSON.stringify(data) );
-        view(presenter).main();
+        view(presenter).main(); //The model only should comunicate with view throg presenter...
     }
+
+    function deleteNote(data){
+        localStorage.setItem('0', JSON.stringify(data) );
+        view(presenter).main(); //The model only should comunicate with view throg presenter...
+    }
+
     return {
         'data': data,
-        'saveNote':saveNote
+        'saveNote':saveNote,
+        'deleteNote': deleteNote
     }
 }
 
@@ -49,7 +56,8 @@ function presenter(model){
     }
 
     function deleteNote(dbid){
-        console.log('logic to delete', dbid);
+        data[dbid]['active'] = false;
+        model().deleteNote(data);
     }
     
     return {
@@ -86,12 +94,13 @@ function view(presenter){
             break;
             case "ebutton":
                 //editNote(clicked);
+                //!!!!Check the saving button should not go back yet !!!!
                 editConf();
             break;
             case "dbutton":
                 //delNote(clicked);
                 let dbid = clicked.getAttribute('dbid');
-                presenter.deleteNote(dbid);
+                presenter(model).deleteNote(dbid);
             break;
         }
     }
