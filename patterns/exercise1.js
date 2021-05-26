@@ -219,30 +219,41 @@ function view(presenter){
         lastMDP.textContent = `Last modification: ${lastMDate}`;
     }
 
+    function currentNote(dbid,activeNotes){
+        let temp = document.querySelector('#notes');
+        let div = temp.content.querySelector('.pastnote');  
+        let p = div.querySelector('p');
+        let buttons = div.querySelector('.buttons');
+        let erraseB = buttons.querySelector('.dbutton');
+        erraseB.setAttribute('dbid', dbid);
+        let editB = buttons.querySelector('.ebutton');
+        editB.setAttribute('dbid',dbid);
+        let viewB = buttons.querySelector('.vbutton');
+        viewB.setAttribute('dbid',dbid);
+        let noteData = activeNotes[dbid];
+        p.textContent = noteData['note'].slice(0,10);
+        if (noteData['note'].length > 10){
+            p.textContent +=  '...';
+        }
+        let a = document.importNode(div, true);
+        return a;
+    }
+
+    function factory(){
+        function createNote(dbid,activeNotes){
+            return currentNote(dbid,activeNotes);
+        }
+        return {'createNote':createNote};
+    }
+
     function placeNotes(){
         pastNotes.innerHTML = '';
         let fragment = document.createDocumentFragment();
                 
         for (let i in activeNotes){
-            let temp = document.querySelector('#notes');
-            let div = temp.content.querySelector('.pastnote');  
-            let p = div.querySelector('p');
-            let buttons = div.querySelector('.buttons');
-            let erraseB = buttons.querySelector('.dbutton');
-            erraseB.setAttribute('dbid', i);
-            let editB = buttons.querySelector('.ebutton');
-            editB.setAttribute('dbid',i);
-            let viewB = buttons.querySelector('.vbutton');
-            viewB.setAttribute('dbid',i);
-            let noteData = activeNotes[i];
-            p.textContent = noteData['note'].slice(0,10);
-            if (noteData['note'].length > 10){
-                p.textContent +=  '...';
-            }
-            let a = document.importNode(div, true);
-            fragment.appendChild(a);
+            let currentNote = factory().createNote(i,activeNotes);
+            fragment.appendChild(currentNote);
         }
-        //let temp = document.querySelector('#notes');
         pastNotes.appendChild(fragment);
     }
 
