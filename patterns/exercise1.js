@@ -1,4 +1,40 @@
 //localStorage.clear();
+//Observer pattern***********
+class ObserverList{
+    constructor(){
+        this.observerList = [];
+    }
+
+    addObserv(obs){
+        return this.observerList.push( obs );
+    }
+}
+
+class Subject{
+    constructor(){
+        this.observers = new ObserverList();
+    }
+
+    addObserver(observer){
+        this.observers.addObserv(observer);
+    }
+
+    notify(){
+        for(let o of this.observers.observerList){
+            o.update()
+        }
+    }
+}
+
+
+class Observer{
+    update(){
+        console.log('notifying');
+    }
+}
+//**********************************
+
+
 
 view(presenter).main();
 
@@ -124,7 +160,6 @@ function presenter(model){
 
 //View
 function view(presenter){
-    let searchBox = document.querySelector('#sarchingbox');
     let activityTitle = document.querySelector('.activity');
     let datesBox = document.querySelector('.hiddates');
     let textSpace = document.getElementsByName('textarea')[0];
@@ -136,11 +171,20 @@ function view(presenter){
     let creationDP = document.querySelector('.creation');
     let lastMDP = document.querySelector('.modified');
     
-    searchBox.addEventListener('keyup', lookTheText);
     pastNotes.addEventListener('click', clickOnNote);
     saveButton.addEventListener('click', saveNote, {'once':true});
     cancelButton.addEventListener('click', mainConf);
     textSpace.addEventListener('keydown', allowTabs);
+
+    let searchBox = new Subject();
+    searchBox.element = document.querySelector('#searchingbox');
+    searchBox.element.addEventListener('keyup', ()=>{searchBox.notify()});
+
+    function lookTheText(){
+        let currentText = searchBox.element.value;
+        presenter(model).filterNotes(currentText);
+    }
+
 
     function clickOnNote(ev){
         let clicked = ev.target;
@@ -163,7 +207,7 @@ function view(presenter){
     }
 
     function mainConf(){
-        searchBox.style.display = 'inline';
+        searchBox.element.style.display = 'inline';
         activityTitle.textContent = 'Create a note.';
         datesBox.style.display = 'none';
         textSpace.setAttribute('placeholder', 'Write a note here.');
@@ -177,7 +221,7 @@ function view(presenter){
         placeNotes();
     }
     function editConf(clicked){
-        searchBox.style.display = 'none';
+        searchBox.element.style.display = 'none';
         activityTitle.textContent = 'Edit this note.';
         datesBox.style.display = 'inline';
         textSpace.setAttribute('placeholder', 'Write a new version of the note.');
@@ -208,7 +252,7 @@ function view(presenter){
         
     }
     function viewConf(clicked){
-        searchBox.style.display = 'none';
+        searchBox.element.style.display = 'none';
         activityTitle.textContent = 'Current note.';
         datesBox.style.display = 'inline';
         textSpace.readOnly = true;
@@ -283,16 +327,10 @@ function view(presenter){
         }
     }
 
-    function lookTheText(){
-        let currentText = searchBox.value;
-        presenter(model).filterNotes(currentText);
-        
-    }
     return{ 'main':mainConf,
             'edit':editConf,
             'view':viewConf};
 }
-
 
 
 /*
