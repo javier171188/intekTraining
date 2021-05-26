@@ -38,7 +38,7 @@ function presenter(model){
     let data = model().data;
     let activeNotes = {};
     for (let i in data){
-        if (data[i].active){
+        if (data[i].active && data[i].passFilter){
             activeNotes[i] = data[i];
         }
     }
@@ -55,7 +55,7 @@ function presenter(model){
             var strIndex = '1';
         }
         let d = new Date();
-        let objectNote = {'createDate':d.toString(), 'lastMDate':d.toString(), 'note':note, 'active':true};
+        let objectNote = {'createDate':d.toString(), 'lastMDate':d.toString(), 'note':note, 'active':true, 'passFilter':true};
         model().saveNote(strIndex, objectNote);
     }
 
@@ -103,13 +103,22 @@ function presenter(model){
         }
     }
 
+    function filterNotes(filter){
+        for (let i in activeNotes){
+            if (activeNotes[i]['note'].includes(filter)){
+                console.log(activeNotes[i]['note']);
+            }
+        }
+    }
+
     return {
         'data':activeNotes,
         'saveNote': saveNote,
         'deleteNote': deleteNote,
         'setConfig': setConfig,
         'editNote': editNote,
-        'dates': dates
+        'dates': dates,
+        'filterNotes': filterNotes
     }
 }
 
@@ -127,7 +136,7 @@ function view(presenter){
     let creationDP = document.querySelector('.creation');
     let lastMDP = document.querySelector('.modified');
     
-
+    searchBox.addEventListener('keyup', lookTheText);
     pastNotes.addEventListener('click', clickOnNote);
     saveButton.addEventListener('click', saveNote, {'once':true});
     cancelButton.addEventListener('click', mainConf);
@@ -274,6 +283,11 @@ function view(presenter){
         }
     }
 
+    function lookTheText(){
+        let currentText = searchBox.value;
+        presenter(model).filterNotes(currentText);
+        
+    }
     return{ 'main':mainConf,
             'edit':editConf,
             'view':viewConf};
