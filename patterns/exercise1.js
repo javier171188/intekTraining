@@ -1,5 +1,4 @@
 //localStorage.clear();
-//Issue detected, every time it takes longer to delete...
 
 //Observer pattern***********
 class ObserverList{
@@ -37,6 +36,7 @@ class Observer{
 
 
 var firstTime = true;
+var firstTImeButtons = true;
 view(presenter).main();
 
 //Model
@@ -173,16 +173,20 @@ function view(presenter){
     let activeNotes = presenter(model)['data'];
     let creationDP = document.querySelector('.creation');
     let lastMDP = document.querySelector('.modified');
-    
-    pastNotes.addEventListener('click', clickOnNote);
+
+    if (firstTImeButtons){
+        pastNotes.addEventListener('click', clickOnNote);
+        firstTImeButtons = false;
+    }
     saveButton.addEventListener('click', saveNote, {'once':true});
-    cancelButton.addEventListener('click', mainConf);
+    cancelButton.addEventListener('click', mainConf, {'once':true});
     textSpace.addEventListener('keydown', allowTabs);
 
     if (typeof searchBox === 'undefined'){
         var searchBox = new Subject();
     }
     searchBox.element = document.querySelector('#searchingbox');
+    
     if (firstTime){
         searchBox.element.addEventListener('keyup', ()=>{searchBox.notify(searchBox.element.value)});
         firstTime = false;
