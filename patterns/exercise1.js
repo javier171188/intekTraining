@@ -33,10 +33,7 @@ class Observer{
     }
 }
 //**********************************
-
-
-var firstTime = true;
-var firstTImeButtons = true;
+var testingPerformance = true;
 view(presenter).main();
 
 //Model
@@ -103,7 +100,6 @@ function presenter(model){
                 data[dbid]['lastMDate'] = d.toString();
                 data[dbid]['note'] = note;
             }
-            
             model().updateNotes(data);
         }
     }
@@ -150,6 +146,15 @@ function presenter(model){
         model().updateNotes(data);
     }
 
+    function interchangeNotes(startingPlace, endingPlace){
+        console.log(`Start: ${startingPlace}, end: ${endingPlace}`);
+        console.log(data);
+        let keepingNote = data[startingPlace];
+        data[startingPlace] = data[endingPlace];
+        data[endingPlace] = keepingNote;
+        model().updateNotes(data);
+    }
+
     return {
         'data':activeNotes,
         'saveNote': saveNote,
@@ -157,7 +162,8 @@ function presenter(model){
         'setConfig': setConfig,
         'editNote': editNote,
         'dates': dates,
-        'filterNotes': filterNotes
+        'filterNotes': filterNotes,
+        'interchangeNotes':interchangeNotes
     }
 }
 
@@ -173,11 +179,17 @@ function view(presenter){
     let activeNotes = presenter(model)['data'];
     let creationDP = document.querySelector('.creation');
     let lastMDP = document.querySelector('.modified');
+    var dragedNote;
 
-    if (firstTImeButtons){
-        pastNotes.addEventListener('click', clickOnNote);
-        firstTImeButtons = false;
-    }
+    pastNotes.removeEventListener('click', clickOnNote);
+    pastNotes.addEventListener('click', clickOnNote);
+    pastNotes.addEventListener('dragstart',draggingNote);
+    pastNotes.addEventListener('dragend',dragEnds);
+    pastNotes.addEventListener("dragover", function(event) {
+                                event.preventDefault();
+                                });
+    pastNotes.addEventListener("drop", dropNote);
+    firstTImeNotes = false;
     saveButton.addEventListener('click', saveNote, {'once':true});
     cancelButton.addEventListener('click', mainConf, {'once':true});
     textSpace.addEventListener('keydown', allowTabs);
@@ -187,9 +199,11 @@ function view(presenter){
     }
     searchBox.element = document.querySelector('#searchingbox');
     
-    if (firstTime){
-        searchBox.element.addEventListener('keyup', ()=>{searchBox.notify(searchBox.element.value)});
-        firstTime = false;
+    searchBox.element.removeEventListener('keyup', notifyChangeBox);
+    console.log('adding eventListener');
+    if (testingPerformance){
+        searchBox.element.addEventListener('keyup', notifyChangeBox);
+        testingPerformance = false;
     }
         
     if (typeof pastNotesObj === 'undefined'){
@@ -198,11 +212,11 @@ function view(presenter){
     pastNotesObj.element = pastNotes;
     searchBox.addObserver(pastNotesObj);
 
-    function lookTheText(){
-        let currentText = searchBox.element.value;
-        presenter(model).filterNotes(currentText);
-    }
 
+    function notifyChangeBox(){
+        searchBox.notify(searchBox.element.value);
+    }
+    
     function clickOnNote(ev){
         let clicked = ev.target;
         clickedClass = clicked.getAttribute('class');
@@ -266,8 +280,8 @@ function view(presenter){
                 presenter(model).editNote(newNote, dbid);
             }
         }
-        
     }
+
     function viewConf(clicked){
         searchBox.element.style.display = 'none';
         activityTitle.textContent = 'Current note.';
@@ -292,8 +306,11 @@ function view(presenter){
     function currentNote(dbid,activeNotes){
         let temp = document.querySelector('#notes');
         let div = temp.content.querySelector('.pastnote');  
+        div.setAttribute('dbid',dbid);
         let p = div.querySelector('p');
+        p.setAttribute('dbid',dbid);
         let buttons = div.querySelector('.buttons');
+        buttons.setAttribute('dbid',dbid);
         let erraseB = buttons.querySelector('.dbutton');
         erraseB.setAttribute('dbid', dbid);
         let editB = buttons.querySelector('.ebutton');
@@ -344,7 +361,29 @@ function view(presenter){
         }
     }
 
+    function draggingNote(event) {
+        //event.dataTransfer.setData('text/plain', event.target.id);
+        //event.currentTarget.style.backgroundColor = 'yellow';
+        draggedNote = event.target;
+        //draggedNote.style.display = 'none';
+        draggedNote.style.opacity = 0.3;
+        //console.log(draggedNote);
+      }
+    
+    function dragEnds(event){
+        //draggedNote = event.target;
+        draggedNote.style.opacity = 1;
+    }
+    
+    function dropNote(event){
+        //event.preventDefault();
+        let startingPlace = draggedNote.getAttribute('dbid');
+        let endingPlace = event.target.getAttribute('dbid');
+        presenter(model).interchangeNotes(startingPlace, endingPlace);
+    }
+
     return{ 'main':mainConf,
             'edit':editConf,
             'view':viewConf};
 }
+
