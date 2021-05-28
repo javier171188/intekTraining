@@ -33,8 +33,7 @@ class Observer{
     }
 }
 //**********************************
-var testingPerformance = true;
-view(presenter).main();
+view(presenter).start();
 
 //Model
 function model(){
@@ -181,37 +180,26 @@ function view(presenter){
     let lastMDP = document.querySelector('.modified');
     var dragedNote;
 
-    pastNotes.removeEventListener('click', clickOnNote);
-    pastNotes.addEventListener('click', clickOnNote);
-    pastNotes.addEventListener('dragstart',draggingNote);
-    pastNotes.addEventListener('dragend',dragEnds);
-    pastNotes.addEventListener("dragover", function(event) {
-                                event.preventDefault();
-                                });
-    pastNotes.addEventListener("drop", dropNote);
-    firstTImeNotes = false;
     saveButton.addEventListener('click', saveNote, {'once':true});
-    cancelButton.addEventListener('click', mainConf, {'once':true});
-    textSpace.addEventListener('keydown', allowTabs);
-
-    if (typeof searchBox === 'undefined'){
-        var searchBox = new Subject();
-    }
-    searchBox.element = document.querySelector('#searchingbox');
     
-    searchBox.element.removeEventListener('keyup', notifyChangeBox);
-    console.log('adding eventListener');
-    if (testingPerformance){
+    
+    function start(){
+        pastNotes.addEventListener('click', clickOnNote);
+        pastNotes.addEventListener('dragstart',draggingNote);
+        pastNotes.addEventListener('dragend',dragEnds);
+        pastNotes.addEventListener("dragover", function(event) {
+                                    event.preventDefault();
+                                    });
+        pastNotes.addEventListener("drop", dropNote);
+        textSpace.addEventListener('keydown', allowTabs);
+        searchBox = new Subject();
+        searchBox.element = document.querySelector('#searchingbox');
         searchBox.element.addEventListener('keyup', notifyChangeBox);
-        testingPerformance = false;
-    }
-        
-    if (typeof pastNotesObj === 'undefined'){
         pastNotesObj = new Observer();
+        searchBox.addObserver(pastNotesObj);
+        pastNotesObj.element = pastNotes;
+        view(presenter).main();
     }
-    pastNotesObj.element = pastNotes;
-    searchBox.addObserver(pastNotesObj);
-
 
     function notifyChangeBox(){
         searchBox.notify(searchBox.element.value);
@@ -238,6 +226,7 @@ function view(presenter){
     }
 
     function mainConf(){
+        //console.log('times');
         searchBox.element.style.display = 'inline';
         activityTitle.textContent = 'Create a note.';
         datesBox.style.display = 'none';
@@ -250,6 +239,10 @@ function view(presenter){
         cancelButton.style.display = 'none';
         pastNotes.style.display = 'block';
         placeNotes();
+        cancelButton.removeEventListener('click', mainConf, {'once':true});
+
+
+
     }
     function editConf(clicked){
         searchBox.element.style.display = 'none';
@@ -267,16 +260,35 @@ function view(presenter){
         let activeNotes = presenter(model).data;
         let note = activeNotes[dbid]['note'];
         textSpace.value = note;
-        editButton.addEventListener('click', editNote(dbid).saveEdition, {'once':true});
+        editButton.addEventListener('click', onEditButton);
         let creationDate = presenter(model).dates(dbid).creation;
         let lastMDate = presenter(model).dates(dbid).modification;
         creationDP.textContent = `Created: ${creationDate}.`;
         lastMDP.textContent = `Last modification: ${lastMDate}`;
+        cancelButton.addEventListener('click', onCancelButton);
+
+        function onCancelButton(){
+            editButton.removeEventListener('click', onEditButton);
+            editNote(dbid, true).saveEdition();
+            mainConf();
+        }
+        function onEditButton(){
+            cancelButton.removeEventListener('click',onCancelButton);
+            editNote(dbid).saveEdition();
+            mainConf();
+        }
+
     }
-    function editNote(dbid){
+    function editNote(dbid, checkCancel=false){
         return {
             'saveEdition': ()=>{
-                let newNote = textSpace.value;
+                let newNote;
+                if (checkCancel){
+                    newNote = activeNotes[dbid]['note'];
+                }else{
+                    newNote = textSpace.value;
+                    console.log('enter');
+                }
                 presenter(model).editNote(newNote, dbid);
             }
         }
@@ -289,16 +301,16 @@ function view(presenter){
         textSpace.readOnly = true;
         saveButton.style.display = 'none';
         editButton.style.display = 'inline';
-        editButton.textContent = 'Go back.';
+        editButton.textContent = 'Go back!';
         cancelButton.style.display = 'none';
         pastNotes.style.display = 'none';
-        editButton.addEventListener('click', mainConf, {'once':true});
         let dbid = clicked.getAttribute('dbid');
         let activeNotes = presenter(model).data;
         let note = activeNotes[dbid]['note'];
         textSpace.value = note;
         let creationDate = presenter(model).dates(dbid).creation;
         let lastMDate = presenter(model).dates(dbid).modification;
+        editButton.addEventListener('click', editNote(dbid).saveEdition, {'once':true});
         creationDP.textContent = `Created: ${creationDate}.`;
         lastMDP.textContent = `Last modification: ${lastMDate}`;
     }
@@ -382,8 +394,12 @@ function view(presenter){
         presenter(model).interchangeNotes(startingPlace, endingPlace);
     }
 
+    
+
     return{ 'main':mainConf,
             'edit':editConf,
-            'view':viewConf};
+            'view':viewConf,
+            'start':start
+        };
 }
 
