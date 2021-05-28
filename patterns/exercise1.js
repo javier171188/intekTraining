@@ -1,4 +1,5 @@
 //localStorage.clear();
+//Improvements: after click the cancel button the page should be created once, not twice.
 
 //Observer pattern***********
 class ObserverList{
@@ -182,6 +183,7 @@ function view(presenter){
 
     function start(){
         pastNotes.addEventListener('click', clickOnNote);
+        console.log('event listener to notes added.');
         pastNotes.addEventListener('dragstart',draggingNote);
         pastNotes.addEventListener('dragend',dragEnds);
         pastNotes.addEventListener("dragover", function(event) {
@@ -193,6 +195,7 @@ function view(presenter){
         searchBox.element = document.querySelector('#searchingbox');
         searchBox.element.addEventListener('keyup', notifyChangeBox);
         saveButton.addEventListener('click', saveNote);
+        console.log('event listener to save button added');
         pastNotesObj = new Observer();
         searchBox.addObserver(pastNotesObj);
         pastNotesObj.element = pastNotes;
@@ -238,9 +241,6 @@ function view(presenter){
         pastNotes.style.display = 'block';
         placeNotes();
         cancelButton.removeEventListener('click', mainConf, {'once':true});
-
-
-
     }
     function editConf(clicked){
         searchBox.element.style.display = 'none';
@@ -258,20 +258,22 @@ function view(presenter){
         let activeNotes = presenter(model).data;
         let note = activeNotes[dbid]['note'];
         textSpace.value = note;
-        editButton.addEventListener('click', onEditButton);
+        editButton.addEventListener('click', onEditButton, {'once':true});
+        console.log('event listener to editButton added');
         let creationDate = presenter(model).dates(dbid).creation;
         let lastMDate = presenter(model).dates(dbid).modification;
         creationDP.textContent = `Created: ${creationDate}.`;
         lastMDP.textContent = `Last modification: ${lastMDate}`;
-        cancelButton.addEventListener('click', onCancelButton);
+        cancelButton.addEventListener('click', onCancelButton, {'once':true});
+        console.log('event listener to cancel button added');
 
         function onCancelButton(){
-            editButton.removeEventListener('click', onEditButton);
+            editButton.removeEventListener('click', onEditButton, {'once':true});
             editNote(dbid, true).saveEdition();
             mainConf();
         }
         function onEditButton(){
-            cancelButton.removeEventListener('click',onCancelButton);
+            cancelButton.removeEventListener('click',onCancelButton, {'once':true});
             editNote(dbid).saveEdition();
             mainConf();
         }
@@ -285,7 +287,7 @@ function view(presenter){
                     newNote = activeNotes[dbid]['note'];
                 }else{
                     newNote = textSpace.value;
-                    console.log('enter');
+                    console.log('Saving the content of the text area');
                 }
                 presenter(model).editNote(newNote, dbid);
             }
@@ -344,9 +346,10 @@ function view(presenter){
     }
 
     function placeNotes(){
+        console.log('creating notes');
         pastNotes.innerHTML = '';
         let fragment = document.createDocumentFragment();
-                
+        activeNotes = presenter(model)['data'];        
         for (let i in activeNotes){
             let currentNote = factory().createNote(i,activeNotes);
             fragment.appendChild(currentNote);
