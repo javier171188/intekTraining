@@ -178,11 +178,8 @@ function view(presenter){
     let activeNotes = presenter(model)['data'];
     let creationDP = document.querySelector('.creation');
     let lastMDP = document.querySelector('.modified');
-    var dragedNote;
+    let dragedNote;
 
-    saveButton.addEventListener('click', saveNote, {'once':true});
-    
-    
     function start(){
         pastNotes.addEventListener('click', clickOnNote);
         pastNotes.addEventListener('dragstart',draggingNote);
@@ -195,6 +192,7 @@ function view(presenter){
         searchBox = new Subject();
         searchBox.element = document.querySelector('#searchingbox');
         searchBox.element.addEventListener('keyup', notifyChangeBox);
+        saveButton.addEventListener('click', saveNote);
         pastNotesObj = new Observer();
         searchBox.addObserver(pastNotesObj);
         pastNotesObj.element = pastNotes;
@@ -226,7 +224,7 @@ function view(presenter){
     }
 
     function mainConf(){
-        //console.log('times');
+        console.log('creating the main page');
         searchBox.element.style.display = 'inline';
         activityTitle.textContent = 'Create a note.';
         datesBox.style.display = 'none';
@@ -380,7 +378,7 @@ function view(presenter){
         //draggedNote.style.display = 'none';
         draggedNote.style.opacity = 0.3;
         //console.log(draggedNote);
-      }
+    }
     
     function dragEnds(event){
         //draggedNote = event.target;
@@ -393,8 +391,6 @@ function view(presenter){
         let endingPlace = event.target.getAttribute('dbid');
         presenter(model).interchangeNotes(startingPlace, endingPlace);
     }
-
-    
 
     return{ 'main':mainConf,
             'edit':editConf,
