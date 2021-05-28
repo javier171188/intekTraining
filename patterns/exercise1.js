@@ -1,5 +1,5 @@
 //localStorage.clear();
-//Improvements: after click the cancel button the page should be created once, not twice.
+//Improvements: When coming back from the edit config,  the page should be created once, not twice.
 
 //Observer pattern***********
 class ObserverList{
@@ -38,38 +38,9 @@ view(presenter).start();
 
 //Model
 function model(){
-   
     let strData = localStorage.getItem('0');
     let data = JSON.parse(strData);
 
-    function saveNote(index, obj){
-        if (obj['note']!==''){
-            if (data){
-                data[index] = obj;
-            } else {
-                data = {'1':obj};
-            }
-        }
-        updateNotes(data);
-    }
-
-    function updateNotes(data){
-        localStorage.setItem('0', JSON.stringify(data) );
-        presenter(()=>{
-            return {'data': data}
-            }).setConfig('main');
-    }
-
-    return {
-        'data': data,
-        'saveNote':saveNote,
-        'updateNotes': updateNotes
-    }
-}
-
-//Presenter
-function presenter(model){
-    let data = model().data;
     let activeNotes = {};
     for (let i in data){
         if (data[i].active && data[i].passFilter){
@@ -89,24 +60,103 @@ function presenter(model){
             var strIndex = '1';
         }
         let d = new Date();
-        let objectNote = {'createDate':d.toString(), 'lastMDate':d.toString(), 'note':note, 'active':true, 'passFilter':true};
-        model().saveNote(strIndex, objectNote);
+        let obj = {'createDate':d.toString(), 'lastMDate':d.toString(), 'note':note, 'active':true, 'passFilter':true};
+        
+        
+        if (obj['note']!==''){
+            if (data){
+                data[strIndex] = obj;
+            } else {
+                data = {'1':obj};
+            }
+        }
+        updateNotes(data);
     }
 
-    function editNote(note, dbid){
+    function updateNotes(data){
+        localStorage.setItem('0', JSON.stringify(data) );
+        presenter(()=>{
+                        return {'data': data}
+                      }).setConfig('main');
+    }
+
+    function updateNote(note, dbid){
         if (note){
             if (data[dbid]['note'] !== note){
                 let d = new Date();
                 data[dbid]['lastMDate'] = d.toString();
                 data[dbid]['note'] = note;
             }
-            model().updateNotes(data);
+            localStorage.setItem('0', JSON.stringify(data) );
+            presenter(()=>{
+                    return {'data': data}
+                    }).setConfig('main');
         }
     }
 
     function deleteNote(dbid){
         data[dbid]['active'] = false;
+        localStorage.setItem('0', JSON.stringify(data) );
+        presenter(()=>{
+            return {'data': data}
+            }).setConfig('main');
+    }
+
+    function getDate(dbid, opt){
+        let d;
+        if (opt==='c'){
+            d = data[dbid]['createDate'];
+        } else if (opt==='m'){
+            d = data[dbid]['lastMDate'];
+        }
+        return d;
+    }
+
+    function filterNotes(filter){
+        for (let i in data){
+            if (data[i]['note'].includes(filter)){
+                data[i]['passFilter'] = true;
+            }else{
+                data[i]['passFilter'] = false;
+            }
+        }
         model().updateNotes(data);
+    }
+
+    function interchangeNotes(startingPlace, endingPlace){
+        let keepingNote = data[startingPlace];
+        data[startingPlace] = data[endingPlace];
+        data[endingPlace] = keepingNote;
+        model().updateNotes(data);
+    }
+
+    return {
+        'data': data,
+        'saveNote':saveNote,
+        'updateNotes': updateNotes,
+        'activeNotes': activeNotes,
+        'deleteNote':deleteNote,
+        'updateNote':updateNote,
+        'getDate':getDate,
+        'filterNotes': filterNotes,
+        'interchangeNotes':interchangeNotes
+    }
+}
+
+//Presenter
+function presenter(model){
+    let activeNotes = model().activeNotes;
+    
+    function saveNote(note){
+        model().saveNote(note);
+    }
+
+    function editNote(note, dbid){
+        model().updateNote(note, dbid);
+    }
+
+    function deleteNote(dbid){
+        model().deleteNote(dbid);
     }
     
     function setConfig(option){
@@ -127,8 +177,8 @@ function presenter(model){
     }
 
     function dates(dbid){
-        let creationDate = data[dbid]['createDate'];
-        let lastMDate = data[dbid]['lastMDate'];
+        let creationDate = model().getDate(dbid,'c');
+        let lastMDate = model().getDate(dbid, 'm');
         return {
             'creation': creationDate,
             'modification': lastMDate
@@ -136,23 +186,11 @@ function presenter(model){
     }
 
     function filterNotes(filter){
-        for (let i in data){
-            if (data[i]['note'].includes(filter)){
-                data[i]['passFilter'] = true;
-            }else{
-                data[i]['passFilter'] = false;
-            }
-        }
-        model().updateNotes(data);
+        model().filterNotes(filter);
     }
-
+    
     function interchangeNotes(startingPlace, endingPlace){
-        console.log(`Start: ${startingPlace}, end: ${endingPlace}`);
-        console.log(data);
-        let keepingNote = data[startingPlace];
-        data[startingPlace] = data[endingPlace];
-        data[endingPlace] = keepingNote;
-        model().updateNotes(data);
+        model().interchangeNotes(startingPlace, endingPlace);
     }
 
     return {
@@ -183,7 +221,7 @@ function view(presenter){
 
     function start(){
         pastNotes.addEventListener('click', clickOnNote);
-        console.log('event listener to notes added.');
+        //console.log('event listener to notes added.');
         pastNotes.addEventListener('dragstart',draggingNote);
         pastNotes.addEventListener('dragend',dragEnds);
         pastNotes.addEventListener("dragover", function(event) {
@@ -195,7 +233,7 @@ function view(presenter){
         searchBox.element = document.querySelector('#searchingbox');
         searchBox.element.addEventListener('keyup', notifyChangeBox);
         saveButton.addEventListener('click', saveNote);
-        console.log('event listener to save button added');
+        //console.log('event listener to save button added');
         pastNotesObj = new Observer();
         searchBox.addObserver(pastNotesObj);
         pastNotesObj.element = pastNotes;
@@ -259,13 +297,13 @@ function view(presenter){
         let note = activeNotes[dbid]['note'];
         textSpace.value = note;
         editButton.addEventListener('click', onEditButton, {'once':true});
-        console.log('event listener to editButton added');
+        //console.log('event listener to editButton added');
         let creationDate = presenter(model).dates(dbid).creation;
         let lastMDate = presenter(model).dates(dbid).modification;
         creationDP.textContent = `Created: ${creationDate}.`;
         lastMDP.textContent = `Last modification: ${lastMDate}`;
         cancelButton.addEventListener('click', onCancelButton, {'once':true});
-        console.log('event listener to cancel button added');
+        //console.log('event listener to cancel button added');
 
         function onCancelButton(){
             editButton.removeEventListener('click', onEditButton, {'once':true});
@@ -284,10 +322,11 @@ function view(presenter){
             'saveEdition': ()=>{
                 let newNote;
                 if (checkCancel){
+                    let activeNotes = presenter(model)['data'];
                     newNote = activeNotes[dbid]['note'];
                 }else{
                     newNote = textSpace.value;
-                    console.log('Saving the content of the text area');
+                    //console.log('Saving the content of the text area');
                 }
                 presenter(model).editNote(newNote, dbid);
             }
@@ -346,7 +385,7 @@ function view(presenter){
     }
 
     function placeNotes(){
-        console.log('creating notes');
+        //console.log('creating notes');
         pastNotes.innerHTML = '';
         let fragment = document.createDocumentFragment();
         activeNotes = presenter(model)['data'];        
