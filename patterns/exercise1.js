@@ -1,39 +1,5 @@
 //localStorage.clear();
-//Improvements: When coming back from the edit config,  the page should be created once, not twice.
 
-//Observer pattern***********
-class ObserverList{
-    constructor(){
-        this.observerList = [];
-    }
-
-    addObserv(obs){
-        return this.observerList.push( obs );
-    }
-}
-
-class Subject{
-    constructor(){
-        this.observers = new ObserverList();
-    }
-
-    addObserver(observer){
-        this.observers.addObserv(observer);
-    }
-
-    notify(filter){
-        for(let o of this.observers.observerList){
-            o.update(filter)
-        }
-    }
-}
-
-class Observer{
-    update(filter){
-        presenter(model).filterNotes(filter);
-    }
-}
-//**********************************
 view(presenter).start();
 
 //Model
@@ -219,6 +185,71 @@ function view(presenter){
     let lastMDP = document.querySelector('.modified');
     let dragedNote;
 
+    //pub/sub pattern**********************************************************************
+    //Copied from https://addyosmani.com/resources/essentialjsdesignpatterns/book
+    var pubsub = {};
+    (function(myObject) {
+        // Storage for topics that can be broadcast
+        // or listened to
+        var topics = {};
+        // A topic identifier
+        var subUid = -1;
+        // Publish or broadcast events of interest
+        // with a specific topic name and arguments
+        // such as the data to pass along
+        myObject.publish = function( topic, args ) {
+            if ( !topics[topic] ) {
+                return false;
+            }
+            var subscribers = topics[topic],
+                len = subscribers ? subscribers.length : 0;
+            while (len--) {
+                subscribers[len].func( topic, args );
+            }
+            return this;
+        };
+        // Subscribe to events of interest
+        // with a specific topic name and a
+        // callback function, to be executed
+        // when the topic/event is observed
+        myObject.subscribe = function( topic, func ) {
+            if (!topics[topic]) {
+                topics[topic] = [];
+            }
+            var token = ( ++subUid ).toString();
+            topics[topic].push({
+                token: token,
+                func: func
+            });
+            return token;
+        };
+        // Unsubscribe from a specific
+        // topic, based on a tokenized reference
+        // to the subscription
+        myObject.unsubscribe = function( token ) {
+            for ( var m in topics ) {
+                if ( topics[m] ) {
+                    for ( var i = 0, j = topics[m].length; i < j; i++ ) {
+                        if ( topics[m][i].token === token ) {
+                            topics[m].splice( i, 1 );
+                            return token;
+                        }
+                    }
+                }
+            }
+            return this;
+        };
+    }( pubsub ));
+    var logger = function ( topic, filter ) {
+        presenter(model).filterNotes(filter);
+    };
+    var subscription = pubsub.subscribe( "newText", logger );
+    function notifyChangeBox(){
+        let filter = searchBox.value;
+        pubsub.publish( "newText", filter );    
+    }
+    //*****************************************************************************************
+
     function start(){
         pastNotes.addEventListener('click', clickOnNote);
         //console.log('event listener to notes added.');
@@ -229,21 +260,14 @@ function view(presenter){
                                     });
         pastNotes.addEventListener("drop", dropNote);
         textSpace.addEventListener('keydown', allowTabs);
-        searchBox = new Subject();
-        searchBox.element = document.querySelector('#searchingbox');
-        searchBox.element.addEventListener('keyup', notifyChangeBox);
+        searchBox = document.querySelector('#searchingbox');
+        searchBox.addEventListener('keyup', notifyChangeBox);
         saveButton.addEventListener('click', saveNote);
         //console.log('event listener to save button added');
-        pastNotesObj = new Observer();
-        searchBox.addObserver(pastNotesObj);
-        pastNotesObj.element = pastNotes;
+        //pastNotesObj = pastNotes;
         view(presenter).main();
     }
 
-    function notifyChangeBox(){
-        searchBox.notify(searchBox.element.value);
-    }
-    
     function clickOnNote(ev){
         let clicked = ev.target;
         clickedClass = clicked.getAttribute('class');
@@ -266,7 +290,7 @@ function view(presenter){
 
     function mainConf(){
         console.log('creating the main page');
-        searchBox.element.style.display = 'inline';
+        searchBox.style.display = 'inline';
         activityTitle.textContent = 'Create a note.';
         datesBox.style.display = 'none';
         textSpace.setAttribute('placeholder', 'Write a note here.');
@@ -281,7 +305,7 @@ function view(presenter){
         cancelButton.removeEventListener('click', mainConf, {'once':true});
     }
     function editConf(clicked){
-        searchBox.element.style.display = 'none';
+        searchBox.style.display = 'none';
         activityTitle.textContent = 'Edit this note.';
         datesBox.style.display = 'inline';
         textSpace.setAttribute('placeholder', 'Write a new version of the note.');
@@ -334,7 +358,7 @@ function view(presenter){
     }
 
     function viewConf(clicked){
-        searchBox.element.style.display = 'none';
+        searchBox.style.display = 'none';
         activityTitle.textContent = 'Current note.';
         datesBox.style.display = 'inline';
         textSpace.readOnly = true;
