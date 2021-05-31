@@ -14,6 +14,21 @@ function model(){
         }
     }
 
+    function modelNote(note){
+        let d = new Date();
+        this.createDate = d;
+        this.lastMDate = d;
+        this.note = note;
+        this.active = true;
+        this.passFilter = true;
+    }
+    function modelFactory() {}
+    modelFactory.prototype.createNote = function ( note ) {
+        this.noteClass = modelNote;
+        return new this.noteClass( note );
+    };
+    var noteFactory = new modelFactory();
+    
     function saveNote(note){
         let indexes = data ? Object.keys(data) : '';
         if (indexes !== ''){
@@ -25,9 +40,8 @@ function model(){
         } else{
             var strIndex = '1';
         }
-        let d = new Date();
-        let obj = {'createDate':d.toString(), 'lastMDate':d.toString(), 'note':note, 'active':true, 'passFilter':true};
         
+        obj = noteFactory.createNote(note);
         
         if (obj['note']!==''){
             if (data){
@@ -401,7 +415,7 @@ function view(presenter){
         return a;
     }
 
-    function factory(){
+    function viewFactory(){
         function createNote(dbid,activeNotes){
             return currentNote(dbid,activeNotes);
         }
@@ -414,7 +428,7 @@ function view(presenter){
         let fragment = document.createDocumentFragment();
         activeNotes = presenter(model)['data'];        
         for (let i in activeNotes){
-            let currentNote = factory().createNote(i,activeNotes);
+            let currentNote = viewFactory().createNote(i,activeNotes);
             fragment.appendChild(currentNote);
         }
         pastNotes.appendChild(fragment);
