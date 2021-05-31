@@ -16,8 +16,8 @@ function model(){
 
     function modelNote(note){
         let d = new Date();
-        this.createDate = d;
-        this.lastMDate = d;
+        this.createDate = d.toString();
+        this.lastMDate = d.toString();
         this.note = note;
         this.active = true;
         this.passFilter = true;
@@ -426,9 +426,10 @@ function view(presenter){
         //console.log('creating notes');
         pastNotes.innerHTML = '';
         let fragment = document.createDocumentFragment();
-        activeNotes = presenter(model)['data'];        
-        for (let i in activeNotes){
-            let currentNote = viewFactory().createNote(i,activeNotes);
+        activeNotes = presenter(model)['data'];      
+        for (let i of Object.keys(activeNotes).reverse()){
+            let j = parseInt(i);
+            let currentNote = viewFactory().createNote(j,activeNotes);
             fragment.appendChild(currentNote);
         }
         pastNotes.appendChild(fragment);
