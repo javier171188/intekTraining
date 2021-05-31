@@ -67,11 +67,17 @@ function model(){
                 data[dbid]['lastMDate'] = d.toString();
                 data[dbid]['note'] = note;
             }
-            localStorage.setItem('0', JSON.stringify(data) );
+            setNewConfig(data);
             presenter(()=>{
                     return {'data': data}
                     }).setConfig('main');
         }
+    }
+
+    function setNewConfig(data){
+        let i = 0;
+        
+        localStorage.setItem('0', JSON.stringify(data));
     }
 
     function deleteNote(dbid){
@@ -109,6 +115,9 @@ function model(){
         data[endingPlace] = keepingNote;
         model().updateNotes(data);
     }
+    function undoAction(){
+        console.log('Undo from the model');
+    }
 
     return {
         'data': data,
@@ -119,7 +128,8 @@ function model(){
         'updateNote':updateNote,
         'getDate':getDate,
         'filterNotes': filterNotes,
-        'interchangeNotes':interchangeNotes
+        'interchangeNotes':interchangeNotes,
+        'undoAction':undoAction
     }
 }
 
@@ -173,6 +183,10 @@ function presenter(model){
         model().interchangeNotes(startingPlace, endingPlace);
     }
 
+    function undoAction(){
+        model().undoAction();
+    }
+    
     return {
         'data':activeNotes,
         'saveNote': saveNote,
@@ -181,7 +195,8 @@ function presenter(model){
         'editNote': editNote,
         'dates': dates,
         'filterNotes': filterNotes,
-        'interchangeNotes':interchangeNotes
+        'interchangeNotes':interchangeNotes,
+        'undoAction': undoAction
     }
 }
 
@@ -197,6 +212,7 @@ function view(presenter){
     let activeNotes = presenter(model)['data'];
     let creationDP = document.querySelector('.creation');
     let lastMDP = document.querySelector('.modified');
+    let undoButton = document.querySelector('.undobutton');
     let dragedNote;
 
     //pub/sub pattern**********************************************************************
@@ -277,6 +293,8 @@ function view(presenter){
         searchBox = document.querySelector('#searchingbox');
         searchBox.addEventListener('keyup', notifyChangeBox);
         saveButton.addEventListener('click', saveNote);
+        undoButton.addEventListener('click',undoAction);
+        document.addEventListener('keydown',checkKeys);
         //console.log('event listener to save button added');
         //pastNotesObj = pastNotes;
         view(presenter).main();
@@ -315,9 +333,11 @@ function view(presenter){
         editButton.style.display = 'none';
         cancelButton.style.display = 'none';
         pastNotes.style.display = 'block';
+        undoButton.style.display = 'inline-block';
         placeNotes();
         cancelButton.removeEventListener('click', mainConf, {'once':true});
     }
+
     function editConf(clicked){
         searchBox.style.display = 'none';
         activityTitle.textContent = 'Edit this note.';
@@ -328,7 +348,8 @@ function view(presenter){
         editButton.style.display = 'inline';
         editButton.textContent = 'Save the changes!';
         cancelButton.style.display = 'inline';
-        cancelButton.textContent = 'Cancel.'
+        cancelButton.textContent = 'Cancel.';
+        undoButton.style.display = 'none';
         pastNotes.style.display = 'none';
         let dbid = clicked.getAttribute('dbid');
         let activeNotes = presenter(model).data;
@@ -346,12 +367,12 @@ function view(presenter){
         function onCancelButton(){
             editButton.removeEventListener('click', onEditButton, {'once':true});
             editNote(dbid, true).saveEdition();
-            mainConf();
+            //mainConf();
         }
         function onEditButton(){
             cancelButton.removeEventListener('click',onCancelButton, {'once':true});
             editNote(dbid).saveEdition();
-            mainConf();
+            //mainConf();
         }
 
     }
@@ -390,6 +411,7 @@ function view(presenter){
         editButton.addEventListener('click', editNote(dbid).saveEdition, {'once':true});
         creationDP.textContent = `Created: ${creationDate}.`;
         lastMDP.textContent = `Last modification: ${lastMDate}`;
+        undoButton.style.display = 'none';
     }
 
     function currentNote(dbid,activeNotes){
@@ -473,6 +495,18 @@ function view(presenter){
         presenter(model).interchangeNotes(startingPlace, endingPlace);
     }
 
+    function checkKeys(event){
+        if (event.ctrlKey && (event.key === "z" || event.key === "Z")) {
+            undoAction();
+          }
+    }
+    
+    function undoAction(){
+        if (undoButton.style.display !=='none'){
+            presenter(model).undoAction();
+        }
+    }
+    
     return{ 'main':mainConf,
             'edit':editConf,
             'view':viewConf,

@@ -24,6 +24,10 @@ nav{
     padding: 0.5%;
 }
 
+.undobutton{
+    width: 10%;
+}
+
 .pastnotes{
     display: block;
     margin-top: 5%;
