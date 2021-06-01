@@ -49,6 +49,7 @@ function model(){
                 data = {'1':obj};
             }
         }
+        setNewConfig(data);
         updateNotes(data);
     }
 
@@ -99,7 +100,8 @@ function model(){
 
     function deleteNote(dbid){
         data[dbid]['active'] = false;
-        localStorage.setItem('0', JSON.stringify(data) );
+        setNewConfig(data);
+        //localStorage.setItem('0', JSON.stringify(data) );
         presenter(()=>{
             return {'data': data}
             }).setConfig('main');
@@ -130,15 +132,16 @@ function model(){
         let keepingNote = data[startingPlace];
         data[startingPlace] = data[endingPlace];
         data[endingPlace] = keepingNote;
+        setNewConfig(data);
         model().updateNotes(data);
     }
     function undoAction(){
         let lastIndex = String(getNextIndex()-1);
         if (lastIndex !== '0'){
             let previousConfing = localStorage.getItem(lastIndex);
-        let previousData =  JSON.parse(previousConfing);
-        localStorage.removeItem(lastIndex);
-        model().updateNotes(previousData);
+            let previousData =  JSON.parse(previousConfing);
+            localStorage.removeItem(lastIndex);
+            model().updateNotes(previousData);
         }
     }
 
