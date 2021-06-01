@@ -1,5 +1,4 @@
 //localStorage.clear();
-
 view(presenter).start();
 
 //Model
@@ -75,9 +74,27 @@ function model(){
     }
 
     function setNewConfig(data){
-        let i = 0;
-        
-        localStorage.setItem('0', JSON.stringify(data));
+        let newConfig = JSON.stringify(data);
+        let oldConfig = localStorage.getItem('0');
+        if (newConfig !== oldConfig){
+            let confIndx = getNextIndex();
+            localStorage.setItem(String(confIndx), oldConfig);
+            localStorage.setItem('0', newConfig);
+        }
+    }
+
+    function getNextIndex(){
+        let confIndx = 0;
+        let checker = true;
+        while (checker){
+            let isThereNote = localStorage.getItem(String(confIndx));
+            if (isThereNote){
+                confIndx++;
+            } else{
+                checker = false;
+            }
+        } 
+        return confIndx;
     }
 
     function deleteNote(dbid){
@@ -116,7 +133,13 @@ function model(){
         model().updateNotes(data);
     }
     function undoAction(){
-        console.log('Undo from the model');
+        let lastIndex = String(getNextIndex()-1);
+        if (lastIndex !== '0'){
+            let previousConfing = localStorage.getItem(lastIndex);
+        let previousData =  JSON.parse(previousConfing);
+        localStorage.removeItem(lastIndex);
+        model().updateNotes(previousData);
+        }
     }
 
     return {
@@ -322,6 +345,7 @@ function view(presenter){
 
     function mainConf(){
         console.log('creating the main page');
+        console.log(localStorage.length);
         searchBox.style.display = 'inline';
         activityTitle.textContent = 'Create a note.';
         datesBox.style.display = 'none';
