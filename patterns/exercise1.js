@@ -101,7 +101,6 @@ function model(){
     function deleteNote(dbid){
         data[dbid]['active'] = false;
         setNewConfig(data);
-        //localStorage.setItem('0', JSON.stringify(data) );
         presenter(()=>{
             return {'data': data}
             }).setConfig('main');
@@ -187,7 +186,6 @@ function presenter(model){
                 view(presenter).view();
             break;
             default:
-                console.log(`The option ${option} was sent as a configuration`);
                 view(presenter).main();
         }
     }
@@ -308,7 +306,6 @@ function view(presenter){
 
     function start(){
         pastNotes.addEventListener('click', clickOnNote);
-        //console.log('event listener to notes added.');
         pastNotes.addEventListener('dragstart',draggingNote);
         pastNotes.addEventListener('dragend',dragEnds);
         pastNotes.addEventListener("dragover", function(event) {
@@ -321,8 +318,7 @@ function view(presenter){
         saveButton.addEventListener('click', saveNote);
         undoButton.addEventListener('click',undoAction);
         document.addEventListener('keydown',checkKeys);
-        //console.log('event listener to save button added');
-        //pastNotesObj = pastNotes;
+        notifyChangeBox();
         view(presenter).main();
     }
 
@@ -331,15 +327,12 @@ function view(presenter){
         clickedClass = clicked.getAttribute('class');
         switch (clickedClass){
             case "vbutton":
-                //viewNote(clicked);
                 viewConf(clicked);
             break;
             case "ebutton":
-                //editNote(clicked);
                 editConf(clicked);
             break;
             case "dbutton":
-                //delNote(clicked);
                 let dbid = clicked.getAttribute('dbid');
                 presenter(model).deleteNote(dbid);
             break;
@@ -347,8 +340,6 @@ function view(presenter){
     }
 
     function mainConf(){
-        console.log('creating the main page');
-        console.log(localStorage.length);
         searchBox.style.display = 'inline';
         activityTitle.textContent = 'Create a note.';
         datesBox.style.display = 'none';
@@ -383,23 +374,19 @@ function view(presenter){
         let note = activeNotes[dbid]['note'];
         textSpace.value = note;
         editButton.addEventListener('click', onEditButton, {'once':true});
-        //console.log('event listener to editButton added');
         let creationDate = presenter(model).dates(dbid).creation;
         let lastMDate = presenter(model).dates(dbid).modification;
         creationDP.textContent = `Created: ${creationDate}.`;
         lastMDP.textContent = `Last modification: ${lastMDate}`;
         cancelButton.addEventListener('click', onCancelButton, {'once':true});
-        //console.log('event listener to cancel button added');
 
         function onCancelButton(){
             editButton.removeEventListener('click', onEditButton, {'once':true});
             editNote(dbid, true).saveEdition();
-            //mainConf();
         }
         function onEditButton(){
             cancelButton.removeEventListener('click',onCancelButton, {'once':true});
             editNote(dbid).saveEdition();
-            //mainConf();
         }
 
     }
@@ -412,7 +399,6 @@ function view(presenter){
                     newNote = activeNotes[dbid]['note'];
                 }else{
                     newNote = textSpace.value;
-                    //console.log('Saving the content of the text area');
                 }
                 presenter(model).editNote(newNote, dbid);
             }
@@ -472,7 +458,6 @@ function view(presenter){
     }
 
     function placeNotes(){
-        //console.log('creating notes');
         pastNotes.innerHTML = '';
         let fragment = document.createDocumentFragment();
         activeNotes = presenter(model)['data'];      
@@ -502,21 +487,15 @@ function view(presenter){
     }
 
     function draggingNote(event) {
-        //event.dataTransfer.setData('text/plain', event.target.id);
-        //event.currentTarget.style.backgroundColor = 'yellow';
         draggedNote = event.target;
-        //draggedNote.style.display = 'none';
         draggedNote.style.opacity = 0.3;
-        //console.log(draggedNote);
     }
     
     function dragEnds(event){
-        //draggedNote = event.target;
         draggedNote.style.opacity = 1;
     }
     
     function dropNote(event){
-        //event.preventDefault();
         let startingPlace = draggedNote.getAttribute('dbid');
         let endingPlace = event.target.getAttribute('dbid');
         presenter(model).interchangeNotes(startingPlace, endingPlace);
