@@ -126,7 +126,7 @@ function model(){
                 data[i]['passFilter'] = false;
             }
         }
-        model().updateNotes(data);
+        updateNotes(data);
     }
 
     function interchangeNotes(startingPlace, endingPlace){
@@ -134,7 +134,7 @@ function model(){
         data[startingPlace] = data[endingPlace];
         data[endingPlace] = keepingNote;
         setNewConfig(data);
-        model().updateNotes(data);
+        updateNotes(data);
     }
     function undoAction(){
         let lastIndex = String(getNextIndex()-1);
@@ -142,7 +142,7 @@ function model(){
             let previousConfing = localStorage.getItem(lastIndex);
             let previousData =  JSON.parse(previousConfing);
             localStorage.removeItem(lastIndex);
-            model().updateNotes(previousData);
+            updateNotes(previousData);
         }
     }
 
@@ -321,7 +321,7 @@ function view(presenter){
         undoButton.addEventListener('click',undoAction);
         document.addEventListener('keydown',checkKeys);
         notifyChangeBox();
-        view(presenter).main();
+        main();
     }
 
     function clickOnNote(ev){
