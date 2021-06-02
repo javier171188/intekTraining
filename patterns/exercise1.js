@@ -13,18 +13,20 @@ function model(){
         }
     }
 
-    function modelNote(note){
-        let d = new Date();
-        this.createDate = d.toString();
-        this.lastMDate = d.toString();
-        this.note = note;
-        this.active = true;
-        this.passFilter = true;
+    class ModelNote {
+        constructor(note) {
+            let d = new Date();
+            this.createDate = d.toString();
+            this.lastMDate = d.toString();
+            this.note = note;
+            this.active = true;
+            this.passFilter = true;
+        }
     }
+    
     function modelFactory() {}
     modelFactory.prototype.createNote = function ( note ) {
-        this.noteClass = modelNote;
-        return new this.noteClass( note );
+        return new ModelNote( note );
     };
     var noteFactory = new modelFactory();
     
