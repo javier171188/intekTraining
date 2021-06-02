@@ -1,17 +1,21 @@
 //localStorage.clear();
-view(presenter).start();
+
 
 //Model
 function model(){
     let strData = localStorage.getItem('0');
     let data = JSON.parse(strData);
-
-    let activeNotes = {};
-    for (let i in data){
-        if (data[i].active && data[i].passFilter){
-            activeNotes[i] = data[i];
+    
+    function getActiveNotes(){
+        let activeNotes = {};
+        for (let i in data){
+            if (data[i].active && data[i].passFilter){
+                activeNotes[i] = data[i];
+            }
         }
+        return activeNotes;
     }
+    let activeNotes = getActiveNotes();
 
     class ModelNote {
         constructor(note) {
@@ -57,9 +61,8 @@ function model(){
 
     function updateNotes(data){
         localStorage.setItem('0', JSON.stringify(data) );
-        presenter(()=>{
-                        return {'data': data}
-                      }).setConfig('main');
+        presenter.data = getActiveNotes();
+        presenter.setConfig('main')
     }
 
     function updateNote(note, dbid){
@@ -70,9 +73,8 @@ function model(){
                 data[dbid]['note'] = note;
             }
             setNewConfig(data);
-            presenter(()=>{
-                    return {'data': data}
-                    }).setConfig('main');
+            presenter.data = getActiveNotes();
+            presenter.setConfig('main');
         }
     }
 
@@ -103,9 +105,8 @@ function model(){
     function deleteNote(dbid){
         data[dbid]['active'] = false;
         setNewConfig(data);
-        presenter(()=>{
-            return {'data': data}
-            }).setConfig('main');
+        presenter.data = getActiveNotes();
+        presenter.setConfig('main');
     }
 
     function getDate(dbid, opt){
@@ -147,7 +148,6 @@ function model(){
     }
 
     return {
-        'data': data,
         'saveNote':saveNote,
         'updateNotes': updateNotes,
         'activeNotes': activeNotes,
@@ -161,22 +161,24 @@ function model(){
 }
 
 //Presenter
-function presenter(model){
-    let activeNotes = model().activeNotes;
+class Presenter{
+    constructor(model){
+        this.data = model().activeNotes;
+    }
     
-    function saveNote(note){
+    saveNote(note){
         model().saveNote(note);
     }
 
-    function editNote(note, dbid){
+    editNote(note, dbid){
         model().updateNote(note, dbid);
     }
 
-    function deleteNote(dbid){
+    deleteNote(dbid){
         model().deleteNote(dbid);
     }
     
-    function setConfig(option){
+    setConfig(option){
         switch(option){
             case "main":
                 view(presenter).main();
@@ -192,7 +194,7 @@ function presenter(model){
         }
     }
 
-    function dates(dbid){
+    dates(dbid){
         let creationDate = model().getDate(dbid,'c');
         let lastMDate = model().getDate(dbid, 'm');
         return {
@@ -201,28 +203,16 @@ function presenter(model){
         }
     }
 
-    function filterNotes(filter){
+    filterNotes(filter){
         model().filterNotes(filter);
     }
     
-    function interchangeNotes(startingPlace, endingPlace){
+    interchangeNotes(startingPlace, endingPlace){
         model().interchangeNotes(startingPlace, endingPlace);
     }
 
-    function undoAction(){
+    undoAction(){
         model().undoAction();
-    }
-    
-    return {
-        'data':activeNotes,
-        'saveNote': saveNote,
-        'deleteNote': deleteNote,
-        'setConfig': setConfig,
-        'editNote': editNote,
-        'dates': dates,
-        'filterNotes': filterNotes,
-        'interchangeNotes':interchangeNotes,
-        'undoAction': undoAction
     }
 }
 
@@ -235,7 +225,7 @@ function view(presenter){
     let editButton = document.querySelector('.editingbutton');
     let cancelButton = document.querySelector('.cancelingbutton');
     let pastNotes = document.querySelector('.pastnotes');
-    let activeNotes = presenter(model)['data'];
+    let activeNotes = presenter.data;
     let creationDP = document.querySelector('.creation');
     let lastMDP = document.querySelector('.modified');
     let undoButton = document.querySelector('.undobutton');
@@ -297,7 +287,7 @@ function view(presenter){
         };
     }( pubsub ));
     var logger = function ( topic, filter ) {
-        presenter(model).filterNotes(filter);
+        presenter.filterNotes(filter);
     };
     var subscription = pubsub.subscribe( "newText", logger );
     function notifyChangeBox(){
@@ -321,7 +311,7 @@ function view(presenter){
         undoButton.addEventListener('click',undoAction);
         document.addEventListener('keydown',checkKeys);
         notifyChangeBox();
-        main();
+        mainConf();
     }
 
     function clickOnNote(ev){
@@ -336,7 +326,7 @@ function view(presenter){
             break;
             case "dbutton":
                 let dbid = clicked.getAttribute('dbid');
-                presenter(model).deleteNote(dbid);
+                presenter.deleteNote(dbid);
             break;
         }
     }
@@ -372,12 +362,12 @@ function view(presenter){
         undoButton.style.display = 'none';
         pastNotes.style.display = 'none';
         let dbid = clicked.getAttribute('dbid');
-        let activeNotes = presenter(model).data;
+        let activeNotes = presenter.data;
         let note = activeNotes[dbid]['note'];
         textSpace.value = note;
         editButton.addEventListener('click', onEditButton, {'once':true});
-        let creationDate = presenter(model).dates(dbid).creation;
-        let lastMDate = presenter(model).dates(dbid).modification;
+        let creationDate = presenter.dates(dbid).creation;
+        let lastMDate = presenter.dates(dbid).modification;
         creationDP.textContent = `Created: ${creationDate}.`;
         lastMDP.textContent = `Last modification: ${lastMDate}`;
         cancelButton.addEventListener('click', onCancelButton, {'once':true});
@@ -397,12 +387,12 @@ function view(presenter){
             'saveEdition': ()=>{
                 let newNote;
                 if (checkCancel){
-                    let activeNotes = presenter(model)['data'];
+                    let activeNotes = presenter.data;
                     newNote = activeNotes[dbid]['note'];
                 }else{
                     newNote = textSpace.value;
                 }
-                presenter(model).editNote(newNote, dbid);
+                presenter.editNote(newNote, dbid);
             }
         }
     }
@@ -418,11 +408,11 @@ function view(presenter){
         cancelButton.style.display = 'none';
         pastNotes.style.display = 'none';
         let dbid = clicked.getAttribute('dbid');
-        let activeNotes = presenter(model).data;
+        let activeNotes = presenter.data;
         let note = activeNotes[dbid]['note'];
         textSpace.value = note;
-        let creationDate = presenter(model).dates(dbid).creation;
-        let lastMDate = presenter(model).dates(dbid).modification;
+        let creationDate = presenter.dates(dbid).creation;
+        let lastMDate = presenter.dates(dbid).modification;
         editButton.addEventListener('click', editNote(dbid).saveEdition, {'once':true});
         creationDP.textContent = `Created: ${creationDate}.`;
         lastMDP.textContent = `Last modification: ${lastMDate}`;
@@ -462,7 +452,7 @@ function view(presenter){
     function placeNotes(){
         pastNotes.innerHTML = '';
         let fragment = document.createDocumentFragment();
-        activeNotes = presenter(model)['data'];      
+        activeNotes = presenter.data;
         for (let i of Object.keys(activeNotes).reverse()){
             let j = parseInt(i);
             let currentNote = viewFactory().createNote(j,activeNotes);
@@ -473,7 +463,7 @@ function view(presenter){
 
     function saveNote(){
         let note = textSpace.value;
-        presenter(model).saveNote(note);
+        presenter.saveNote(note);
     }
 
     function allowTabs(event){  
@@ -500,7 +490,7 @@ function view(presenter){
     function dropNote(event){
         let startingPlace = draggedNote.getAttribute('dbid');
         let endingPlace = event.target.getAttribute('dbid');
-        presenter(model).interchangeNotes(startingPlace, endingPlace);
+        presenter.interchangeNotes(startingPlace, endingPlace);
     }
 
     function checkKeys(event){
@@ -511,7 +501,7 @@ function view(presenter){
     
     function undoAction(){
         if (undoButton.style.display !=='none'){
-            presenter(model).undoAction();
+            presenter.undoAction();
         }
     }
     
@@ -521,4 +511,5 @@ function view(presenter){
             'start':start
         };
 }
-
+presenter = new Presenter(model);
+view(presenter).start();
