@@ -35,24 +35,13 @@ function model(){
     var noteFactory = new modelFactory();
     
     function saveNote(note){
-        let indexes = data ? Object.keys(data) : '';
-        if (indexes !== ''){
-            indexes = indexes.map((n)=>{
-                return parseInt(n);
-            });
-            let newIndex = Math.max(...indexes)+1;
-            var strIndex =  String(newIndex);
-        } else{
-            var strIndex = '1';
-        }
-        
         obj = noteFactory.createNote(note);
         
         if (obj['note']!==''){
             if (data){
-                data[strIndex] = obj;
+                data.push(obj);
             } else {
-                data = {'1':obj};
+                data = [obj];
             }
         }
         setNewConfig(data);
@@ -77,31 +66,6 @@ function model(){
             //presenter.data = getActiveNotes();
             //presenter.setConfig('main');
         }
-    }
-
-    function setNewConfig(data){
-        let newConfig = JSON.stringify(data);
-        let oldConfig = localStorage.getItem('0');
-        if (newConfig !== oldConfig){
-            let confIndx = getNextIndex();
-            localStorage.setItem(String(confIndx), oldConfig);
-            localStorage.setItem('0', newConfig);
-        }
-        activeNotes = getActiveNotes();
-    }
-
-    function getNextIndex(){
-        let confIndx = 0;
-        let checker = true;
-        while (checker){
-            let isThereNote = localStorage.getItem(String(confIndx));
-            if (isThereNote){
-                confIndx++;
-            } else{
-                checker = false;
-            }
-        } 
-        return confIndx;
     }
 
     function deleteNote(dbid){
@@ -139,6 +103,7 @@ function model(){
         setNewConfig(data);
         updateNotes(data);
     }
+    
     function undoAction(){
         let lastIndex = String(getNextIndex()-1);
         if (lastIndex !== '0'){
@@ -147,6 +112,29 @@ function model(){
             localStorage.removeItem(lastIndex);
             updateNotes(previousData);
         }
+    }
+    function setNewConfig(data){
+        let newConfig = JSON.stringify(data);
+        let oldConfig = localStorage.getItem('0');
+        if (newConfig !== oldConfig){
+            let confIndx = getNextIndex();
+            localStorage.setItem(String(confIndx), oldConfig);
+            localStorage.setItem('0', newConfig);
+        }
+        activeNotes = getActiveNotes();
+    }
+    function getNextIndex(){
+        let confIndx = 0;
+        let checker = true;
+        while (checker){
+            let isThereNote = localStorage.getItem(String(confIndx));
+            if (isThereNote){
+                confIndx++;
+            } else{
+                checker = false;
+            }
+        } 
+        return confIndx;
     }
 
     return {
