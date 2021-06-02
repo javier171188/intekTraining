@@ -61,8 +61,9 @@ function model(){
 
     function updateNotes(data){
         localStorage.setItem('0', JSON.stringify(data) );
-        presenter.data = getActiveNotes();
-        presenter.setConfig('main')
+        //presenter.data = getActiveNotes();
+        //presenter.setConfig('main');
+        activeNotes = getActiveNotes();
     }
 
     function updateNote(note, dbid){
@@ -73,8 +74,8 @@ function model(){
                 data[dbid]['note'] = note;
             }
             setNewConfig(data);
-            presenter.data = getActiveNotes();
-            presenter.setConfig('main');
+            //presenter.data = getActiveNotes();
+            //presenter.setConfig('main');
         }
     }
 
@@ -86,6 +87,7 @@ function model(){
             localStorage.setItem(String(confIndx), oldConfig);
             localStorage.setItem('0', newConfig);
         }
+        activeNotes = getActiveNotes();
     }
 
     function getNextIndex(){
@@ -105,8 +107,8 @@ function model(){
     function deleteNote(dbid){
         data[dbid]['active'] = false;
         setNewConfig(data);
-        presenter.data = getActiveNotes();
-        presenter.setConfig('main');
+        //presenter.data = getActiveNotes();
+        //presenter.setConfig('main');
     }
 
     function getDate(dbid, opt){
@@ -164,18 +166,25 @@ function model(){
 class Presenter{
     constructor(model){
         this.data = model().activeNotes;
+        this.model = model;
     }
     
     saveNote(note){
-        model().saveNote(note);
+        this.model().saveNote(note);
+        this.data = this.model().activeNotes;
+        this.setConfig('main');
     }
 
     editNote(note, dbid){
-        model().updateNote(note, dbid);
+        this.model().updateNote(note, dbid);
+        this.data = this.model().activeNotes;
+        this.setConfig('main');
     }
 
     deleteNote(dbid){
-        model().deleteNote(dbid);
+        this.model().deleteNote(dbid);
+        this.data = this.model().activeNotes;
+        this.setConfig('main');
     }
     
     setConfig(option){
@@ -195,8 +204,8 @@ class Presenter{
     }
 
     dates(dbid){
-        let creationDate = model().getDate(dbid,'c');
-        let lastMDate = model().getDate(dbid, 'm');
+        let creationDate = this.model().getDate(dbid,'c');
+        let lastMDate = this.model().getDate(dbid, 'm');
         return {
             'creation': creationDate,
             'modification': lastMDate
@@ -204,15 +213,21 @@ class Presenter{
     }
 
     filterNotes(filter){
-        model().filterNotes(filter);
+        this.model().filterNotes(filter);
+        this.data = this.model().activeNotes;
+        this.setConfig('main');
     }
     
     interchangeNotes(startingPlace, endingPlace){
         model().interchangeNotes(startingPlace, endingPlace);
+        this.data = model().activeNotes;
+        this.setConfig('main');
     }
 
     undoAction(){
         model().undoAction();
+        this.data = model().activeNotes;
+        this.setConfig('main');
     }
 }
 
