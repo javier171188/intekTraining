@@ -43,9 +43,10 @@ function model(){
             } else {
                 data = [obj];
             }
+            inverse = {'command':'saveNote'};
+            savePreviousConfig(inverse);
+            updateNotes(data);
         }
-        //setNewConfig(data);
-        updateNotes(data);
     }
 
     function updateNotes(data){
@@ -54,12 +55,12 @@ function model(){
     }
 
     function updateNote(note, dbid,reversing=false){
-        if (note){
-           if (!reversing){
-                let inverse = {'dbid':dbid, 'command':'updateNote', 'text':data[dbid]['note']};
-                savePreviousConfig(inverse);
-            }
+        if (note ){
             if (data[dbid]['note'] !== note){
+                if (!reversing){
+                    let inverse = {'dbid':dbid, 'command':'updateNote', 'text':data[dbid]['note']};
+                    savePreviousConfig(inverse);
+                }
                 let d = new Date();
                 data[dbid]['lastMDate'] = d.toString();
                 data[dbid]['note'] = note;
@@ -88,6 +89,11 @@ function model(){
                     updateNote(note, dbid,reversing=true);
                     localStorage.setItem('1', JSON.stringify(commands));
                     break;
+                case 'saveNote':
+                    data.pop();
+                    localStorage.setItem('0', JSON.stringify(data));
+                    localStorage.setItem('1', JSON.stringify(commands));
+                    break;
             
                 default:
                     break;
@@ -97,7 +103,8 @@ function model(){
 
     function deleteNote(dbid){
         data[dbid]['active'] = false;
-        setNewConfig(data);
+        localStorage.setItem('0', JSON.stringify(data));
+        //setNewConfig(data);
         //presenter.data = getActiveNotes();
         //presenter.setConfig('main');
     }
