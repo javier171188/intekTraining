@@ -81,7 +81,6 @@ function model(){
         let commands = JSON.parse(strCommands);
         if (commands.length > 0){
             reverseCommand = commands.pop();
-            console.log(reverseCommand);
             let dbid = reverseCommand['dbid'] || '';
             switch (reverseCommand['command']) {
                 case 'updateNote':
@@ -100,7 +99,8 @@ function model(){
                     localStorage.setItem('1', JSON.stringify(commands));
                     break;
                 case 'interchange':
-                    
+                    interchangeNotes(reverseCommand['start'], reverseCommand['end'], reversing=true);
+                    localStorage.setItem('1',JSON.stringify(commands));
                     break;
                 default:
                     break;
