@@ -161,7 +161,7 @@ function Model(){
 }
 
 //Presenter
-class Presenter{// making reference to global view*******************************
+class Presenter{
     constructor(model){
         this.data = model.activeNotes;
         this.model = model;
@@ -170,35 +170,20 @@ class Presenter{// making reference to global view******************************
     saveNote(note){
         this.model.saveNote(note);
         this.data = this.model.getActiveNotes();
-        this.setConfig('main');
     }
 
     editNote(note, dbid){
         this.model.updateNote(note, dbid);
         this.data = this.model.getActiveNotes();
-        this.setConfig('main');
     }
 
     deleteNote(dbid){
         this.model.deleteNote(dbid);
         this.data = this.model.getActiveNotes();
-        this.setConfig('main');
     }
     
     setConfig(option){
-        switch(option){
-            case "main":
-                view.main();
-            break;
-            case 'edit':
-                view.edit();
-            break;
-            case 'view':
-                view.view();
-            break;
-            default:
-                view.main();
-        }
+       console.log('check code');
     }
 
     dates(dbid){
@@ -213,19 +198,16 @@ class Presenter{// making reference to global view******************************
     filterNotes(filter){
         this.model.filterNotes(filter);
         this.data = this.model.getActiveNotes();
-        this.setConfig('main');
     }
     
     interchangeNotes(startingPlace, endingPlace){
         model.interchangeNotes(startingPlace, endingPlace);
         this.data = model.getActiveNotes();
-        this.setConfig('main');
     }
 
     undoAction(){
         model.undoAction();
         this.data = model.getActiveNotes();
-        this.setConfig('main');
     }
 }
 
@@ -287,6 +269,7 @@ function View(presenter,pubsub){
             case "dbutton":
                 let dbid = clicked.getAttribute('dbid');
                 presenter.deleteNote(dbid);
+                mainConf();
             break;
         }
     }
@@ -353,6 +336,7 @@ function View(presenter,pubsub){
                     newNote = textSpace.value;
                 }
                 presenter.editNote(newNote, dbid);
+                mainConf();
             }
         }
     }
@@ -424,6 +408,7 @@ function View(presenter,pubsub){
     function saveNote(){
         let note = textSpace.value;
         presenter.saveNote(note);
+        mainConf();
     }
 
     function allowTabs(event){  
@@ -451,6 +436,7 @@ function View(presenter,pubsub){
         let startingPlace = draggedNote.getAttribute('dbid');
         let endingPlace = event.target.getAttribute('dbid');
         presenter.interchangeNotes(startingPlace, endingPlace);
+        mainConf();
     }
 
     function checkKeys(event){
@@ -462,6 +448,7 @@ function View(presenter,pubsub){
     function undoAction(){
         if (undoButton.style.display !=='none'){
             presenter.undoAction();
+            mainConf();
         }
     }
     
@@ -532,5 +519,4 @@ var pubsub = {};
 model = Model();
 presenter = new Presenter(model);
 view = View(presenter, pubsub);
-
 view.start();
