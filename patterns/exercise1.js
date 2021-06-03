@@ -2,7 +2,7 @@
 
 
 //Model
-function model(){
+function Model(){
     let strData = localStorage.getItem('0');
     let data = JSON.parse(strData);
     
@@ -36,7 +36,6 @@ function model(){
     
     function saveNote(note){
         obj = noteFactory.createNote(note);
-        
         if (obj['note']!==''){
             if (data){
                 data.push(obj);
@@ -113,7 +112,6 @@ function model(){
         localStorage.setItem('0', JSON.stringify(data));
         let inverse = {'command':'deleteNote', 'dbid':dbid};
         savePreviousConfig(inverse);
-        //setNewConfig(data);
     }
 
     function getDate(dbid, opt){
@@ -147,22 +145,6 @@ function model(){
         }
         updateNotes(data);
     }
-    
-    
-    
-    /*function getNextIndex(){
-        let confIndx = 0;
-        let checker = true;
-        while (checker){
-            let isThereNote = localStorage.getItem(String(confIndx));
-            if (isThereNote){
-                confIndx++;
-            } else{
-                checker = false;
-            }
-        } 
-        return confIndx;
-    }*/
 
     return {
         'saveNote':saveNote,
@@ -173,54 +155,55 @@ function model(){
         'getDate':getDate,
         'filterNotes': filterNotes,
         'interchangeNotes':interchangeNotes,
-        'undoAction':undoAction
+        'undoAction':undoAction,
+        'getActiveNotes':getActiveNotes
     }
 }
 
 //Presenter
-class Presenter{
+class Presenter{// making reference to global view*******************************
     constructor(model){
-        this.data = model().activeNotes;
+        this.data = model.activeNotes;
         this.model = model;
     }
     
     saveNote(note){
-        this.model().saveNote(note);
-        this.data = this.model().activeNotes;
+        this.model.saveNote(note);
+        this.data = this.model.getActiveNotes();
         this.setConfig('main');
     }
 
     editNote(note, dbid){
-        this.model().updateNote(note, dbid);
-        this.data = this.model().activeNotes;
+        this.model.updateNote(note, dbid);
+        this.data = this.model.getActiveNotes();
         this.setConfig('main');
     }
 
     deleteNote(dbid){
-        this.model().deleteNote(dbid);
-        this.data = this.model().activeNotes;
+        this.model.deleteNote(dbid);
+        this.data = this.model.getActiveNotes();
         this.setConfig('main');
     }
     
     setConfig(option){
         switch(option){
             case "main":
-                view(presenter, pubsub).main();
+                view.main();
             break;
             case 'edit':
-                view(presenter, pubsub).edit();
+                view.edit();
             break;
             case 'view':
-                view(presenter, pubsub).view();
+                view.view();
             break;
             default:
-                view(presenter, pubsub).main();
+                view.main();
         }
     }
 
     dates(dbid){
-        let creationDate = this.model().getDate(dbid,'c');
-        let lastMDate = this.model().getDate(dbid, 'm');
+        let creationDate = this.model.getDate(dbid,'c');
+        let lastMDate = this.model.getDate(dbid, 'm');
         return {
             'creation': creationDate,
             'modification': lastMDate
@@ -228,26 +211,26 @@ class Presenter{
     }
 
     filterNotes(filter){
-        this.model().filterNotes(filter);
-        this.data = this.model().activeNotes;
+        this.model.filterNotes(filter);
+        this.data = this.model.getActiveNotes();
         this.setConfig('main');
     }
     
     interchangeNotes(startingPlace, endingPlace){
-        model().interchangeNotes(startingPlace, endingPlace);
-        this.data = model().activeNotes;
+        model.interchangeNotes(startingPlace, endingPlace);
+        this.data = model.getActiveNotes();
         this.setConfig('main');
     }
 
     undoAction(){
-        model().undoAction();
-        this.data = model().activeNotes;
+        model.undoAction();
+        this.data = model.getActiveNotes();
         this.setConfig('main');
     }
 }
 
 //View
-function view(presenter,pubsub){
+function View(presenter,pubsub){
     let activityTitle = document.querySelector('.activity');
     let datesBox = document.querySelector('.hiddates');
     let textSpace = document.getElementsByName('textarea')[0];
@@ -546,6 +529,8 @@ var pubsub = {};
 }( pubsub ));
 //*****************************************************************************************
 
-
+model = Model();
 presenter = new Presenter(model);
-view(presenter, pubsub).start();
+view = View(presenter, pubsub);
+
+view.start();
