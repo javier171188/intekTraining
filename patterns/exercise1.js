@@ -99,6 +99,9 @@ function model(){
                     localStorage.setItem('0', JSON.stringify(data));
                     localStorage.setItem('1', JSON.stringify(commands));
                     break;
+                case 'interchange':
+                    
+                    break;
                 default:
                     break;
             }
@@ -134,11 +137,14 @@ function model(){
         updateNotes(data);
     }
 
-    function interchangeNotes(startingPlace, endingPlace){
+    function interchangeNotes(startingPlace, endingPlace, reversing=false){
         let keepingNote = data[startingPlace];
         data[startingPlace] = data[endingPlace];
         data[endingPlace] = keepingNote;
-        setNewConfig(data);
+        if (!reversing){
+            let inverse = {'command':'interchange', 'start':endingPlace, 'end':startingPlace};
+            savePreviousConfig(inverse);    
+        }
         updateNotes(data);
     }
     
