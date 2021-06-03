@@ -182,9 +182,7 @@ class Presenter{
         this.data = this.model.getActiveNotes();
     }
     
-    setConfig(option){
-       console.log('check code');
-    }
+    
 
     dates(dbid){
         let creationDate = this.model.getDate(dbid,'c');
@@ -230,11 +228,13 @@ function View(presenter,pubsub){
     //calling the pub/sub ***************
     var logger = function ( topic, filter ) {
         presenter.filterNotes(filter);
+        mainConf();
     };
     var subscription = pubsub.subscribe( "newText", logger );
     function notifyChangeBox(){
         let filter = searchBox.value;
         pubsub.publish( "newText", filter );    
+        
     };
     //************************************
     
