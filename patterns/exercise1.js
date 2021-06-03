@@ -82,10 +82,10 @@ function model(){
         if (commands.length > 0){
             reverseCommand = commands.pop();
             console.log(reverseCommand);
+            let dbid = reverseCommand['dbid'] || '';
             switch (reverseCommand['command']) {
                 case 'updateNote':
                     let note = reverseCommand['text'];
-                    let dbid = reverseCommand['dbid'];
                     updateNote(note, dbid,reversing=true);
                     localStorage.setItem('1', JSON.stringify(commands));
                     break;
@@ -94,7 +94,11 @@ function model(){
                     localStorage.setItem('0', JSON.stringify(data));
                     localStorage.setItem('1', JSON.stringify(commands));
                     break;
-            
+                case 'deleteNote':
+                    data[dbid]['active'] = true;
+                    localStorage.setItem('0', JSON.stringify(data));
+                    localStorage.setItem('1', JSON.stringify(commands));
+                    break;
                 default:
                     break;
             }
@@ -104,9 +108,9 @@ function model(){
     function deleteNote(dbid){
         data[dbid]['active'] = false;
         localStorage.setItem('0', JSON.stringify(data));
+        let inverse = {'command':'deleteNote', 'dbid':dbid};
+        savePreviousConfig(inverse);
         //setNewConfig(data);
-        //presenter.data = getActiveNotes();
-        //presenter.setConfig('main');
     }
 
     function getDate(dbid, opt){
