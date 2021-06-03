@@ -44,27 +44,54 @@ function model(){
                 data = [obj];
             }
         }
-        setNewConfig(data);
+        //setNewConfig(data);
         updateNotes(data);
     }
 
     function updateNotes(data){
         localStorage.setItem('0', JSON.stringify(data) );
-        //presenter.data = getActiveNotes();
-        //presenter.setConfig('main');
         activeNotes = getActiveNotes();
     }
 
-    function updateNote(note, dbid){
+    function updateNote(note, dbid,reversing=false){
         if (note){
+           if (!reversing){
+                let inverse = {'dbid':dbid, 'command':'updateNote', 'text':data[dbid]['note']};
+                savePreviousConfig(inverse);
+            }
             if (data[dbid]['note'] !== note){
                 let d = new Date();
                 data[dbid]['lastMDate'] = d.toString();
                 data[dbid]['note'] = note;
+                localStorage.setItem('0',JSON.stringify(data));
             }
-            setNewConfig(data);
-            //presenter.data = getActiveNotes();
-            //presenter.setConfig('main');
+        }
+    }
+    function savePreviousConfig(inverse){
+        let strCommands = localStorage.getItem('1') || '[]';
+        let commands = JSON.parse(strCommands);
+        commands.push(inverse);
+        let newCommands = JSON.stringify(commands);
+        localStorage.setItem('1',newCommands);
+        activeNotes = getActiveNotes();
+    }
+    function undoAction(){
+        let strCommands = localStorage.getItem('1');
+        let commands = JSON.parse(strCommands);
+        if (commands.length > 0){
+            reverseCommand = commands.pop();
+            console.log(reverseCommand);
+            switch (reverseCommand['command']) {
+                case 'updateNote':
+                    let note = reverseCommand['text'];
+                    let dbid = reverseCommand['dbid'];
+                    updateNote(note, dbid,reversing=true);
+                    localStorage.setItem('1', JSON.stringify(commands));
+                    break;
+            
+                default:
+                    break;
+            }
         }
     }
 
@@ -104,26 +131,9 @@ function model(){
         updateNotes(data);
     }
     
-    function undoAction(){
-        let lastIndex = String(getNextIndex()-1);
-        if (lastIndex !== '0'){
-            let previousConfing = localStorage.getItem(lastIndex);
-            let previousData =  JSON.parse(previousConfing);
-            localStorage.removeItem(lastIndex);
-            updateNotes(previousData);
-        }
-    }
-    function setNewConfig(data){
-        let newConfig = JSON.stringify(data);
-        let oldConfig = localStorage.getItem('0');
-        if (newConfig !== oldConfig){
-            let confIndx = getNextIndex();
-            localStorage.setItem(String(confIndx), oldConfig);
-            localStorage.setItem('0', newConfig);
-        }
-        activeNotes = getActiveNotes();
-    }
-    function getNextIndex(){
+    
+    
+    /*function getNextIndex(){
         let confIndx = 0;
         let checker = true;
         while (checker){
@@ -135,7 +145,7 @@ function model(){
             }
         } 
         return confIndx;
-    }
+    }*/
 
     return {
         'saveNote':saveNote,
