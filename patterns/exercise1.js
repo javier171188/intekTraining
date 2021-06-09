@@ -4,19 +4,72 @@
 
 //Model
 function Model(){
-    let strData = localStorage.getItem('0');
-    let data = JSON.parse(strData);
-    
-    function getActiveNotes(){
-        let activeNotes = {};
-        for (let i in data){
-            if (data[i].active && data[i].passFilter){
-                activeNotes[i] = data[i];
+    function getData(indx='0',active=true){
+        if (indx==='0' && active){
+            let strData = localStorage.getItem('0');
+            let data = JSON.parse(strData);
+            let activeNotes = {};
+            for (let i in data){
+                if (data[i].active && data[i].passFilter){
+                    activeNotes[i] = data[i];
+                }
+            }
+            return activeNotes;
+        }else if(indx==='0' && !active){
+            let strData = localStorage.getItem('0');
+            let data = JSON.parse(strData);
+            return data;
+        }
+        let strData = localStorage.getItem('1');
+        let commands = JSON.parse(strData);
+        return commands;
+    }
+    function savePreviousConfig(inverse){
+        let strCommands = localStorage.getItem('1') || '[]';
+        let commands = JSON.parse(strCommands);
+        commands.push(inverse);
+        let newCommands = JSON.stringify(commands);
+        localStorage.setItem('1',newCommands);
+    }
+    function saveNoteDataBase(obj){
+        let strData = localStorage.getItem('0');
+        let data = JSON.parse(strData);
+        if (data){
+            data.push(obj);
+        } else {
+            data = [obj];
+        }
+        localStorage.setItem('0', JSON.stringify(data) );
+    }
+    function updateData(dbid,filter, indx='0'){
+        if (indx=='1'){
+            let commands = filter['commands'];
+            localStorage.setItem('1', JSON.stringify(commands));
+            return;
+        }
+        let strData = localStorage.getItem('0');
+        let data = JSON.parse(strData);
+        let difNote = [false,''];
+        if ('note' in filter){
+            if (filter['note'] !== data[dbid]['note']){
+                difNote = [true, data[dbid]['note']];
+                data[dbid]['note'] = filter['note'];
+                data[dbid]['lastMDate'] = filter['lastMDate'].toString();
+            }
+        }else if('data' in filter){
+            data = filter['data'];
+        }else{
+            for (let key in filter){
+                data[dbid][key] = filter[key];
             }
         }
-        return activeNotes;
+        localStorage.setItem('0', JSON.stringify(data));
+        return difNote;
     }
-    let activeNotes = getActiveNotes();
+
+    function updateNotes(data){
+        localStorage.setItem('0', JSON.stringify(data) );
+    }
 
     class ModelNote {
         constructor(note) {
@@ -34,50 +87,12 @@ function Model(){
     };
     var noteFactory = new modelFactory();
     
-    function saveNote(note){
-        let obj = noteFactory.createNote(note);
-        if (obj['note']!==''){
-            if (data){
-                data.push(obj);
-            } else {
-                data = [obj];
-            }
-            let inverse = {'command':'saveNote'};
-            savePreviousConfig(inverse);
-            updateNotes(data);
-        }
-    }
-
-    function updateNotes(data){
-        localStorage.setItem('0', JSON.stringify(data) );
-        activeNotes = getActiveNotes();
-    }
-
-    function updateNote(note, dbid,reversing=false){
-        if (note ){
-            if (data[dbid]['note'] !== note){
-                if (!reversing){
-                    let inverse = {'dbid':dbid, 'command':'updateNote', 'text':data[dbid]['note']};
-                    savePreviousConfig(inverse);
-                }
-                let d = new Date();
-                data[dbid]['lastMDate'] = d.toString();
-                data[dbid]['note'] = note;
-                localStorage.setItem('0',JSON.stringify(data));
-            }
-        }
-    }
-    function savePreviousConfig(inverse){
-        let strCommands = localStorage.getItem('1') || '[]';
-        let commands = JSON.parse(strCommands);
-        commands.push(inverse);
-        let newCommands = JSON.stringify(commands);
-        localStorage.setItem('1',newCommands);
-        activeNotes = getActiveNotes();
-    }
     function undoAction(){
-        let strCommands = localStorage.getItem('1');
-        let commands = JSON.parse(strCommands);
+        let commands = getData('1');
+        let data = getData('0',false)
+        if (!data){
+            return;
+        }
         if (commands.length > 0){
             let reverseCommand = commands.pop();
             let dbid = reverseCommand['dbid'] || '';
@@ -85,21 +100,20 @@ function Model(){
                 case 'updateNote':
                     let note = reverseCommand['text'];
                     updateNote(note, dbid,true);
-                    localStorage.setItem('1', JSON.stringify(commands));
+                    updateData('-1',{'commands':commands}, '1');
                     break;
-                case 'saveNote':
+                case 'saveNote'://just have to correct this
                     data.pop();
-                    localStorage.setItem('0', JSON.stringify(data));
-                    localStorage.setItem('1', JSON.stringify(commands));
+                    updateData('-1',{'data':data}, '0');
+                    updateData('-1',{'commands':commands}, '1');
                     break;
                 case 'deleteNote':
-                    data[dbid]['active'] = true;
-                    localStorage.setItem('0', JSON.stringify(data));
-                    localStorage.setItem('1', JSON.stringify(commands));
+                    updateData(dbid,{'active':true});
+                    updateData('-1',{'commands':commands}, '1');
                     break;
                 case 'interchange':
                     interchangeNotes(reverseCommand['start'], reverseCommand['end'], true);
-                    localStorage.setItem('1',JSON.stringify(commands));
+                    updateData('-1',{'commands':commands}, '1');
                     break;
                 default:
                     break;
@@ -108,14 +122,37 @@ function Model(){
     }
 
     function deleteNote(dbid){
-        data[dbid]['active'] = false;
-        localStorage.setItem('0', JSON.stringify(data));
+        updateData(dbid,{'active':false});
         let inverse = {'command':'deleteNote', 'dbid':dbid};
         savePreviousConfig(inverse);
     }
 
+    function saveNote(note){
+        let obj = noteFactory.createNote(note);
+        if (obj['note']!==''){
+            saveNoteDataBase(obj);
+            let inverse = {'command':'saveNote'};
+            savePreviousConfig(inverse);
+        }
+    }
+
+    function updateNote(note, dbid,reversing=false){
+        if (note ){
+            let d = new Date();
+            let filter = {'note':note, 'lastMDate':d};
+            let difNote = updateData(dbid,filter);
+            if (!reversing){
+                if(difNote[0]){
+                    let inverse = {'dbid':dbid, 'command':'updateNote', 'text':difNote[1]};
+                    savePreviousConfig(inverse);
+                }
+            }
+        }
+    }
+    
     function getDate(dbid, opt){
         let d;
+        let data = getData('0',true);
         if (opt==='c'){
             d = data[dbid]['createDate'];
         } else if (opt==='m'){
@@ -125,6 +162,7 @@ function Model(){
     }
 
     function filterNotes(filter){
+        let data = getData('0',false);
         for (let i in data){
             if (data[i]['note'].includes(filter)){
                 data[i]['passFilter'] = true;
@@ -136,6 +174,7 @@ function Model(){
     }
 
     function interchangeNotes(startingPlace, endingPlace, reversing=false){
+        let data = getData('0',false);
         let keepingNote = data[startingPlace];
         data[startingPlace] = data[endingPlace];
         data[endingPlace] = keepingNote;
@@ -145,18 +184,15 @@ function Model(){
         }
         updateNotes(data);
     }
-
     return {
         'saveNote':saveNote,
-        'updateNotes': updateNotes,
-        'activeNotes': activeNotes,
         'deleteNote':deleteNote,
         'updateNote':updateNote,
         'getDate':getDate,
         'filterNotes': filterNotes,
         'interchangeNotes':interchangeNotes,
         'undoAction':undoAction,
-        'getActiveNotes':getActiveNotes
+        'getActiveNotes':getData
     }
 }
 
