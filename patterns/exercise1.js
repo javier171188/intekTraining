@@ -1,3 +1,4 @@
+'use strict';
 //localStorage.clear();
 
 
@@ -27,7 +28,6 @@ function Model(){
             this.passFilter = true;
         }
     }
-    
     function modelFactory() {}
     modelFactory.prototype.createNote = function ( note ) {
         return new ModelNote( note );
@@ -35,14 +35,14 @@ function Model(){
     var noteFactory = new modelFactory();
     
     function saveNote(note){
-        obj = noteFactory.createNote(note);
+        let obj = noteFactory.createNote(note);
         if (obj['note']!==''){
             if (data){
                 data.push(obj);
             } else {
                 data = [obj];
             }
-            inverse = {'command':'saveNote'};
+            let inverse = {'command':'saveNote'};
             savePreviousConfig(inverse);
             updateNotes(data);
         }
@@ -79,12 +79,12 @@ function Model(){
         let strCommands = localStorage.getItem('1');
         let commands = JSON.parse(strCommands);
         if (commands.length > 0){
-            reverseCommand = commands.pop();
+            let reverseCommand = commands.pop();
             let dbid = reverseCommand['dbid'] || '';
             switch (reverseCommand['command']) {
                 case 'updateNote':
                     let note = reverseCommand['text'];
-                    updateNote(note, dbid,reversing=true);
+                    updateNote(note, dbid,true);
                     localStorage.setItem('1', JSON.stringify(commands));
                     break;
                 case 'saveNote':
@@ -98,7 +98,7 @@ function Model(){
                     localStorage.setItem('1', JSON.stringify(commands));
                     break;
                 case 'interchange':
-                    interchangeNotes(reverseCommand['start'], reverseCommand['end'], reversing=true);
+                    interchangeNotes(reverseCommand['start'], reverseCommand['end'], true);
                     localStorage.setItem('1',JSON.stringify(commands));
                     break;
                 default:
@@ -222,7 +222,8 @@ function View(presenter,pubsub){
     let creationDP = document.querySelector('.creation');
     let lastMDP = document.querySelector('.modified');
     let undoButton = document.querySelector('.undobutton');
-    let dragedNote;
+    let searchBox = document.querySelector('#searchingbox');
+    let draggedNote;
 
     
     //calling the pub/sub ***************
@@ -247,7 +248,7 @@ function View(presenter,pubsub){
                                     });
         pastNotes.addEventListener("drop", dropNote);
         textSpace.addEventListener('keydown', allowTabs);
-        searchBox = document.querySelector('#searchingbox');
+        
         searchBox.addEventListener('keyup', notifyChangeBox);
         saveButton.addEventListener('click', saveNote);
         undoButton.addEventListener('click',undoAction);
@@ -258,7 +259,7 @@ function View(presenter,pubsub){
 
     function clickOnNote(ev){
         let clicked = ev.target;
-        clickedClass = clicked.getAttribute('class');
+        let clickedClass = clicked.getAttribute('class');
         switch (clickedClass){
             case "vbutton":
                 viewConf(clicked);
@@ -516,7 +517,7 @@ var pubsub = {};
 }( pubsub ));
 //*****************************************************************************************
 
-model = Model();
-presenter = new Presenter(model);
-view = View(presenter, pubsub);
+let model = Model();
+let presenter = new Presenter(model);
+let view = View(presenter, pubsub);
 view.start();
