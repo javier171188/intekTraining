@@ -94,7 +94,7 @@ function Model () {
     }
     if (commands.length > 0) {
       const reverseCommand = commands.pop()
-      const dbid = reverseCommand.dbid || ''
+      let dbid = reverseCommand.dbid || ''
       switch (reverseCommand.command) {
         case 'updateNote':
           const note = reverseCommand.text
@@ -197,9 +197,10 @@ function Model () {
 
 // Presenter
 class Presenter {
-  constructor (model) {
+  constructor (model,pubsub) {
     this.data = model.getActiveNotes('0', true)
     this.model = model
+    this.pubsub = pubsub
   }
 
   saveNote (note) {
@@ -240,6 +241,10 @@ class Presenter {
     model.undoAction()
     this.data = model.getActiveNotes()
   }
+
+  start(){
+    pubsub.publish('startApp', this.data)
+  }
 }
 
 // View
@@ -251,20 +256,19 @@ function View (presenter, pubsub) {
   const editButton = document.querySelector('.editingbutton')
   const cancelButton = document.querySelector('.cancelingbutton')
   const pastNotes = document.querySelector('.pastnotes')
-  let activeNotes = presenter.data
   const creationDP = document.querySelector('.creation')
   const lastMDP = document.querySelector('.modified')
   const undoButton = document.querySelector('.undobutton')
   const searchBox = document.querySelector('#searchingbox')
   let draggedNote
 
-  function notifyChangeBox () {
+  function notifyChangeBox (activeNotes) {
     const filter = searchBox.value
     pubsub.publish('newText', filter)
-    mainConf()
+    mainConf(activeNotes)
   };
 
-  function start () {
+  function start (activeNotes) {
     pastNotes.addEventListener('click', clickOnNote)
     pastNotes.addEventListener('dragstart', draggingNote)
     pastNotes.addEventListener('dragend', dragEnds)
@@ -278,46 +282,30 @@ function View (presenter, pubsub) {
     saveButton.addEventListener('click', saveNote)
     undoButton.addEventListener('click', undoAction)
     document.addEventListener('keydown', checkKeys)
-    notifyChangeBox()
-    mainConf()
+    notifyChangeBox(activeNotes)
+    //mainConf()
   }
 
   function clickOnNote (ev) {
     const clicked = ev.target
     const clickedClass = clicked.getAttribute('class')
+    let dbid = clicked.getAttribute('dbid')
     switch (clickedClass) {
       case 'vbutton':
         viewConf(clicked)
         break
       case 'ebutton':
-        editConf(clicked)
+        pubsub.publish('editClicked', dbid)
+        //editConf(dbid)
         break
       case 'dbutton':
-        const dbid = clicked.getAttribute('dbid')
         pubsub.publish('deleteNote', dbid)
         mainConf()
         break
     }
   }
 
-  function mainConf () {
-    searchBox.style.display = 'inline'
-    activityTitle.textContent = 'Create a note.'
-    datesBox.style.display = 'none'
-    textSpace.setAttribute('placeholder', 'Write a note here.')
-    textSpace.readOnly = false
-    textSpace.value = ''
-    saveButton.style.display = 'inline'
-    saveButton.textContent = 'Save the note!'
-    editButton.style.display = 'none'
-    cancelButton.style.display = 'none'
-    pastNotes.style.display = 'block'
-    undoButton.style.display = 'inline-block'
-    placeNotes()
-    cancelButton.removeEventListener('click', mainConf, { once: true })
-  }
-
-  function editConf (clicked) {
+  function editConf (note, dates) {
     searchBox.style.display = 'none'
     activityTitle.textContent = 'Edit this note.'
     datesBox.style.display = 'inline'
@@ -330,13 +318,15 @@ function View (presenter, pubsub) {
     cancelButton.textContent = 'Cancel.'
     undoButton.style.display = 'none'
     pastNotes.style.display = 'none'
-    const dbid = clicked.getAttribute('dbid')
-    const activeNotes = presenter.data
-    const note = activeNotes[dbid].note
+    
+    //const activeNotes = presenter.data
+    //const note = activeNotes[dbid].note
     textSpace.value = note
     editButton.addEventListener('click', onEditButton, { once: true })
-    const creationDate = presenter.dates(dbid).creation
-    const lastMDate = presenter.dates(dbid).modification
+    //const creationDate = presenter.dates(dbid).creation
+    //const lastMDate = presenter.dates(dbid).modification
+    const creationDate = dates.creation
+    const lastMDate = dates.modification
     creationDP.textContent = `Created: ${creationDate}.`
     lastMDP.textContent = `Last modification: ${lastMDate}`
     cancelButton.addEventListener('click', onCancelButton, { once: true })
@@ -350,6 +340,24 @@ function View (presenter, pubsub) {
       editNote(dbid).saveEdition()
     }
   }
+
+  function mainConf (activeNotes) {
+    searchBox.style.display = 'inline'
+    activityTitle.textContent = 'Create a note.'
+    datesBox.style.display = 'none'
+    textSpace.setAttribute('placeholder', 'Write a note here.')
+    textSpace.readOnly = false
+    textSpace.value = ''
+    saveButton.style.display = 'inline'
+    saveButton.textContent = 'Save the note!'
+    editButton.style.display = 'none'
+    cancelButton.style.display = 'none'
+    pastNotes.style.display = 'block'
+    undoButton.style.display = 'inline-block'
+    placeNotes(activeNotes)
+    cancelButton.removeEventListener('click', mainConf, { once: true })
+  }
+
   function editNote (dbid, checkCancel = false) {
     return {
       saveEdition: () => {
@@ -357,6 +365,7 @@ function View (presenter, pubsub) {
         if (checkCancel) {
           const activeNotes = presenter.data
           newNote = activeNotes[dbid].note
+          pubsub.publish('clickCancel',)
         } else {
           newNote = textSpace.value
         }
@@ -376,7 +385,7 @@ function View (presenter, pubsub) {
     editButton.textContent = 'Go back!'
     cancelButton.style.display = 'none'
     pastNotes.style.display = 'none'
-    const dbid = clicked.getAttribute('dbid')
+    let dbid = clicked.getAttribute('dbid')
     const activeNotes = presenter.data
     const note = activeNotes[dbid].note
     textSpace.value = note
@@ -418,10 +427,9 @@ function View (presenter, pubsub) {
     return { createNote: createNote }
   }
 
-  function placeNotes () {
+  function placeNotes (activeNotes) {
     pastNotes.innerHTML = ''
     const fragment = document.createDocumentFragment()
-    activeNotes = presenter.data
     for (const i of Object.keys(activeNotes).reverse()) {
       const j = parseInt(i)
       const currentNote = viewFactory().createNote(j, activeNotes)
@@ -545,7 +553,7 @@ const pubsub = {};
 const model = Model()
 const presenter = new Presenter(model)
 const view = View(presenter, pubsub)
-view.start()
+
 
 // Subscribing*******************************************************************
 function interchangeNotesLogger (topic, indexes) {
@@ -577,4 +585,20 @@ function undoActionLogger (topic) {
   presenter.undoAction()
 }
 pubsub.subscribe('undoAction', undoActionLogger)
+
+function startAppLogger(topic, activeNotes){
+    view.start(activeNotes);
+}
+pubsub.subscribe('startApp', startAppLogger)
+
+function editClickedLogger(topic, dbid){
+    let dates = presenter.dates(dbid)
+    let activeNotes = presenter.data
+    let note = activeNotes[dbid].note
+    view.edit (note, dates)
+}
+pubsub.subscribe('editClicked', editClickedLogger)
+
+
 //* *****************************************************************************
+presenter.start()
