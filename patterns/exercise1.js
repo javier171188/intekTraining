@@ -199,7 +199,7 @@ function Model(){
 //Presenter
 class Presenter{
     constructor(model){
-        this.data = model.activeNotes;
+        this.data = model.getActiveNotes('0',true);
         this.model = model;
     }
     
@@ -263,15 +263,10 @@ function View(presenter,pubsub){
 
     
     //calling the pub/sub ***************
-    var logger = function ( topic, filter ) {
-        presenter.filterNotes(filter);
-        mainConf();
-    };
-    var subscription = pubsub.subscribe( "newText", logger );
     function notifyChangeBox(){
         let filter = searchBox.value;
         pubsub.publish( "newText", filter );    
-        
+        mainConf();
     };
     //************************************
     
@@ -305,7 +300,7 @@ function View(presenter,pubsub){
             break;
             case "dbutton":
                 let dbid = clicked.getAttribute('dbid');
-                presenter.deleteNote(dbid);
+                pubsub.publish( "deleteNote", dbid );    
                 mainConf();
             break;
         }
@@ -372,7 +367,7 @@ function View(presenter,pubsub){
                 }else{
                     newNote = textSpace.value;
                 }
-                presenter.editNote(newNote, dbid);
+                pubsub.publish( "editNote", [newNote, dbid] );  
                 mainConf();
             }
         }
@@ -445,6 +440,7 @@ function View(presenter,pubsub){
     function saveNote(){
         let note = textSpace.value;
         presenter.saveNote(note);
+        pubsub.publish( "saveNote", note ); 
         mainConf();
     }
 
@@ -472,7 +468,7 @@ function View(presenter,pubsub){
     function dropNote(event){
         let startingPlace = draggedNote.getAttribute('dbid');
         let endingPlace = event.target.getAttribute('dbid');
-        presenter.interchangeNotes(startingPlace, endingPlace);
+        pubsub.publish( "interchangeNotes", [startingPlace, endingPlace] ); 
         mainConf();
     }
 
@@ -484,7 +480,7 @@ function View(presenter,pubsub){
     
     function undoAction(){
         if (undoButton.style.display !=='none'){
-            presenter.undoAction();
+            pubsub.publish( "undoAction" ); 
             mainConf();
         }
     }
