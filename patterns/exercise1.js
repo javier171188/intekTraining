@@ -300,12 +300,12 @@ function View (presenter, pubsub) {
         break
       case 'dbutton':
         pubsub.publish('deleteNote', dbid)
-        mainConf()
+        mainConf()//active notes <-----------------------------------
         break
     }
   }
 
-  function editConf (note, dates) {
+  function editConf (note, dates, dbid) {
     searchBox.style.display = 'none'
     activityTitle.textContent = 'Edit this note.'
     datesBox.style.display = 'inline'
@@ -330,7 +330,6 @@ function View (presenter, pubsub) {
     creationDP.textContent = `Created: ${creationDate}.`
     lastMDP.textContent = `Last modification: ${lastMDate}`
     cancelButton.addEventListener('click', onCancelButton, { once: true })
-
     function onCancelButton () {
       editButton.removeEventListener('click', onEditButton, { once: true })
       editNote(dbid, true).saveEdition()
@@ -361,19 +360,21 @@ function View (presenter, pubsub) {
   function editNote (dbid, checkCancel = false) {
     return {
       saveEdition: () => {
-        let newNote
-        if (checkCancel) {
-          const activeNotes = presenter.data
-          newNote = activeNotes[dbid].note
-          pubsub.publish('clickCancel',)
-        } else {
-          newNote = textSpace.value
-        }
-        pubsub.publish('editNote', [newNote, dbid])
-        mainConf()
+        pubsub.publish('saveEditClicked',[dbid,checkCancel])
       }
     }
   }
+
+  function saveEdition(newNote, dbid, activeNotes, checkCancel){
+    if (!checkCancel) {
+        newNote = textSpace.value
+    } 
+    activeNotes[dbid]['note'] = newNote
+    pubsub.publish('editNote', [newNote, dbid])
+    mainConf(activeNotes)
+  }
+
+
 
   function viewConf (clicked) {
     searchBox.style.display = 'none'
@@ -441,7 +442,7 @@ function View (presenter, pubsub) {
   function saveNote () {
     const note = textSpace.value
     pubsub.publish('saveNote', note)
-    mainConf()
+    mainConf()//Active notes<---------------------??????????????????
   }
 
   function allowTabs (event) {
@@ -489,7 +490,8 @@ function View (presenter, pubsub) {
     main: mainConf,
     edit: editConf,
     view: viewConf,
-    start: start
+    start: start,
+    saveEdition:saveEdition
   }
 }
 
@@ -592,13 +594,22 @@ function startAppLogger(topic, activeNotes){
 pubsub.subscribe('startApp', startAppLogger)
 
 function editClickedLogger(topic, dbid){
+    //let dates = presenter.dates(dbid)
     let dates = presenter.dates(dbid)
     let activeNotes = presenter.data
     let note = activeNotes[dbid].note
-    view.edit (note, dates)
+    view.edit (note, dates, dbid)
 }
 pubsub.subscribe('editClicked', editClickedLogger)
 
-
+function saveEditClickedLogger(topic, info){
+    let dbid = info[0]
+    let checker = info[1]
+    let data = presenter.data
+    let newNote = data[dbid]['note']
+    view.saveEdition(newNote, dbid, data, checker)
+}
+pubsub.subscribe('saveEditClicked',saveEditClickedLogger)
 //* *****************************************************************************
 presenter.start()
+//pubsub.publish('editClicked'
