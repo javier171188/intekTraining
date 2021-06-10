@@ -101,7 +101,7 @@ function Model () {
           updateNote(note, dbid, true)
           updateData('-1', { commands: commands }, '1')
           break
-        case 'saveNote':// just have to correct this
+        case 'saveNote':
           data.pop()
           updateData('-1', { data: data }, '0')
           updateData('-1', { commands: commands }, '1')
