@@ -218,8 +218,6 @@ class Presenter{
         this.data = this.model.getActiveNotes();
     }
     
-    
-
     dates(dbid){
         let creationDate = this.model.getDate(dbid,'c');
         let lastMDate = this.model.getDate(dbid, 'm');
@@ -439,7 +437,6 @@ function View(presenter,pubsub){
 
     function saveNote(){
         let note = textSpace.value;
-        presenter.saveNote(note);
         pubsub.publish( "saveNote", note ); 
         mainConf();
     }
@@ -553,3 +550,35 @@ let model = Model();
 let presenter = new Presenter(model);
 let view = View(presenter, pubsub);
 view.start();
+
+//Subscribing*******************************************************************
+function interchangeNotesLogger( topic,  indexes) {
+        presenter.interchangeNotes(indexes[0], indexes[1]);
+};
+pubsub.subscribe( "interchangeNotes", interchangeNotesLogger );
+
+function textFilterLogger(topic, filter){
+    presenter.filterNotes(filter);
+}
+pubsub.subscribe( "newText", textFilterLogger ); 
+
+function deleteNoteLogger(topic, dbid){
+    presenter.deleteNote(dbid);
+}
+pubsub.subscribe( "deleteNote", deleteNoteLogger );    
+
+function editNoteLogger(topic, info){
+    presenter.editNote(info[0],info[1]);
+}
+pubsub.subscribe( "editNote",  editNoteLogger);
+
+function saveNoteLogger(topic, note){
+    presenter.saveNote(note);
+}
+pubsub.subscribe( "saveNote", saveNoteLogger ); 
+
+function undoActionLogger(topic){
+    presenter.undoAction();
+}
+pubsub.subscribe( "undoAction",undoActionLogger ); 
+//******************************************************************************
