@@ -1,5 +1,5 @@
 'use strict'
-// localStorage.clear();
+//localStorage.clear();
 
 // Model
 function Model () {
@@ -197,9 +197,8 @@ function Model () {
 
 // Presenter
 class Presenter {
-  constructor (model,pubsub) {
+  constructor (pubsub) {
     pubsub.publish('getDataPresenter',this)  
-    this.model = model// errase at the end.
     this.pubsub = pubsub
     this.creationDate
     this.lastMDate
@@ -211,22 +210,16 @@ class Presenter {
   }
 
   editNote (note, dbid) {
-    //this.model.updateNote(note, dbid)
     this.pubsub.publish('editNotePresenter', [note,dbid])
-    //this.data = this.model.getActiveNotes()
     this.pubsub.publish('getDataPresenter',this)  
   }
 
   deleteNote (dbid) {
-    //this.model.deleteNote(dbid)
     this.pubsub.publish('deleteNotePresenter', dbid)
-    //this.data = this.model.getActiveNotes()
     this.pubsub.publish('getDataPresenter',this)  
   }
 
   dates (dbid) {
-    //const creationDate = this.model.getDate(dbid, 'c')
-    //const lastMDate = this.model.getDate(dbid, 'm')
     this.pubsub.publish('getDatesPresenter',[this,dbid])
     return {
       creation: this.creationDate,
@@ -235,23 +228,17 @@ class Presenter {
   }
 
   filterNotes (filter) {
-    //this.model.filterNotes(filter)
     this.pubsub.publish('filterNotesPresenter',filter)
-    //this.data = this.model.getActiveNotes()
     this.pubsub.publish('getDataPresenter',this)
   }
 
   interchangeNotes (startingPlace, endingPlace) {
-    //model.interchangeNotes(startingPlace, endingPlace)
     this.pubsub.publish('interchageNotesPresenter', [startingPlace,endingPlace])
-    //this.data = model.getActiveNotes()
     this.pubsub.publish('getDataPresenter',this)
   }
 
   undoAction () {
-    //model.undoAction()
     this.pubsub.publish('undoActionPresenter')
-    //this.data = model.getActiveNotes()
     this.pubsub.publish('getDataPresenter',this)
   }
 
@@ -557,7 +544,7 @@ function getDataModelLogger(topic, p){
 pubsub.subscribe('getDataPresenter',getDataModelLogger)  
 //*******************************
 const model = Model()
-const presenter = new Presenter(model,pubsub)
+const presenter = new Presenter(pubsub)
 const view = View(pubsub)
 
 
@@ -673,4 +660,3 @@ function viewLogger(topic, dbid){
 pubsub.subscribe('viewClicked', viewLogger)
 //* *****************************************************************************
 presenter.start()
-//pubsub.publish('editClicked'
