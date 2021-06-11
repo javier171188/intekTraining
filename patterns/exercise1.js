@@ -262,10 +262,9 @@ function View (presenter, pubsub) {
   const searchBox = document.querySelector('#searchingbox')
   let draggedNote
 
-  function notifyChangeBox (activeNotes) {
+  function notifyChangeBox () {
     const filter = searchBox.value
     pubsub.publish('newText', filter)
-    mainConf(activeNotes)
   };
 
   function start (activeNotes) {
@@ -283,7 +282,6 @@ function View (presenter, pubsub) {
     undoButton.addEventListener('click', undoAction)
     document.addEventListener('keydown', checkKeys)
     notifyChangeBox(activeNotes)
-    //mainConf()
   }
 
   function clickOnNote (ev) {
@@ -293,15 +291,12 @@ function View (presenter, pubsub) {
     switch (clickedClass) {
       case 'vbutton':
         pubsub.publish('viewClicked', dbid)
-        //viewConf(clicked)
         break
       case 'ebutton':
         pubsub.publish('editClicked', dbid)
-        //editConf(dbid)
         break
       case 'dbutton':
         pubsub.publish('deleteNote', dbid)
-        mainConf()//active notes <-----------------------------------
         break
     }
   }
@@ -320,12 +315,8 @@ function View (presenter, pubsub) {
     undoButton.style.display = 'none'
     pastNotes.style.display = 'none'
     
-    //const activeNotes = presenter.data
-    //const note = activeNotes[dbid].note
     textSpace.value = note
     editButton.addEventListener('click', onEditButton, { once: true })
-    //const creationDate = presenter.dates(dbid).creation
-    //const lastMDate = presenter.dates(dbid).modification
     const creationDate = dates.creation
     const lastMDate = dates.modification
     creationDP.textContent = `Created: ${creationDate}.`
@@ -375,8 +366,6 @@ function View (presenter, pubsub) {
     mainConf(activeNotes)
   }
 
-
-
   function viewConf (dbid, note, dates) {
     searchBox.style.display = 'none'
     activityTitle.textContent = 'Current note.'
@@ -387,8 +376,6 @@ function View (presenter, pubsub) {
     editButton.textContent = 'Go back!'
     cancelButton.style.display = 'none'
     pastNotes.style.display = 'none'
-    //const activeNotes = presenter.data
-    //const note = activeNotes[dbid].note
     textSpace.value = note
     const creationDate = dates.creation
     const lastMDate = dates.modification
@@ -442,7 +429,6 @@ function View (presenter, pubsub) {
   function saveNote () {
     const note = textSpace.value
     pubsub.publish('saveNote', note)
-    mainConf()//Active notes<---------------------??????????????????
   }
 
   function allowTabs (event) {
@@ -470,7 +456,6 @@ function View (presenter, pubsub) {
     const startingPlace = draggedNote.getAttribute('dbid')
     const endingPlace = event.target.getAttribute('dbid')
     pubsub.publish('interchangeNotes', [startingPlace, endingPlace])
-    mainConf()
   }
 
   function checkKeys (event) {
@@ -482,7 +467,7 @@ function View (presenter, pubsub) {
   function undoAction () {
     if (undoButton.style.display !== 'none') {
       pubsub.publish('undoAction')
-      mainConf()
+      
     }
   }
 
@@ -560,16 +545,22 @@ const view = View(presenter, pubsub)
 // Subscribing*******************************************************************
 function interchangeNotesLogger (topic, indexes) {
   presenter.interchangeNotes(indexes[0], indexes[1])
+  let activeNotes = presenter.data
+  view.main(activeNotes)
 };
 pubsub.subscribe('interchangeNotes', interchangeNotesLogger)
 
 function textFilterLogger (topic, filter) {
   presenter.filterNotes(filter)
+  let activeNotes = presenter.data
+  view.main(activeNotes)
 }
 pubsub.subscribe('newText', textFilterLogger)
 
 function deleteNoteLogger (topic, dbid) {
   presenter.deleteNote(dbid)
+  let activeNotes = presenter.data
+  view.main(activeNotes)
 }
 pubsub.subscribe('deleteNote', deleteNoteLogger)
 
@@ -580,11 +571,16 @@ pubsub.subscribe('editNote', editNoteLogger)
 
 function saveNoteLogger (topic, note) {
   presenter.saveNote(note)
+  let activeNotes = presenter.data
+  view.main(activeNotes)
 }
 pubsub.subscribe('saveNote', saveNoteLogger)
 
 function undoActionLogger (topic) {
   presenter.undoAction()
+  let activeNotes = presenter.data
+  view.main(activeNotes)
+
 }
 pubsub.subscribe('undoAction', undoActionLogger)
 
