@@ -292,7 +292,8 @@ function View (presenter, pubsub) {
     let dbid = clicked.getAttribute('dbid')
     switch (clickedClass) {
       case 'vbutton':
-        viewConf(clicked)
+        pubsub.publish('viewClicked', dbid)
+        //viewConf(clicked)
         break
       case 'ebutton':
         pubsub.publish('editClicked', dbid)
@@ -376,7 +377,7 @@ function View (presenter, pubsub) {
 
 
 
-  function viewConf (clicked) {
+  function viewConf (dbid, note, dates) {
     searchBox.style.display = 'none'
     activityTitle.textContent = 'Current note.'
     datesBox.style.display = 'inline'
@@ -386,12 +387,11 @@ function View (presenter, pubsub) {
     editButton.textContent = 'Go back!'
     cancelButton.style.display = 'none'
     pastNotes.style.display = 'none'
-    let dbid = clicked.getAttribute('dbid')
-    const activeNotes = presenter.data
-    const note = activeNotes[dbid].note
+    //const activeNotes = presenter.data
+    //const note = activeNotes[dbid].note
     textSpace.value = note
-    const creationDate = presenter.dates(dbid).creation
-    const lastMDate = presenter.dates(dbid).modification
+    const creationDate = dates.creation
+    const lastMDate = dates.modification
     editButton.addEventListener('click', editNote(dbid).saveEdition, { once: true })
     creationDP.textContent = `Created: ${creationDate}.`
     lastMDP.textContent = `Last modification: ${lastMDate}`
@@ -610,6 +610,14 @@ function saveEditClickedLogger(topic, info){
     view.saveEdition(newNote, dbid, data, checker)
 }
 pubsub.subscribe('saveEditClicked',saveEditClickedLogger)
+
+function viewLogger(topic, dbid){
+    let dates = presenter.dates(dbid)
+    let activeNotes = presenter.data
+    let note = activeNotes[dbid].note
+    view.view(dbid, note, dates)
+}
+pubsub.subscribe('viewClicked', viewLogger)
 //* *****************************************************************************
 presenter.start()
 //pubsub.publish('editClicked'
