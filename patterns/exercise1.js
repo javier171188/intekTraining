@@ -198,19 +198,21 @@ function Model () {
 // Presenter
 class Presenter {
   constructor (model,pubsub) {
-    this.data = model.getActiveNotes('0', true)
-    this.model = model
+    pubsub.publish('getDataModel',this)  
+    this.model = model// errase at the end.
     this.pubsub = pubsub
   }
 
   saveNote (note) {
-    this.model.saveNote(note)
-    this.data = this.model.getActiveNotes()
+    this.pubsub.publish('saveNoteModel', note)
+    this.pubsub.publish('getDataModel',this)  
   }
 
   editNote (note, dbid) {
-    this.model.updateNote(note, dbid)
-    this.data = this.model.getActiveNotes()
+    //this.model.updateNote(note, dbid)
+    this.pubsub.publish()
+    //this.data = this.model.getActiveNotes()
+    this.pubsub.publish('getDataModel',this)  
   }
 
   deleteNote (dbid) {
@@ -248,7 +250,7 @@ class Presenter {
 }
 
 // View
-function View (presenter, pubsub) {
+function View (pubsub) {
   const activityTitle = document.querySelector('.activity')
   const datesBox = document.querySelector('.hiddates')
   const textSpace = document.getElementsByName('textarea')[0]
@@ -537,12 +539,23 @@ const pubsub = {};
 }(pubsub))
 //* ****************************************************************************************
 
+//Get Data from model***********
+function getDataModelLogger(topic, p){
+    p.data = model.getActiveNotes('0', true)
+}
+pubsub.subscribe('getDataModel',getDataModelLogger)  
+//*******************************
 const model = Model()
-const presenter = new Presenter(model)
-const view = View(presenter, pubsub)
+const presenter = new Presenter(model,pubsub)
+const view = View(pubsub)
 
 
 // Subscribing*******************************************************************
+function saveNoteModelLogger(topic, note){
+    model.saveNote(note)
+}
+pubsub.subscribe('saveNoteModel', saveNoteModelLogger)
+
 function interchangeNotesLogger (topic, indexes) {
   presenter.interchangeNotes(indexes[0], indexes[1])
   let activeNotes = presenter.data
