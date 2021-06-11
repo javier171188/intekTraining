@@ -198,50 +198,61 @@ function Model () {
 // Presenter
 class Presenter {
   constructor (model,pubsub) {
-    pubsub.publish('getDataModel',this)  
+    pubsub.publish('getDataPresenter',this)  
     this.model = model// errase at the end.
     this.pubsub = pubsub
+    this.creationDate
+    this.lastMDate
   }
 
   saveNote (note) {
-    this.pubsub.publish('saveNoteModel', note)
-    this.pubsub.publish('getDataModel',this)  
+    this.pubsub.publish('saveNotePresenter', note)
+    this.pubsub.publish('getDataPresenter',this)  
   }
 
   editNote (note, dbid) {
     //this.model.updateNote(note, dbid)
-    this.pubsub.publish()
+    this.pubsub.publish('editNotePresenter', [note,dbid])
     //this.data = this.model.getActiveNotes()
-    this.pubsub.publish('getDataModel',this)  
+    this.pubsub.publish('getDataPresenter',this)  
   }
 
   deleteNote (dbid) {
-    this.model.deleteNote(dbid)
-    this.data = this.model.getActiveNotes()
+    //this.model.deleteNote(dbid)
+    this.pubsub.publish('deleteNotePresenter', dbid)
+    //this.data = this.model.getActiveNotes()
+    this.pubsub.publish('getDataPresenter',this)  
   }
 
   dates (dbid) {
-    const creationDate = this.model.getDate(dbid, 'c')
-    const lastMDate = this.model.getDate(dbid, 'm')
+    //const creationDate = this.model.getDate(dbid, 'c')
+    //const lastMDate = this.model.getDate(dbid, 'm')
+    this.pubsub.publish('getDatesPresenter',[this,dbid])
     return {
-      creation: creationDate,
-      modification: lastMDate
+      creation: this.creationDate,
+      modification: this.lastMDate
     }
   }
 
   filterNotes (filter) {
-    this.model.filterNotes(filter)
-    this.data = this.model.getActiveNotes()
+    //this.model.filterNotes(filter)
+    this.pubsub.publish('filterNotesPresenter',filter)
+    //this.data = this.model.getActiveNotes()
+    this.pubsub.publish('getDataPresenter',this)
   }
 
   interchangeNotes (startingPlace, endingPlace) {
-    model.interchangeNotes(startingPlace, endingPlace)
-    this.data = model.getActiveNotes()
+    //model.interchangeNotes(startingPlace, endingPlace)
+    this.pubsub.publish('interchageNotesPresenter', [startingPlace,endingPlace])
+    //this.data = model.getActiveNotes()
+    this.pubsub.publish('getDataPresenter',this)
   }
 
   undoAction () {
-    model.undoAction()
-    this.data = model.getActiveNotes()
+    //model.undoAction()
+    this.pubsub.publish('undoActionPresenter')
+    //this.data = model.getActiveNotes()
+    this.pubsub.publish('getDataPresenter',this)
   }
 
   start(){
@@ -543,7 +554,7 @@ const pubsub = {};
 function getDataModelLogger(topic, p){
     p.data = model.getActiveNotes('0', true)
 }
-pubsub.subscribe('getDataModel',getDataModelLogger)  
+pubsub.subscribe('getDataPresenter',getDataModelLogger)  
 //*******************************
 const model = Model()
 const presenter = new Presenter(model,pubsub)
@@ -551,10 +562,43 @@ const view = View(pubsub)
 
 
 // Subscribing*******************************************************************
+function undoActionModelLoger(topic){
+  model.undoAction()
+}
+pubsub.subscribe('undoActionPresenter',undoActionModelLoger)
+
+function interchageNotesModelLogger(topic, info){
+  model.interchangeNotes(info[0], info[1])
+}
+pubsub.subscribe('interchageNotesPresenter', interchageNotesModelLogger)
+
+function filterNotesModelLogger(topic, filter){
+  model.filterNotes(filter)
+}
+pubsub.subscribe('filterNotesPresenter',filterNotesModelLogger)
+
+function getDatesModelLogger(topic, info){
+  let p = info[0]
+  let dbid = info[1]
+  p.creationDate = model.getDate(dbid, 'c')
+  p.lastMDate = model.getDate(dbid, 'm')
+}
+pubsub.subscribe('getDatesPresenter',getDatesModelLogger)
+
+function deleteNoteModelLogger(topic,dbid){
+  model.deleteNote(dbid)
+}
+pubsub.subscribe('deleteNotePresenter', deleteNoteModelLogger)
+
+function editNoteModelLogger(topic, info){
+  model.updateNote(info[0],info[1])
+}
+pubsub.subscribe('editNotePresenter', editNoteModelLogger)
+
 function saveNoteModelLogger(topic, note){
     model.saveNote(note)
 }
-pubsub.subscribe('saveNoteModel', saveNoteModelLogger)
+pubsub.subscribe('saveNotePresenter', saveNoteModelLogger)
 
 function interchangeNotesLogger (topic, indexes) {
   presenter.interchangeNotes(indexes[0], indexes[1])
