@@ -1,7 +1,7 @@
 'use strict'
 
 
-// localStorage.clear();
+// localStorage.clear();    
 // pub/sub pattern**********************************************************************
 // Copied from https://addyosmani.com/resources/essentialjsdesignpatterns/book
 const pubsub = {};
@@ -71,9 +71,9 @@ const model = (function () {
             localStorage.setItem(key, JSON.stringify(value));
         }
 
-        function getData(indx = '0', active = true) {
-            const data = readStoreItem(indx === '0' ? '0' : '1') || []
-            if (indx === '0' && active) {
+        function getData(indx = 'notes', active = true) {
+            const data = readStoreItem(indx === 'notes' ? 'notes' : 'backCommands') || []
+            if (indx === 'notes' && active) {
                 return data
                     .reduce((activeNotes, note, idx) => {
                         if (note.active && note.passFilter) {
@@ -86,22 +86,22 @@ const model = (function () {
         }
 
         function savePreviousConfig(inverse) {
-            const commands = readStoreItem('1', '[]')
+            const commands = readStoreItem('backCommands', '[]')
             commands.push(inverse)
-            writeStoreItem('1', commands)
+            writeStoreItem('backCommands', commands)
         }
         function saveNoteDataBase(obj) {
-            let data = readStoreItem('0', '[]')
+            let data = readStoreItem('notes', '[]')
             data.push(obj)
-            writeStoreItem('0', data);
+            writeStoreItem('notes', data);
         }
 
-        function updateData(dbid, filter, indx = '0') {
-            if (indx === '1') {
-                writeStoreItem('1', filter.commands)
+        function updateData(dbid, filter, indx = 'notes') {
+            if (indx === 'backCommands') {
+                writeStoreItem('backCommands', filter.commands)
                 return
             }
-            let data = readStoreItem('0')
+            let data = readStoreItem('notes')
             let difNote = [false, '']
             if ('note' in filter) {
                 if (filter.note !== data[dbid].note) {
@@ -116,12 +116,12 @@ const model = (function () {
                     data[dbid][key] = filter[key]
                 }
             }
-            writeStoreItem('0', data)
+            writeStoreItem('notes', data)
             return difNote
         }
 
         function updateNotes(data) {
-            writeStoreItem('0', data);
+            writeStoreItem('notes', data);
         }
 
         class ModelNote {
@@ -145,7 +145,7 @@ const model = (function () {
             },
             saveNote({ data }) {
                 data.pop()
-                updateData('-1', { data }, '0')
+                updateData('-1', { data }, 'notes')
             },
             deleteNote({ dbid }) {
                 updateData(dbid, { active: true })
@@ -156,8 +156,8 @@ const model = (function () {
         }
 
         function undoAction() {
-            const commands = getData('1')
-            const data = getData('0', false)
+            const commands = getData('backCommands')
+            const data = getData('notes', false)
             if (!data) {
                 return
             }
@@ -167,7 +167,7 @@ const model = (function () {
                 const undoAction = UNDO_ACTIONS[reverseCommand.command];
                 if (undoAction) {
                     undoAction({ command: reverseCommand, dbid, data });
-                    updateData('-1', { commands: commands }, '1')
+                    updateData('-1', { commands: commands }, 'backCommands')
                 }
             }
         }
@@ -198,14 +198,14 @@ const model = (function () {
         }
 
         function getDate(dbid, opt) {
-            const data = getData('0', true)
+            const data = getData('notes', true)
             return opt === 'c' ?
                 data[dbid].createDate :
                 data[dbid].lastMDate // opt === m
         }
 
         function filterNotes(filter) {
-            const notes = getData('0', false)
+            const notes = getData('notes', false)
             for (const n of notes) {
                 n.passFilter = n.note.includes(filter)
             }
@@ -213,7 +213,7 @@ const model = (function () {
         }
 
         function interchangeNotes(startingPlace, endingPlace, reversing = false) {
-            const data = getData('0', false)
+            const data = getData('notes', false)
             const keepingNote = data[startingPlace]
             data[startingPlace] = data[endingPlace]
             data[endingPlace] = keepingNote
@@ -574,7 +574,7 @@ const view = (function (pubsub) {
 window.addEventListener('load', function () {
     //Get Data from model***********
     function getDataModelLogger(topic, p) {
-        p.data = model.getActiveNotes('0', true)
+        p.data = model.getActiveNotes('notes', true)
     }
     pubsub.subscribe('getDataPresenter', getDataModelLogger)
 
