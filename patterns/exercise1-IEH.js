@@ -70,7 +70,7 @@ const model = (function () {
     }
 
     function getData(indx = '0', active = true) {
-        const data = readStoreItem(indx === '0' ? '0' : '1')
+        const data = readStoreItem(indx === '0' ? '0' : '1') || []
         if (indx === '0' && active) {
             return data
                 .reduce((activeNotes, note, idx) => {
@@ -237,54 +237,63 @@ const model = (function () {
 })();
 
 // Presenter
-const presenter = new (class {
-    constructor(pubsub) {
+const presenter = (function(pubsub) {
+    let creationDate
+    let lastMDate
+    pubsub.publish('getDataPresenter', this)
+
+    function saveNote(note) {
+        pubsub.publish('saveNotePresenter', note)
         pubsub.publish('getDataPresenter', this)
-        this.pubsub = pubsub
-        this.creationDate
-        this.lastMDate
     }
 
-    saveNote(note) {
-        this.pubsub.publish('saveNotePresenter', note)
-        this.pubsub.publish('getDataPresenter', this)
+    function editNote(note, dbid) {
+        pubsub.publish('editNotePresenter', [note, dbid])
+        pubsub.publish('getDataPresenter', this)
     }
 
-    editNote(note, dbid) {
-        this.pubsub.publish('editNotePresenter', [note, dbid])
-        this.pubsub.publish('getDataPresenter', this)
+    function deleteNote(dbid) {
+        pubsub.publish('deleteNotePresenter', dbid)
+        pubsub.publish('getDataPresenter', this)
     }
 
-    deleteNote(dbid) {
-        this.pubsub.publish('deleteNotePresenter', dbid)
-        this.pubsub.publish('getDataPresenter', this)
-    }
-
-    dates(dbid) {
-        this.pubsub.publish('getDatesPresenter', [this, dbid])
+    function dates(dbid) {
+        pubsub.publish('getDatesPresenter', [this, dbid])
         return {
             creation: this.creationDate,
             modification: this.lastMDate
         }
     }
 
-    filterNotes(filter) {
-        this.pubsub.publish('filterNotesPresenter', filter)
-        this.pubsub.publish('getDataPresenter', this)
+    function filterNotes(filter) {
+        pubsub.publish('filterNotesPresenter', filter)
+        pubsub.publish('getDataPresenter', this)
     }
 
-    interchangeNotes(startingPlace, endingPlace) {
-        this.pubsub.publish('interchageNotesPresenter', [startingPlace, endingPlace])
-        this.pubsub.publish('getDataPresenter', this)
+    function interchangeNotes(startingPlace, endingPlace) {
+        pubsub.publish('interchageNotesPresenter', [startingPlace, endingPlace])
+        pubsub.publish('getDataPresenter', this)
     }
 
-    undoAction() {
-        this.pubsub.publish('undoActionPresenter')
-        this.pubsub.publish('getDataPresenter', this)
+    function undoAction() {
+        pubsub.publish('undoActionPresenter')
+        pubsub.publish('getDataPresenter', this)
     }
 
-    start() {
+    function start() {
+        pubsub.publish('getDataPresenter', this)
         pubsub.publish('startApp', this.data)
+    }
+
+    return{
+        start:start,
+        filterNotes:filterNotes,
+        dates:dates,
+        undoAction:undoAction,
+        interchangeNotes:interchangeNotes,
+        deleteNote:deleteNote,
+        editNote:editNote,
+        saveNote:saveNote
     }
 })(pubsub);
 
@@ -317,6 +326,11 @@ const view = (function (pubsub) {
         })
         pastNotes.addEventListener('drop', dropNote)
         textSpace.addEventListener('keydown', allowTabs)
+        window.addEventListener('keydown', function (event) {
+            if (event.ctrlKey && (event.key === 'z' || event.key === 'Z')){
+                event.preventDefault()
+            }
+        })
 
         searchBox.addEventListener('keyup', notifyChangeBox)
         saveButton.addEventListener('click', saveNote)
@@ -617,7 +631,6 @@ window.addEventListener('load', function () {
     pubsub.subscribe('startApp', startAppLogger)
 
     function editClickedLogger(topic, dbid) {
-        //let dates = presenter.dates(dbid)
         let dates = presenter.dates(dbid)
         let activeNotes = presenter.data
         let note = activeNotes[dbid].note
