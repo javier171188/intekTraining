@@ -60,185 +60,196 @@ const pubsub = {};
 
 // Model
 const model = (function () {
-    function readStoreItem(key, fallback = null) {
-        const str = localStorage.getItem(key) || fallback;
-        return JSON.parse(str);
-    }
-    // This is more versetail than the pre-existing updateNotes function
-    function writeStoreItem(key, value) {
-        localStorage.setItem(key, JSON.stringify(value));
-    }
-
-    function getData(indx = '0', active = true) {
-        const data = readStoreItem(indx === '0' ? '0' : '1') || []
-        if (indx === '0' && active) {
-            return data
-                .reduce((activeNotes, note, idx) => {
-                    if (note.active && note.passFilter) {
-                        activeNotes[idx] = note
-                    }
-                    return activeNotes
-                }, {});
+    var modelInstance;
+    function init(){
+        function readStoreItem(key, fallback = null) {
+            const str = localStorage.getItem(key) || fallback;
+            return JSON.parse(str);
         }
-        return data;
-    }
-
-    function savePreviousConfig(inverse) {
-        const commands = readStoreItem('1', '[]')
-        commands.push(inverse)
-        writeStoreItem('1', commands)
-    }
-    function saveNoteDataBase(obj) {
-        let data = readStoreItem('0', '[]')
-        data.push(obj)
-        writeStoreItem('0', data);
-    }
-
-    function updateData(dbid, filter, indx = '0') {
-        if (indx === '1') {
-            writeStoreItem('1', filter.commands)
-            return
+        // This is more versetail than the pre-existing updateNotes function
+        function writeStoreItem(key, value) {
+            localStorage.setItem(key, JSON.stringify(value));
         }
-        let data = readStoreItem('0')
-        let difNote = [false, '']
-        if ('note' in filter) {
-            if (filter.note !== data[dbid].note) {
-                difNote = [true, data[dbid].note]
-                data[dbid].note = filter.note
-                data[dbid].lastMDate = filter.lastMDate.toString()
+
+        function getData(indx = '0', active = true) {
+            const data = readStoreItem(indx === '0' ? '0' : '1') || []
+            if (indx === '0' && active) {
+                return data
+                    .reduce((activeNotes, note, idx) => {
+                        if (note.active && note.passFilter) {
+                            activeNotes[idx] = note
+                        }
+                        return activeNotes
+                    }, {});
             }
-        } else if ('data' in filter) {
-            data = filter.data
-        } else {
-            for (const key in filter) {
-                data[dbid][key] = filter[key]
+            return data;
+        }
+
+        function savePreviousConfig(inverse) {
+            const commands = readStoreItem('1', '[]')
+            commands.push(inverse)
+            writeStoreItem('1', commands)
+        }
+        function saveNoteDataBase(obj) {
+            let data = readStoreItem('0', '[]')
+            data.push(obj)
+            writeStoreItem('0', data);
+        }
+
+        function updateData(dbid, filter, indx = '0') {
+            if (indx === '1') {
+                writeStoreItem('1', filter.commands)
+                return
             }
+            let data = readStoreItem('0')
+            let difNote = [false, '']
+            if ('note' in filter) {
+                if (filter.note !== data[dbid].note) {
+                    difNote = [true, data[dbid].note]
+                    data[dbid].note = filter.note
+                    data[dbid].lastMDate = filter.lastMDate.toString()
+                }
+            } else if ('data' in filter) {
+                data = filter.data
+            } else {
+                for (const key in filter) {
+                    data[dbid][key] = filter[key]
+                }
+            }
+            writeStoreItem('0', data)
+            return difNote
         }
-        writeStoreItem('0', data)
-        return difNote
-    }
 
-    function updateNotes(data) {
-        writeStoreItem('0', data);
-    }
+        function updateNotes(data) {
+            writeStoreItem('0', data);
+        }
 
-    class ModelNote {
-        constructor(note) {
-            const d = new Date()
-            this.createDate = d.toString()
-            this.lastMDate = d.toString()
-            this.note = note
-            this.active = true
-            this.passFilter = true
-        }
-    }
-    function ModelFactory() { }
-    ModelFactory.prototype.createNote = function (note) {
-        return new ModelNote(note)
-    }
-    const noteFactory = new ModelFactory()
-    const UNDO_ACTIONS = {
-        updateNote({ command, dbid }) {
-            updateNote(command.text, dbid, true)
-        },
-        saveNote({ data }) {
-            data.pop()
-            updateData('-1', { data }, '0')
-        },
-        deleteNote({ dbid }) {
-            updateData(dbid, { active: true })
-        },
-        interchange({ command }) {
-            interchangeNotes(command.start, command.end, true)
-        }
-    }
-
-    function undoAction() {
-        const commands = getData('1')
-        const data = getData('0', false)
-        if (!data) {
-            return
-        }
-        if (commands.length > 0) {
-            const reverseCommand = commands.pop()
-            let dbid = reverseCommand.dbid || ''
-            const undoAction = UNDO_ACTIONS[reverseCommand.command];
-            if (undoAction) {
-                undoAction({ command: reverseCommand, dbid, data });
-                updateData('-1', { commands: commands }, '1')
+        class ModelNote {
+            constructor(note) {
+                const d = new Date()
+                this.createDate = d.toString()
+                this.lastMDate = d.toString()
+                this.note = note
+                this.active = true
+                this.passFilter = true
             }
         }
-    }
-
-    function deleteNote(dbid) {
-        updateData(dbid, { active: false })
-        savePreviousConfig({ command: 'deleteNote', dbid })
-    }
-
-    function saveNote(note) {
-        const obj = noteFactory.createNote(note)
-        if (obj.note !== '') {
-            saveNoteDataBase(obj)
-            savePreviousConfig({ command: 'saveNote' })
+        function ModelFactory() { }
+        ModelFactory.prototype.createNote = function (note) {
+            return new ModelNote(note)
         }
-    }
+        const noteFactory = new ModelFactory()
+        const UNDO_ACTIONS = {
+            updateNote({ command, dbid }) {
+                updateNote(command.text, dbid, true)
+            },
+            saveNote({ data }) {
+                data.pop()
+                updateData('-1', { data }, '0')
+            },
+            deleteNote({ dbid }) {
+                updateData(dbid, { active: true })
+            },
+            interchange({ command }) {
+                interchangeNotes(command.start, command.end, true)
+            }
+        }
 
-    function updateNote(note, dbid, reversing = false) {
-        if (note) {
-            const filter = { note, lastMDate: new Date() }
-            const [dif, text] = updateData(dbid, filter)
-            if (!reversing) {
-                if (dif) {
-                    savePreviousConfig({ dbid, command: 'updateNote', text })
+        function undoAction() {
+            const commands = getData('1')
+            const data = getData('0', false)
+            if (!data) {
+                return
+            }
+            if (commands.length > 0) {
+                const reverseCommand = commands.pop()
+                let dbid = reverseCommand.dbid || ''
+                const undoAction = UNDO_ACTIONS[reverseCommand.command];
+                if (undoAction) {
+                    undoAction({ command: reverseCommand, dbid, data });
+                    updateData('-1', { commands: commands }, '1')
                 }
             }
         }
-    }
 
-    function getDate(dbid, opt) {
-        const data = getData('0', true)
-        return opt === 'c' ?
-            data[dbid].createDate :
-            data[dbid].lastMDate // opt === m
-    }
-
-    function filterNotes(filter) {
-        const notes = getData('0', false)
-        for (const n of notes) {
-            n.passFilter = n.note.includes(filter)
+        function deleteNote(dbid) {
+            updateData(dbid, { active: false })
+            savePreviousConfig({ command: 'deleteNote', dbid })
         }
-        updateNotes(notes)
-    }
 
-    function interchangeNotes(startingPlace, endingPlace, reversing = false) {
-        const data = getData('0', false)
-        const keepingNote = data[startingPlace]
-        data[startingPlace] = data[endingPlace]
-        data[endingPlace] = keepingNote
-        if (!reversing) {
-            savePreviousConfig({
-                command: 'interchange',
-                start: endingPlace,
-                end: startingPlace
-            })
+        function saveNote(note) {
+            const obj = noteFactory.createNote(note)
+            if (obj.note !== '') {
+                saveNoteDataBase(obj)
+                savePreviousConfig({ command: 'saveNote' })
+            }
         }
-        updateNotes(data)
+
+        function updateNote(note, dbid, reversing = false) {
+            if (note) {
+                const filter = { note, lastMDate: new Date() }
+                const [dif, text] = updateData(dbid, filter)
+                if (!reversing) {
+                    if (dif) {
+                        savePreviousConfig({ dbid, command: 'updateNote', text })
+                    }
+                }
+            }
+        }
+
+        function getDate(dbid, opt) {
+            const data = getData('0', true)
+            return opt === 'c' ?
+                data[dbid].createDate :
+                data[dbid].lastMDate // opt === m
+        }
+
+        function filterNotes(filter) {
+            const notes = getData('0', false)
+            for (const n of notes) {
+                n.passFilter = n.note.includes(filter)
+            }
+            updateNotes(notes)
+        }
+
+        function interchangeNotes(startingPlace, endingPlace, reversing = false) {
+            const data = getData('0', false)
+            const keepingNote = data[startingPlace]
+            data[startingPlace] = data[endingPlace]
+            data[endingPlace] = keepingNote
+            if (!reversing) {
+                savePreviousConfig({
+                    command: 'interchange',
+                    start: endingPlace,
+                    end: startingPlace
+                })
+            }
+            updateNotes(data)
+        }
+        return {
+            saveNote,
+            deleteNote,
+            updateNote,
+            getDate,
+            filterNotes,
+            interchangeNotes,
+            undoAction,
+            getActiveNotes: getData
+        }
     }
     return {
-        saveNote,
-        deleteNote,
-        updateNote,
-        getDate,
-        filterNotes,
-        interchangeNotes,
-        undoAction,
-        getActiveNotes: getData
-    }
-})();
+        getInstance: function () {
+          if ( !modelInstance ) {
+            modelInstance = init();
+          }
+          return modelInstance;
+        }
+      };
+})().getInstance();
 
 // Presenter
 const presenter = (function(pubsub) {
-    let instance;
+    var presenterInstance;
 
     function init(){
         let creationDate
@@ -301,10 +312,10 @@ const presenter = (function(pubsub) {
     }
     return {
         getInstance: function () {
-          if ( !instance ) {
-            instance = init();
+          if ( !presenterInstance ) {
+            presenterInstance = init();
           }
-          return instance;
+          return presenterInstance;
         }
       };
 })(pubsub).getInstance();
