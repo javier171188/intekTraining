@@ -295,6 +295,116 @@ const presenter = (function(pubsub) {
         }
 
         function start() {
+            // Subscribing*******************************************************************
+            function undoActionModelLoger(topic) {
+                model.undoAction()
+            }
+            pubsub.subscribe('undoActionPresenter', undoActionModelLoger)
+
+            function interchageNotesModelLogger(topic, info) {
+                model.interchangeNotes(info[0], info[1])
+            }
+            pubsub.subscribe('interchageNotesPresenter', interchageNotesModelLogger)
+
+            function filterNotesModelLogger(topic, filter) {
+                model.filterNotes(filter)
+            }
+            pubsub.subscribe('filterNotesPresenter', filterNotesModelLogger)
+
+            function getDatesModelLogger(topic, info) {
+                let p = info[0]
+                let dbid = info[1]
+                p.creationDate = model.getDate(dbid, 'c')
+                p.lastMDate = model.getDate(dbid, 'm')
+            }
+            pubsub.subscribe('getDatesPresenter', getDatesModelLogger)
+
+            function deleteNoteModelLogger(topic, dbid) {
+                model.deleteNote(dbid)
+            }
+            pubsub.subscribe('deleteNotePresenter', deleteNoteModelLogger)
+
+            function editNoteModelLogger(topic, info) {
+                model.updateNote(info[0], info[1])
+            }
+            pubsub.subscribe('editNotePresenter', editNoteModelLogger)
+
+            function saveNoteModelLogger(topic, note) {
+                model.saveNote(note)
+            }
+            pubsub.subscribe('saveNotePresenter', saveNoteModelLogger)
+
+            function interchangeNotesLogger(topic, indexes) {
+                presenter.interchangeNotes(indexes[0], indexes[1])
+                let activeNotes = presenter.data
+                view.main(activeNotes)
+            };
+            pubsub.subscribe('interchangeNotes', interchangeNotesLogger)
+
+            function textFilterLogger(topic, filter) {
+                presenter.filterNotes(filter)
+                let activeNotes = presenter.data
+                view.main(activeNotes)
+            }
+            pubsub.subscribe('newText', textFilterLogger)
+
+            function deleteNoteLogger(topic, dbid) {
+                presenter.deleteNote(dbid)
+                let activeNotes = presenter.data
+                view.main(activeNotes)
+            }
+            pubsub.subscribe('deleteNote', deleteNoteLogger)
+
+            function editNoteLogger(topic, info) {
+                presenter.editNote(info[0], info[1])
+            }
+            pubsub.subscribe('editNote', editNoteLogger)
+
+            function saveNoteLogger(topic, note) {
+                presenter.saveNote(note)
+                let activeNotes = presenter.data
+                view.main(activeNotes)
+            }
+            pubsub.subscribe('saveNote', saveNoteLogger)
+
+            function undoActionLogger(topic) {
+                presenter.undoAction()
+                let activeNotes = presenter.data
+                view.main(activeNotes)
+
+            }
+            pubsub.subscribe('undoAction', undoActionLogger)
+
+            function startAppLogger(topic, activeNotes) {
+                view.start(activeNotes);
+            }
+            pubsub.subscribe('startApp', startAppLogger)
+
+            function editClickedLogger(topic, dbid) {
+                let dates = presenter.dates(dbid)
+                let activeNotes = presenter.data
+                let note = activeNotes[dbid].note
+                view.edit(note, dates, dbid)
+            }
+            pubsub.subscribe('editClicked', editClickedLogger)
+
+            function saveEditClickedLogger(topic, info) {
+                let dbid = info[0]
+                let checker = info[1]
+                let data = presenter.data
+                let newNote = data[dbid]['note']
+                view.saveEdition(newNote, dbid, data, checker)
+            }
+            pubsub.subscribe('saveEditClicked', saveEditClickedLogger)
+
+            function viewLogger(topic, dbid) {
+                let dates = presenter.dates(dbid)
+                let activeNotes = presenter.data
+                let note = activeNotes[dbid].note
+                view.view(dbid, note, dates)
+            }
+            pubsub.subscribe('viewClicked', viewLogger)
+            //* *****************************************************************************
             pubsub.publish('getDataPresenter', this)
             pubsub.publish('startApp', this.data)
         }
@@ -577,116 +687,7 @@ window.addEventListener('load', function () {
         p.data = model.getActiveNotes('notes', true)
     }
     pubsub.subscribe('getDataPresenter', getDataModelLogger)
-
-    // Subscribing*******************************************************************
-    function undoActionModelLoger(topic) {
-        model.undoAction()
-    }
-    pubsub.subscribe('undoActionPresenter', undoActionModelLoger)
-
-    function interchageNotesModelLogger(topic, info) {
-        model.interchangeNotes(info[0], info[1])
-    }
-    pubsub.subscribe('interchageNotesPresenter', interchageNotesModelLogger)
-
-    function filterNotesModelLogger(topic, filter) {
-        model.filterNotes(filter)
-    }
-    pubsub.subscribe('filterNotesPresenter', filterNotesModelLogger)
-
-    function getDatesModelLogger(topic, info) {
-        let p = info[0]
-        let dbid = info[1]
-        p.creationDate = model.getDate(dbid, 'c')
-        p.lastMDate = model.getDate(dbid, 'm')
-    }
-    pubsub.subscribe('getDatesPresenter', getDatesModelLogger)
-
-    function deleteNoteModelLogger(topic, dbid) {
-        model.deleteNote(dbid)
-    }
-    pubsub.subscribe('deleteNotePresenter', deleteNoteModelLogger)
-
-    function editNoteModelLogger(topic, info) {
-        model.updateNote(info[0], info[1])
-    }
-    pubsub.subscribe('editNotePresenter', editNoteModelLogger)
-
-    function saveNoteModelLogger(topic, note) {
-        model.saveNote(note)
-    }
-    pubsub.subscribe('saveNotePresenter', saveNoteModelLogger)
-
-    function interchangeNotesLogger(topic, indexes) {
-        presenter.interchangeNotes(indexes[0], indexes[1])
-        let activeNotes = presenter.data
-        view.main(activeNotes)
-    };
-    pubsub.subscribe('interchangeNotes', interchangeNotesLogger)
-
-    function textFilterLogger(topic, filter) {
-        presenter.filterNotes(filter)
-        let activeNotes = presenter.data
-        view.main(activeNotes)
-    }
-    pubsub.subscribe('newText', textFilterLogger)
-
-    function deleteNoteLogger(topic, dbid) {
-        presenter.deleteNote(dbid)
-        let activeNotes = presenter.data
-        view.main(activeNotes)
-    }
-    pubsub.subscribe('deleteNote', deleteNoteLogger)
-
-    function editNoteLogger(topic, info) {
-        presenter.editNote(info[0], info[1])
-    }
-    pubsub.subscribe('editNote', editNoteLogger)
-
-    function saveNoteLogger(topic, note) {
-        presenter.saveNote(note)
-        let activeNotes = presenter.data
-        view.main(activeNotes)
-    }
-    pubsub.subscribe('saveNote', saveNoteLogger)
-
-    function undoActionLogger(topic) {
-        presenter.undoAction()
-        let activeNotes = presenter.data
-        view.main(activeNotes)
-
-    }
-    pubsub.subscribe('undoAction', undoActionLogger)
-
-    function startAppLogger(topic, activeNotes) {
-        view.start(activeNotes);
-    }
-    pubsub.subscribe('startApp', startAppLogger)
-
-    function editClickedLogger(topic, dbid) {
-        let dates = presenter.dates(dbid)
-        let activeNotes = presenter.data
-        let note = activeNotes[dbid].note
-        view.edit(note, dates, dbid)
-    }
-    pubsub.subscribe('editClicked', editClickedLogger)
-
-    function saveEditClickedLogger(topic, info) {
-        let dbid = info[0]
-        let checker = info[1]
-        let data = presenter.data
-        let newNote = data[dbid]['note']
-        view.saveEdition(newNote, dbid, data, checker)
-    }
-    pubsub.subscribe('saveEditClicked', saveEditClickedLogger)
-
-    function viewLogger(topic, dbid) {
-        let dates = presenter.dates(dbid)
-        let activeNotes = presenter.data
-        let note = activeNotes[dbid].note
-        view.view(dbid, note, dates)
-    }
-    pubsub.subscribe('viewClicked', viewLogger)
-    //* *****************************************************************************
+    //******************************
+    
     presenter.start()
 })();
