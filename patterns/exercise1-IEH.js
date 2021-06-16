@@ -72,16 +72,17 @@ const model = (function () {
         }
 
         function getData(indx = 'notes', active = true) {
-            const data = readStoreItem(indx === 'notes' ? 'notes' : 'backCommands') || []
+            const data = readStoreItem(indx === 'notes' ? 'notes' : 'backCommands') || {}
             if (indx === 'notes' && active) {
-                return data
-                    .reduce((activeNotes, note, idx) => {
-                        if (note.active && note.passFilter) {
-                            activeNotes[idx] = note
+                return Object.keys(data)
+                    .reduce((activeNotes, dbid) => {
+                        if (data[dbid].active && data[dbid].passFilter) {
+                            activeNotes[dbid] = data[dbid]
                         }
                         return activeNotes
                     }, {});
             }
+            
             return data;
         }
 
@@ -91,8 +92,11 @@ const model = (function () {
             writeStoreItem('backCommands', commands)
         }
         function saveNoteDataBase(obj) {
-            let data = readStoreItem('notes', '[]')
-            data.push(obj)
+            let data = readStoreItem('notes', '{}')
+            //data.push(obj)
+            let dbid = obj.dbid
+            delete obj.dbid
+            data[dbid] = obj
             writeStoreItem('notes', data);
         }
 
@@ -129,6 +133,7 @@ const model = (function () {
                 const d = new Date()
                 this.createDate = d.toString()
                 this.lastMDate = d.toString()
+                this.dbid = d.getTime()
                 this.note = note
                 this.active = true
                 this.passFilter = true
@@ -206,7 +211,7 @@ const model = (function () {
 
         function filterNotes(filter) {
             const notes = getData('notes', false)
-            for (const n of notes) {
+            for (const n of Object.values(notes)) {
                 n.passFilter = n.note.includes(filter)
             }
             updateNotes(notes)
