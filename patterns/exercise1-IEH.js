@@ -87,13 +87,13 @@ const model = (function () {
         }
 
         function savePreviousConfig(inverse) {
-            const commands = readStoreItem('backCommands', '[]')
-            commands.push(inverse)
+            const commands = readStoreItem('backCommands', '{}')
+            let lastIndex =  getLastIndex(commands)
+            commands[String(lastIndex+1)] = inverse
             writeStoreItem('backCommands', commands)
         }
         function saveNoteDataBase(obj) {
             let data = readStoreItem('notes', '{}')
-            //data.push(obj)
             let dbid = obj.dbid
             delete obj.dbid
             data[dbid] = obj
@@ -149,7 +149,8 @@ const model = (function () {
                 updateNote(command.text, dbid, true)
             },
             saveNote({ data }) {
-                data.pop()
+                let lastIndex =  getLastIndex(data)
+                delete data[lastIndex]
                 updateData('-1', { data }, 'notes')
             },
             deleteNote({ dbid }) {
@@ -163,11 +164,14 @@ const model = (function () {
         function undoAction() {
             const commands = getData('backCommands')
             const data = getData('notes', false)
+            let lastIndex =  getLastIndex(commands)
+            
             if (!data) {
                 return
             }
-            if (commands.length > 0) {
-                const reverseCommand = commands.pop()
+            if (lastIndex in commands) {
+                const reverseCommand = commands[lastIndex]
+                delete commands[lastIndex]
                 let dbid = reverseCommand.dbid || ''
                 const undoAction = UNDO_ACTIONS[reverseCommand.command];
                 if (undoAction) {
@@ -230,6 +234,11 @@ const model = (function () {
                 })
             }
             updateNotes(data)
+        }
+        function getLastIndex(obj){
+            let indices = Object.keys(obj).map( num => parseInt(num, 10) )
+            let lastIndex =  indices.length>0 ?  Math.max(...indices) : 0
+            return lastIndex
         }
         return {
             saveNote,
@@ -695,4 +704,4 @@ window.addEventListener('load', function () {
     //******************************
     
     presenter.start()
-})();
+})
