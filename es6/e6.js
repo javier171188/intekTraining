@@ -1,34 +1,41 @@
 'use strict';
-let nextMonth = {January:'February', 
-                February:'March', 
-                March:'April', 
-                April:'May', 
-                May:'June', 
-                June:'July', 
-                July:'August', 
-                August:'September', 
-                September:'October',
-                October:'November',
-                November:'December', 
-                December: null};
 
-let testString = "January February March January February March";
-let testArray = testString.split(' ');
+let months = document.querySelector('.months').textContent;
+months = setNewString(months);
 
-let bundaryMonths = [];
-for (var i = 0; i<testArray.length-1; i++){
-    if(testArray[i+1] !== nextMonth[testArray[i]] && !bundaryMonths.includes(testArray[i])){
-        bundaryMonths.push(testArray[i]);
-        
+let result = document.querySelector('.new-months');
+result.textContent = months;
+
+function setNewString(originalString){
+    let nextMonth = {January:'February', 
+                    February:'March', 
+                    March:'April', 
+                    April:'May', 
+                    May:'June', 
+                    June:'July', 
+                    July:'August', 
+                    August:'September', 
+                    September:'October',
+                    October:'November',
+                    November:'December', 
+                    December: 'January'};
+
+    let monthsArray = originalString.split(' ');
+    let bundaryMonths = [];
+    for (var i = 0; i<monthsArray.length-1; i++){
+        if(monthsArray[i+1] !== nextMonth[monthsArray[i]] && !bundaryMonths.includes(monthsArray[i])){
+            bundaryMonths.push(monthsArray[i]);
+        }
     }
-}
-if (!bundaryMonths.includes(testArray[i])){
-    bundaryMonths.push(testArray[i]);
-}
+    if (!bundaryMonths.includes(monthsArray[i])){
+        bundaryMonths.push(monthsArray[i]);
+    }
 
-testString = bundaryMonths.reduce(reducer, testString)
+    originalString = bundaryMonths.reduce(getNextMonth, originalString)
 
-console.log(testString);
-function reducer(acumulator, currentValue){
-    return acumulator.replaceAll(currentValue, `${currentValue} ${nextMonth[currentValue]}`);
+    function getNextMonth(originalStr, currentValue){
+        return originalStr.replaceAll(currentValue, `${currentValue} ${nextMonth[currentValue]}`);
+    }
+    
+    return originalString;
 }
