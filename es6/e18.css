@@ -1,0 +1,22 @@
+.title{
+    text-align: center;
+    font-size: 300%;
+    color: rgb(100, 167, 226);
+}
+
+.modify-button{
+    color: blue;
+    text-decoration: underline;
+}
+
+.modify-button:hover{
+    cursor: pointer;
+}
+
+.modify{
+    display: none;
+}
+
+.candidates{
+    display: inline-block;
+}
