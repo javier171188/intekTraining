@@ -2,46 +2,50 @@
 let patternBox = document.getElementById('pattern');
 let button = document.getElementById('match-button');
 let testText = document.querySelector('.text');
-let originalText = testText.innerHTML;
+let originalText = testText.textContent;
 
 button.addEventListener('click', searchPattern);
 
 function searchPattern(){
     let pattern = patternBox.value;
-    let tempText = testText.innerHTML;
     if (!pattern){
         testText.innerHTML = originalText;
         return;
     }
-    
-    let strParts = pattern.split('*');
-    let fullWords= getFullWord(strParts[0], strParts[1]);
-    for (let i = 2; i<strParts.length; i++){
-        fullWords = fullWords.map((current)=>{
-                let newWords = getFullWord(current, strParts[i]);
-                return newWords;
-                         })
-        fullWords = fullWords.flat();
-    }
-    console.log(fullWords);
 
-    function getFullWord(prevString, nextString){
-        let prevInds = getAllIndexes(tempText, prevString);
-        let nextInds = getAllIndexes(tempText, nextString);
+
+    let patterns = [pattern];
+    let newPatterns;
+
+   // while (patterns.some((str)=>str.includes('*'))){
+        newPatterns = [];
+        for (let p of patterns){
+            newPatterns.push(simpPattern(p));
+        }
+        patterns = newPatterns.flat().slice();
+        debugger;
+    //}
+
+    function simpPattern(pattern){
         let words = [];
-        for (let i of prevInds){
-            for (let j of nextInds){
-                if (j === i+ prevString.length+1){
-                    let matchingWord = tempText.slice(i, j+nextString.length);
-                    if (!words.includes(matchingWord)){
-                        words.push(matchingWord);
-                    }
-                }
+        let wildInds = pattern.indexOf('*');
+        for (let l=32; l<=126; l++){
+            let firstPart = pattern.slice(0,wildInds) + String.fromCharCode(l);
+            let index = originalText.indexOf(firstPart);
+            if ( index >= 0){
+                words.push(firstPart+pattern.slice(wildInds+1));
             }
         }
         return words;
     }
+
     
+    /*if (wildInds.length<1){
+        subsWord(pattern);
+        return;
+    }*/
+
+
     subsWord(pattern);
     function subsWord(word){
         let newText = originalText.replaceAll(word, `<span>${word}</span>`);
