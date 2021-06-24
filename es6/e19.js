@@ -1,16 +1,20 @@
 'use strict';
 let patternBox = document.getElementById('pattern');
-let button = document.getElementById('match-button');
 let testText = document.querySelector('.text');
 let originalText = testText.textContent;
+patternBox.addEventListener('keyup',searchPattern)
 
-button.addEventListener('click', searchPattern);
 searchPattern();
 function searchPattern(){
     let pattern = patternBox.value;
     if (!pattern){
         testText.innerHTML = originalText;
         return;
+    }
+    if (pattern ==='*'){
+        let newText = `<span>${originalText}</span>`;
+        testText.innerHTML = newText;
+        return
     }
     
     let words = [pattern];
