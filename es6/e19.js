@@ -12,32 +12,26 @@ function searchPattern(){
         testText.innerHTML = originalText;
         return;
     }
-
-
-    let patterns = [pattern];
-    let newPatterns;
-
-   // while (patterns.some((str)=>str.includes('*'))){
-        newPatterns = [];
-        for (let p of patterns){
-            newPatterns.push(simpPattern(p));
-        }
-        patterns = newPatterns.flat().slice();
-        debugger;
-    //}
-
-    function simpPattern(pattern){
-        let words = [];
-        let wildInds = pattern.indexOf('*');
-        for (let l=32; l<=126; l++){
-            let firstPart = pattern.slice(0,wildInds) + String.fromCharCode(l);
-            let index = originalText.indexOf(firstPart);
-            if ( index >= 0){
-                words.push(firstPart+pattern.slice(wildInds+1));
+    
+    let words = [pattern];
+    let wildInds = getAllIndexes(pattern, '*');
+    let createdWords;
+    for (let i of wildInds){
+        for (let p of words){
+            createdWords = [];
+            for (let l=32; l<=126; l++){
+                if (originalText.includes(`${p.substring(0, i)}${String.fromCharCode(l)}`)){
+                    let newWord = `${p.substring(0, i)}${String.fromCharCode(l)}${p.substring(i + 1)}`;
+                    if (!words.includes(newWord)){
+                        createdWords.push(newWord);
+                    }
+                }
             }
+            words = words.concat(createdWords);
         }
-        return words;
     }
+    words = words.filter(word=> originalText.includes(word));
+    console.log(words);
 
     
     /*if (wildInds.length<1){
