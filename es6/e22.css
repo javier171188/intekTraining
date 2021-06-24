@@ -1,0 +1,17 @@
+.title{
+    color: blue;
+    text-align: center;
+    font-size: 350%;
+}
+
+.changing{
+    border: solid;
+    height: 10vh;
+    width: 30vw;
+    text-align: center;
+    font-size: 150%;
+    padding-top: 5%;
+}
+.container{
+    display: flex;
+}
