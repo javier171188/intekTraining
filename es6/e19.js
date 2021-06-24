@@ -5,7 +5,7 @@ let testText = document.querySelector('.text');
 let originalText = testText.textContent;
 
 button.addEventListener('click', searchPattern);
-
+searchPattern();
 function searchPattern(){
     let pattern = patternBox.value;
     if (!pattern){
@@ -20,30 +20,25 @@ function searchPattern(){
         for (let p of words){
             createdWords = [];
             for (let l=32; l<=126; l++){
-                if (originalText.includes(`${p.substring(0, i)}${String.fromCharCode(l)}`)){
-                    let newWord = `${p.substring(0, i)}${String.fromCharCode(l)}${p.substring(i + 1)}`;
-                    if (!words.includes(newWord)){
-                        createdWords.push(newWord);
-                    }
+                let newWord = `${p.substring(0, i)}${String.fromCharCode(l)}${p.substring(i + 1)}`;
+                if (originalText.includes(newWord.substring(0,i+1)) && !words.includes(newWord)){
+                    createdWords.push(newWord);
                 }
             }
             words = words.concat(createdWords);
         }
     }
     words = words.filter(word=> originalText.includes(word));
-    console.log(words);
-
     
-    /*if (wildInds.length<1){
-        subsWord(pattern);
-        return;
-    }*/
 
-
-    subsWord(pattern);
-    function subsWord(word){
-        let newText = originalText.replaceAll(word, `<span>${word}</span>`);
-        testText.innerHTML = newText;
+    subsWord(words);
+    function subsWord(words){
+        testText.textContent = originalText;
+        for (let word of words){
+            let newText = testText.innerHTML;
+            newText = newText.replaceAll(word, `<span>${word}</span>`);
+            testText.innerHTML = newText;
+        }
     }
 
     function getAllIndexes(str, word) {
