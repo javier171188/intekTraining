@@ -3,3 +3,12 @@
     font-size: 310%;
     text-align: center;
 }
+
+#next{
+    display: none;
+}
+
+.text-area{
+    font-size: 350%;
+    text-align: center;
+}
