@@ -1,0 +1,13 @@
+.title{
+    font-size: 330%;
+    text-align: center;
+    color: rgb(62, 173, 122);
+}
+
+p:nth-of-type(even) {
+    visibility: hidden;
+  }
+
+p:nth-of-type(odd){
+    cursor: pointer;
+}

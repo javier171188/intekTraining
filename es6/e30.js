@@ -2,8 +2,6 @@
 let paragraphs = document.getElementsByTagName('p');
 
 
-console.log(paragraphs);
-
 for (let i=0; i< paragraphs.length; i = i+2){
     paragraphs[i].addEventListener('click', ()=>{changeState(i); });
 }
