@@ -1,28 +1,34 @@
 'use strict';
+let resultArea = document.querySelector('.result');
 let url1 = 'https://jsonplaceholder.typicode.com/posts',
     url2 = 'https://jsonplaceholder.typicode.com/users';
 
 
 var async = {
     getAll: function ( urlArray, callback){ 
-            let obj;
-            //let f =  fetch(urlArray[0]).then(data => data.json())
-            //let g = fetch(urlArray[0]).then(data => data.json())
-            //Promise.all([f(),g()]).then(response => console.log(response));
-            const first = () => {
-                return fetch(urlArray[0]).then(data => data.json());
-                }
-            const second = () => {
-                return fetch(urlArray[0]).then(data => data.json());
+            let callsArray = [];
+            
+            for (let i in urlArray){
+                callsArray.push(function(){
+                    return fetch(urlArray[i]).then(data => data.json());
+                    }());
             }
 
-            Promise.all([first(),second()]).then(response => console.log(response));
+            Promise.all(callsArray).then(response => {
+                                    let finalR = {};
+                                    for (let i in response){
+                                        finalR[parseInt(i)+1] = response[i];
+                                    }           
+                                    callback(finalR)});
+            } 
+    };
 
-    } };
-
-//async.getAll([axCall1,axCall2], callback);
 async.getAll([url1,url2], finalFunction);
 
-function finalFunction(x){
-    console.log(x);
+function finalFunction(responses){
+    for (let i in responses){
+        let p = document.createElement('p');
+        p.innerHTML = `The type of the result of function ${i} is ${typeof responses[i]}.`;
+        resultArea.appendChild(p);
+        }
 }
