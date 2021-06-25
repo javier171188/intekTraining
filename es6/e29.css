@@ -1,0 +1,17 @@
+.title{
+    text-align: center;
+    font-size: 320%;
+}
+
+#id1{
+    color: blue;
+    text-decoration: underline;
+}
+
+#id1:hover{
+    cursor: pointer;
+}
+
+div{
+    visibility: hidden;
+}
