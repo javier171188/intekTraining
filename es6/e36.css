@@ -1,0 +1,11 @@
+.title{
+    text-align: center;
+    font-size: 310%;
+    color: rgb(250, 164, 3);
+}
+
+.result{
+    padding: 5%;
+    margin: 5%;
+    font-size: 200%;
+}
