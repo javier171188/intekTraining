@@ -45,21 +45,19 @@ function operate(event){
         zeroDiv.textContent = "We can't divide by zero."
         
     }
-    console.log(calculator.value);
     switch (action){
         case 'add':
             calculator.add(value);
         break;
-        case 'add':
-            calculator.add(value);
+        case 'sub':
+            calculator.substract(value);
         break;
-        case 'add':
-            calculator.add(value);
+        case 'mult':
+            calculator.multiply(value);
         break;
-        case 'add':
-            calculator.add(value);
+        case 'divide':
+            calculator.divide(value);
         break;
     }
-    console.log(calculator.value);
     resultArea.textContent = calculator.value;
 }
