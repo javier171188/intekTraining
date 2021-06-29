@@ -1,0 +1,14 @@
+.title{
+    color: rgb(116, 75, 21);
+    text-align: center;
+    font-size: 310%;
+}
+
+.result{
+    padding-top: 8%;
+    font-size: 150%;
+}
+
+.zerodiv{
+    color: red;
+}
