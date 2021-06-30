@@ -1,8 +1,6 @@
 const getNotes = require('./notes.js')
+const yargs = require('yargs')
 const chalck = require('chalk')
 
-const msg = getNotes()
-console.log(msg)
-
-const greenMsg = chalck.bold.inverse.green('Success!')
-console.log(greenMsg)
+console.log(process.argv)
+console.log(yargs.argv)
