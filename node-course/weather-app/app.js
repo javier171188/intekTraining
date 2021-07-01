@@ -1,14 +1,23 @@
-const request = require('request')
-const fs = require('fs')
+const geocode = require('./utils/geocode')
+const forecast = require('./utils/forecast')
 
-const bufferKey = fs.readFileSync('keys.txt')
-const access_key = bufferKey.toString()
+const location = process.argv.slice(2)[0]
 
-const url = `http://api.weatherstack.com/current?access_key=${access_key}&query=37.8267,-122.4233&units=f`
+if (location){
+    geocode(location, (error, data) => {
+        if (error){
+            return console.log(error)
+        }
+    
+        forecast(data.latitude, data.longitude, (error, forecastData) =>{
+            if (error) {
+                return console.log(error)
+            }
+            console.log(data.location)
+            console.log(forecastData)
+        })
+    })
+} else {
+    console.log('You need to specify a location.')
+}
 
-request({ url: url, json: true}, (error, response) => {
-    const temperature = response.body.current.temperature
-    const feelsLike = response.body.current.feelslike
-    const weatDescrip = response.body.current.weather_descriptions[0]
-    console.log(`${weatDescrip}. It is currently ${temperature} degrees outside. It feels like ${feelsLike}.`)
-})
