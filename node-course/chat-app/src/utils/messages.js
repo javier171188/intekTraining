@@ -5,8 +5,9 @@ const generateMessage = (text) => {
     }
 }
 
-const generateLocationMessage = (coords) => {
+const generateLocationMessage = (username, coords) => {
     return {
+        username,
         url: `https://www.google.com.mx/maps/?q=${coords.latitude},${coords.longitude}`,
         createdAt: new Date().getTime()
     }
