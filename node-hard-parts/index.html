@@ -3,13 +3,15 @@
   <meta charset="UTF-8">
   <title>Document</title>
   <!-- Comment out the line below to do the extension problem! -->
-  <!-- <link rel="stylesheet" type="text/css" href="./style.css"> -->
+  <link rel="stylesheet" type="text/css" href="./style.css"> 
 </head>
 <body>
 Display only this page
 <button id='hiButton'>Say hi!</button>
 <button id='helloButton'>Greet the server with hello!</button>
 <button id='whatsUpButton'>Greet the server with what's up!</button>
+<button id='changeButton'>Modify file!</button>
+<button id='deleteButton'>Delete file!</button>
 </body>
 <script>
 var xmlHttp = new XMLHttpRequest();
@@ -40,5 +42,16 @@ whatsUpButton.onclick = function() {
   xmlHttp.send('what\'s up'); // what is receiving this greeting?
 }
 
+changeButton.onclick = function () {
+  xmlHttp.open('PUT','/change', true);
+  xmlHttp.setRequestHeader('Content-type','text');
+  xmlHttp.send('updated message');
+}
+
+deleteButton.onclick = function () {
+  xmlHttp.open('DELETE','/delete', true);
+  xmlHttp.setRequestHeader('Content-type','text');
+  xmlHttp.send('delete file');
+}
 </script>
 </html>
