@@ -5,24 +5,23 @@ let data = '';
 /* Create a read stream here*/
 const readPoemStream = fs.createReadStream('streams/on-joy-and-sorrow-emoji.txt'); 
 
-readPoemStream.setEncoding('UTF8'); 
+/* Create a write stream here*/
+const writePoemStream = fs.createWriteStream('on-joy-and-sorrow-fixed.txt');
 
-readPoemStream.on('data', function(chunk) {
-    //data += chunk.toString().replace(':)', 'joy').replace(':(', 'sorrow')
-    data += chunk.substring(4);
-    
-    
- });
- 
- readPoemStream.on('end',function() {
-    console.log( data);
- });
 
-/* Create a write stream here
-const writePoemStream =
-*/
+const transformStream = through(function (chunk, enc, next){
+   chunk = chunk.toString().replaceAll(':)', 'joy').replaceAll(':(','sorrow');
+   this.push(chunk);
+   next();
+})
+readPoemStream.pipe(transformStream).pipe(writePoemStream);
 
-/* EXTENSION: Create a transform stream (modify the read stream before piping to write stream)
-const transformStream = ???
-readPoemStream.pipe(transformStream).pipe(writePoemStream)
-*/
+
+// For old node versions
+String.prototype.replaceAll = function(oldStr, newStr){
+   let replacedStr =  this;
+   while (replacedStr.includes(oldStr)){
+      replacedStr = replacedStr.replace(oldStr, newStr);
+   }
+   return replacedStr;
+}
