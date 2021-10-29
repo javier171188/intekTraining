@@ -13,7 +13,6 @@ function wait(milliseconds) {
 async function queryRetry(request, maxRetry, delay, useIncrement) {
     let result;
     let waitTime = delay;
-    let start = new Date().getTime();
     for (let i = 0; i < maxRetry; i++) {
         try {
             result = await request();

@@ -1,8 +1,8 @@
 'use strict'
-const axios = require('axios');
+require('isomorphic-fetch');
 const queryRetry = require('./exercise2');
 
-const urlQuery = url => () => axios.get(url)
+const urlQuery = url => () => fetch(url);
 
 const maxRetry = 3;
 const useIncrement = true;
