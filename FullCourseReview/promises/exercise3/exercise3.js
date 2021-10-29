@@ -1,7 +1,6 @@
 'use strict'
 require('isomorphic-fetch');
 
-
 function cancellableFetch(url) {
     let cancel;
     let request = new Promise((resolve, reject) => resolve(fetch(url)));
@@ -13,11 +12,4 @@ function cancellableFetch(url) {
     return returningPromise;
 }
 
-
-const result = cancellableFetch('https://www.google.com/')
-
-console.log(result);
-result
-    .then((r) => console.log('success'))
-    .catch((e) => console.log(e))
-result.cancel();
+module.exports = cancellableFetch;
