@@ -3002,20 +3002,6 @@ const WORDS = ['A',
     'YOUTH',
     'ZONE']
 
-const VOWELS = 'aeiou';
-const CONSONANTS = 'bcdfghjklmnpqrstvwxyz'
-
-// https://stackoverflow.com/questions/11935175/sampling-a-random-subset-from-an-array
-
-
-var letters1 = [
-    'E', 'S', 'R', 'A', 'T', 'I', 'N', 'D', 'A'
-];
-var letters2 = ['M', 'I', 'N', 'D', 'S', 'E', 'T'];
-
-
-console.log(getLongestWord(letters1));
-console.log(getLongestWord(letters2));
 
 function getLongestWord(letters) {
     letters = letters.map(l => l.toUpperCase());
@@ -3059,3 +3045,4 @@ function getLongestWord(letters) {
     }
 };
 
+module.exports = getLongestWord;
