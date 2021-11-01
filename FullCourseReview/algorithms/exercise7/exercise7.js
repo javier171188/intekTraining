@@ -1,7 +1,4 @@
 'use strict'
-const input = "111";
-
-longestRunOfTwoNumbers(input);
 
 function longestRunOfTwoNumbers(numberString) {
     if (numberString.length < 3) {
@@ -19,7 +16,6 @@ function longestRunOfTwoNumbers(numberString) {
         } else if (numbers.size > 2) {
             runStart++;
         }
-
     }
     return longestRun;
 }
