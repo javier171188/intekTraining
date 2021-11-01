@@ -16,21 +16,22 @@ const oldObj = {
     }
 };
 
-let flat = flatten(oldObj, "oldObj");
+let flat = flattenFun(oldObj, "oldObj");
 console.log(flat);
 
-function flatten(oldObject, parentName) {
+function flattenFun(oldObject, parentName) {
     let newObject = new Object();
 
-    for (let t in oldObject) {
+    Object.keys(oldObject).forEach((t) => {
         if (typeof oldObject[t] === 'object' && Object.prototype.toString.call(oldObject[t]) !== '[object Array]') {
             let subOject = flatten(oldObject[t], t);
-            for (let key in subOject) {
+
+            Object.keys(subOject).forEach(key => {
                 newObject[parentName + '_' + key] = subOject[key];
-            }
+            })
         } else {
             newObject[parentName + '_' + t] = oldObject[t];
         }
-    }
+    })
     return newObject;
 }
