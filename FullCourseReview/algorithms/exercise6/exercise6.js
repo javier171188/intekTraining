@@ -3010,10 +3010,10 @@ const letters = [
     'E', 'S', 'R', 'A', 'T', 'I', 'N', 'D', 'A'
 ]
 
-var total = []
-
+var total = new Set();
 function getPerms(array) {
     if (array.length === 1) {
+        total.add(array[0]);
         return array
     }
     let results = [];
@@ -3021,21 +3021,36 @@ function getPerms(array) {
         let withoutLetter = [...array];
         withoutLetter.splice(i, 1);
 
-        let permsWitouthLetter = getPerms(withoutLetter);
-        let thisPerms = permsWitouthLetter.map(l => array[i] + l);
+        let permsWithoutLetter = getPerms(withoutLetter);
+        let thisPerms = permsWithoutLetter.map(l => array[i] + l);
         results = results.concat(thisPerms);
     }
-    total = total.concat(results);
+    results.forEach(e => total.add(e));
     return results;
 }
 getPerms(['a', 'b', 'c', 'd'])
-//getLongestWord(['a', 'b', 'c', 'd']);
-console.log(total);
 
+let perms = Array.from(total);
+perms.sort((a, b) => {
+    if (a.length !== b.length) {
+        return b.length - a.length
+    }
+    if (a > b) {
+        return 1;
+    }
+    if (a < b) {
+        return -1;
+    }
+    return 0;
+})
+
+perms.forEach(e => {
+    if (WORDS.includes(e)) {
+        console.log(e);
+    }
+})
 
 function getLongestWord(letters) {
-    let words = []
-    for (let word of getPerms(letters)) {
-        console.log(word);
-    }
+
 };
+
