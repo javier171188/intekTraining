@@ -16,7 +16,7 @@ const oldObj = {
     }
 };
 
-let flat = flattenFun(oldObj, "oldObj");
+let flat = flattenImp(oldObj, "oldObj");
 console.log(flat);
 
 function flattenFun(oldObject, parentName) {
@@ -34,4 +34,37 @@ function flattenFun(oldObject, parentName) {
         }
     })
     return newObject;
+}
+
+function flattenImp(oldObject, parentName) {
+    let newObject = new Object();
+    let objElements = { ...oldObj };
+
+    while (Object.keys(objElements).length > 0) {
+        console.log('enter')
+        for (let t in objElements) {
+            if (typeof objElements[t] === 'object' && Object.prototype.toString.call(objElements[t]) !== '[object Array]') {
+                for (let key in objElements[t]) {
+                    objElements[t + '_' + key] = objElements[t][key];
+                    console.log(t, key);
+                    console.log(objElements[t + '_' + key]);
+                    console.log('-----------------')
+                    wait(1000)
+                }
+            } else {
+                newObject[t] = oldObject[t];
+            }
+            delete objElements[t]
+        }
+    }
+    return newObject;
+}
+function wait(milliseconds) {
+    var start = new Date().getTime();
+    let waiting = true;
+    while (waiting) {
+        if ((new Date().getTime() - start) > milliseconds) {
+            waiting = false
+        }
+    }
 }
