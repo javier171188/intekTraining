@@ -1,5 +1,4 @@
 'use strict'
-const input = [1, 2, 3, [4, 5, [6, [[7]], 8]], [9, 10]]
 
 function flattenArrayR(input) {
     let flatArray = [];
@@ -28,4 +27,4 @@ function flattenArrayI(input) {
     return flatArray;
 }
 
-console.log(flattenArrayI(input));
+module.exports = { flattenArrayR, flattenArrayI }
