@@ -1,30 +1,10 @@
 'use strict'
 
-const oldObj = {
-    name: 'Sara',
-    gender: 'Apache Attack Helicopter',
-    address: {
-        location: {
-            city: 'SF',
-            state: 'CA'
-        },
-        preferredLocation: {
-            city: 'SF',
-            state: ['CA', 'MN']
-        },
-        other: undefined
-    }
-};
-
-let flat = flattenImp(oldObj, "oldObj");
-console.log('result: ', flat);
-
 function flattenFun(oldObject, parentName) {
     let newObject = new Object();
-
     Object.keys(oldObject).forEach((t) => {
         if (typeof oldObject[t] === 'object' && Object.prototype.toString.call(oldObject[t]) !== '[object Array]') {
-            let subOject = flatten(oldObject[t], t);
+            let subOject = flattenFun(oldObject[t], t);
 
             Object.keys(subOject).forEach(key => {
                 newObject[parentName + '_' + key] = subOject[key];
@@ -61,3 +41,8 @@ function flattenImp(oldObj, parentName) {
     }
     return newObject;
 }
+
+module.exports = {
+    flattenFun,
+    flattenImp
+};
