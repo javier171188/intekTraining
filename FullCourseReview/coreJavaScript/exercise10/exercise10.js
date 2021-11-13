@@ -52,11 +52,11 @@ function printTree(tree, order = 'infix') {
         branch2 = branches.slice(closingParIndex + 2);
     }
 
-    /*console.log('root:', root);
+    console.log('root:', root);
     console.log('branches:', branches)
     console.log('branch 1', branch1);
     console.log('branch 2', branch2);
-    console.log('#######################');*/
+    console.log('#######################');
     if (order === 'prefix') {
         console.log(root);
         printTree(branch1, order);
