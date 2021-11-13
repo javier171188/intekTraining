@@ -2,7 +2,7 @@
 
 const bTree = '(A,(B,(D),(E)),(C,(F,(H),(I)),(G,,(J))))';
 
-printTree('(A,(B,(D),(E)),(C,(F,(H),(I)),(G,,(J))))', 'prefix');
+printTree('(A,(B,(D),(E)),(C,(F,(H),(I)),(G,,(J))))');
 //printTree('(B,(D),(E))', 'prefix');
 
 function printTree(tree, order = 'infix') {
@@ -14,7 +14,6 @@ function printTree(tree, order = 'infix') {
         console.log(tree);
         return;
     }
-
 
     let root = tree.slice(0, firstComaIndex);
     let branches = tree.slice(firstComaIndex + 1);
@@ -40,8 +39,6 @@ function printTree(tree, order = 'infix') {
         }
     }
 
-
-
     closingParIndex = parseInt(closingParIndex);
     let branch1;
     let branch2;
@@ -52,19 +49,23 @@ function printTree(tree, order = 'infix') {
         branch2 = branches.slice(closingParIndex + 2);
     }
 
-    console.log('root:', root);
+    /*console.log('root:', root);
     console.log('branches:', branches)
     console.log('branch 1', branch1);
     console.log('branch 2', branch2);
-    console.log('#######################');
+    console.log('#######################');*/
     if (order === 'prefix') {
         console.log(root);
         printTree(branch1, order);
         printTree(branch2, order);
     } else if (order === 'postfix') {
-
+        printTree(branch1, order);
+        printTree(branch2, order);
+        console.log(root);
     } else {
-
+        printTree(branch1, order);
+        console.log(root);
+        printTree(branch2, order);
     }
 }
 
