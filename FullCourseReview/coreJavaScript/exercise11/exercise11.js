@@ -13,27 +13,32 @@ let html = `
 
 
 let parents = querySelectorAll("div.note < input.is-complete");
-//console.log(parents);
+console.log(parents);
 
 
 function simpleSelector(selector, htmlStr) {
     const [elementType, elementClass] = selector.split('.');
     let fullPattern = new RegExp(`<${elementType}.*?/${elementType}>`, 'g');
-    let openingPatter = new RegExp(`<${elementType}.*?>`, 'g');
+    let openingPattern = new RegExp(`<${elementType}.*?/?>`, 'g');
     let elementsIt = htmlStr.matchAll(fullPattern);
+    let openingIt = htmlStr.matchAll(openingPattern)
 
+
+    var elementsList = [];
     if (elementsIt) {
-        var elementsList = [...elementsIt].map(e => e[0]);
-        if (elementClass) {
-            elementsList = elementsList.filter(e => {
-                let openElement = e.matchAll(openingPatter);
-                openElement = [...openElement].map(e => e[0])[0];
-                let hasClass = openElement.search(`class="${elementClass}"`)
-                return hasClass > -1;
-            })
+        elementsList = [...elementsIt].map(e => e[0]);
+        let openingList = [...openingIt].map(e => e[0]);
+        if (elementsList.length < openingList.length) {
+            elementsList = openingList;
         }
-    } else {
-        return [];
+    }
+    if (elementClass) {
+        elementsList = elementsList.filter(e => {
+            let openElement = e.matchAll(openingPattern);
+            openElement = [...openElement].map(e => e[0])[0];
+            let hasClass = openElement.search(`class="${elementClass}"`)
+            return hasClass > -1;
+        })
     }
     return elementsList;
 }
@@ -49,10 +54,9 @@ function querySelectorAll(selector) {
     if (childrenSelector) {
         parentsList = parentsList.filter(p => {
             let children = simpleSelector(childrenSelector, p);
-            return true;
+            return children.length > 0;
         })
     }
+
     return parentsList;
-
-
 }
