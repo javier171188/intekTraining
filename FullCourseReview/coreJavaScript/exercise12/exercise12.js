@@ -1,5 +1,4 @@
 'use strict';
-
 function printTree(tree, order = 'infix') {
     let transverse = '';
 
@@ -7,7 +6,6 @@ function printTree(tree, order = 'infix') {
         while (tree.includes(' ')) {
             tree = tree.replace(' ', '');
         }
-
         tree = tree.slice(1, -1);
 
         let firstComaIndex = tree.indexOf(',');
@@ -68,4 +66,14 @@ function printTree(tree, order = 'infix') {
     return transverse.slice(1);
 }
 
-module.exports = { printTree };
+function isSymmetric(tree) {
+    let traverseTree = printTree(tree);
+    let traverseList = traverseTree.split(',');
+    let reversedList = traverseList.reverse();
+    let reversedTree = reversedList.join(',');
+    return reversedTree === traverseTree;
+}
+
+
+module.exports = { isSymmetric };
+
