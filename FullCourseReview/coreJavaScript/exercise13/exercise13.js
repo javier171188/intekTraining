@@ -1,34 +1,4 @@
 'use strict';
-
-let tree = `(0, 
-    (1), 
-    (2, 
-        (1),
-        (5, 
-            (3),
-            (5,
-                (6)), 
-            (9))),
-    (3,  
-        (0)),
-    (5), 
-    (7, 
-        (3, 
-            (3), 
-            (0, 
-                (9), 
-                (4)))))`;
-
-tree = `(0,(1),(2, (1),(5, (3),(5,(6)), (9))),(3, (0)),(5),(7, (3, (3), (0, (9), (4)))))`;
-tree = '(A, (B, (D),(E)), (C,(F), (G)))';
-//tree = '(B,(D),(E)),(C,(F),(G))';
-//tree = '(D),(E),(F),(G)';
-
-//const result = getNodeAndBranches(tree);
-//getTrees(tree);
-let sameLevel = isSameLevel(tree, 'E', 'G');
-console.log(sameLevel);
-
 function getNodeAndBranches(tree) {
     tree = tree.slice(1, -1);
     let firstComaIndex = tree.indexOf(',');
@@ -71,10 +41,6 @@ function isSameLevel(tree, number1, number2) {
     var [nodes, branchesStr] = getNodeAndBranches(tree);
     var branches = getTrees(branchesStr);
 
-
-    console.log(nodes);
-    //console.log(branches);
-
     while (branches.length > 0) {
         nodes = branches.map(b => getNodeAndBranches(b)[0]);
         branches = branches.map(b => getNodeAndBranches(b)[1]);
@@ -83,7 +49,6 @@ function isSameLevel(tree, number1, number2) {
             newBranches = newBranches.concat(getTrees(b))
         });
         branches = newBranches;
-        console.log(nodes);
         if (number1 === number2) {
             let count = nodes.filter(n => n === number1).length;
             if (count > 1) {
@@ -95,9 +60,8 @@ function isSameLevel(tree, number1, number2) {
                 return true
             }
         }
-
-        //console.log(branches.length);
     }
-
     return false;
 }
+
+module.exports = { isSameLevel };
