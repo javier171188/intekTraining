@@ -1,41 +1,36 @@
 'use strict';
-
-let html = `
-<section>
-   <div id="1" class="note"><input type="checkbox" class="is-complete" checked> </div>
-   <div id="2" class="note"></div>
-   <div id="3" class="note"><input type="checkbox" class="is-complete" checked></div>
-   <div id="4" class="note"></div>
-   <div id="5" class="note"><input type="checkbox" class="is-complete" checked></div>
-   <div id="6" class="note"><input type="checkbox" class="is-complete" ></div>
-   <div class="otherclass"></div>
-   <div></div>
-</section>`
-
-
-let parents = querySelectorAll("div.note < input.is-complete[checked]");
-console.log(parents);
+let html =
+    `<section>
+    <div id="1" class="note"><input type="checkbox" class="is-complete" checked> </div>
+    <div id="2" class="note"></div>
+    <div id="3" class="note"><input type="checkbox" class="is-complete" checked></div>
+    <div id="4" class="note"></div>
+    <div id="5" class="note"><input type="checkbox" class="is-complete" checked></div>
+    <div id="6" class="note"><input type="checkbox" class="is-complete" ></div>
+    <div class="otherclass"></div>
+    <div></div>
+    </section>`;
 
 
 function simpleSelector(selector, htmlStr) {
     let [elementType, elementClass] = selector.split('.');
 
     let propertyPattern = new RegExp(/\[.*?\]/, 'g');
-    let fullPattern = new RegExp(`<${elementType}.*?/${elementType}>`, 'g');
+    let fullPattern = new RegExp(`<${elementType}.*?\/${elementType}>`, 'gs');
     let openingPattern = new RegExp(`<${elementType}.*?/?>`, 'g');
 
-    var propertyIt = elementClass.matchAll(propertyPattern);
-    let propertyLi = [...propertyIt];
-    propertyLi = propertyLi.map(p => p[0]);
-
-
     let property = '';
-    if (propertyLi.length > 0) {
-        property = propertyLi[0];
-        elementClass = elementClass.replace(property, '');
-        property = property.slice(1, -1);
-    }
+    if (elementClass) {
+        var propertyIt = elementClass.matchAll(propertyPattern);
+        let propertyLi = [...propertyIt];
+        propertyLi = propertyLi.map(p => p[0]);
 
+        if (propertyLi.length > 0) {
+            property = propertyLi[0];
+            elementClass = elementClass.replace(property, '');
+            property = property.slice(1, -1);
+        }
+    }
 
     let elementsIt = htmlStr.matchAll(fullPattern);
     let openingIt = htmlStr.matchAll(openingPattern);
@@ -49,14 +44,13 @@ function simpleSelector(selector, htmlStr) {
             elementsList = openingList;
         }
     }
+
     if (elementClass) {
         elementsList = elementsList.filter(e => {
             let openElement = e.matchAll(openingPattern);
             openElement = [...openElement].map(e => e[0])[0];
 
             let hasClass = openElement.search(`class="${elementClass}"`);
-            let hasProperty = openElement.search(` ${property}`);
-
 
             return hasClass > -1;
         })
@@ -76,6 +70,9 @@ function simpleSelector(selector, htmlStr) {
 }
 
 function querySelectorAll(selector) {
+    if (!selector) {
+        return [];
+    }
     while (selector.includes(' ')) {
         selector = selector.replace(' ', '');
     }
@@ -92,3 +89,5 @@ function querySelectorAll(selector) {
 
     return parentsList;
 }
+
+module.exports = { querySelectorAll };
