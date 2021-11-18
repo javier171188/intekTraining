@@ -17,20 +17,6 @@ function maxAreaInHistogram(hist) {
     return maxArea;
 }
 
-let A = [
-    [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-    [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-    [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
-]
-
-greatestArea(A);
-
 function greatestArea(matrix) {
     if (matrix.length < 1) {
         return 0;
@@ -51,3 +37,5 @@ function greatestArea(matrix) {
     }
     return maxArea;
 }
+
+module.exports = { greatestArea };
