@@ -1,11 +1,5 @@
 'use strict';
 
-const { Node, createLinkedList } = require('./exercise17Utils');
-
-let head = createLinkedList([1, 2, 3, 4, 5, 4, 3, 2, 1])
-
-console.log(isPalindrome(head));
-
 function isPalindrome(head) {
     if (!head.next) return true;
     let values = [head.data];
@@ -21,3 +15,5 @@ function isPalindrome(head) {
     }
     return true;
 }
+
+module.exports = { isPalindrome };
