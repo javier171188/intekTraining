@@ -28,8 +28,9 @@ let primeNumbers = [];
 let NInt = 4;
 let propose = 2;
 
+
+logBar(0);
 while (primeNumbers.length < NInt) {
-    let i = primeNumbers.length;
     if (isPrime(propose)) {
         primeNumbers.push(propose);
     }
@@ -40,7 +41,7 @@ console.log(primeNumbers);
 
 
 
-logBar(1);
+
 
 /*function main() {
     for (let i = 0; i <= 40; i++) {
