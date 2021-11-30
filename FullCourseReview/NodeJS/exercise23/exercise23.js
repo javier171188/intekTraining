@@ -8,10 +8,16 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 rl.question('How many prime numbers do you want? ', (N) => {
-    let primeNumbers = [];
-    let NInt = parseInt(N);
-    let propose = 2;
 
+    computePrimes(N);
+
+    rl.close()
+});
+
+function computePrimes(N) {
+    let NInt = parseInt(N);
+    let primeNumbers = [];
+    let propose = 2;
     logBar(0);
     let prop = 0;
     while (primeNumbers.length < NInt) {
@@ -24,9 +30,7 @@ rl.question('How many prime numbers do you want? ', (N) => {
     }
     console.log('');
     console.log(primeNumbers);
-
-    rl.close()
-});
+}
 
 function isPrime(number) {
     if (number === 0 || number === 1) return false
