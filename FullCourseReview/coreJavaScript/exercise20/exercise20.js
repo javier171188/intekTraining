@@ -1,5 +1,4 @@
 'use strict';
-//https://codepen.io/drake-p/pen/bhICx
 
 const button = document.getElementById('button');
 const numberInput = document.getElementById('number-input');

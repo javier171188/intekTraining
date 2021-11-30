@@ -9,10 +9,12 @@ input{
 }
 
 #working-area{
-    border:solid;
     height: 400px;
+    width: 80%;
     font-size: 100px;
-    padding: 54.609px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .triangle{
@@ -29,6 +31,8 @@ input{
 
 .base{
     display: flex;
+    justify-content: center;
+
 }
 
 .one-deep.top{
