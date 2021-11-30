@@ -4,10 +4,15 @@
     text-align: center;
 }
 
+input{
+    margin-left: 5px;
+}
+
 #working-area{
     border:solid;
     height: 400px;
     font-size: 100px;
+    padding: 54.609px;
 }
 
 .triangle{
@@ -27,7 +32,7 @@
 }
 
 .one-deep.top{
-    border: solid;
     margin-left: 0;
-    align-items: center;
+    display: flex;
+    justify-content: center;
 }
