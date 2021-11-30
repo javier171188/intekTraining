@@ -1,64 +1,32 @@
 'use strict';
 import chalk from 'chalk';
+import * as readline from "readline";
 
 
-/*const readline = require('readline').createInterface({
+const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
-let N;*/
-/*readline.question('How many prime numbers do you want? ', (number) => {
-    N = number;
-    let NInt = parseInt(N);
+rl.question('How many prime numbers do you want? ', (N) => {
     let primeNumbers = [];
-
+    let NInt = parseInt(N);
     let propose = 2;
+
+    logBar(0);
+    let prop = 0;
     while (primeNumbers.length < NInt) {
         if (isPrime(propose)) {
             primeNumbers.push(propose);
+            prop = primeNumbers.length / NInt;
+            logBar(prop);
         }
         propose++;
     }
-
+    console.log('');
     console.log(primeNumbers);
-    readline.close();
+
+    rl.close()
 });
-*/
-let primeNumbers = [];
-let NInt = 4;
-let propose = 2;
-
-
-logBar(0);
-while (primeNumbers.length < NInt) {
-    if (isPrime(propose)) {
-        primeNumbers.push(propose);
-    }
-    propose++;
-}
-
-console.log(primeNumbers);
-
-
-
-
-
-/*function main() {
-    for (let i = 0; i <= 40; i++) {
-        const dots = "█".repeat(i)
-        const left = 40 - i
-        const empty = "░".repeat(left)
-        process.stdout.write(chalk.blue.bgBlack.bold(`\r[${dots}${empty}] `) + chalk.greenBright.bgBlack(`${Math.round(i * 2.5)}% `));
-
-    }
-    return;
-}
-
-main();*/
-
-function wait(ms) {
-    return new Promise(res => setTimeout(res, ms))
-}
 
 function isPrime(number) {
     if (number === 0 || number === 1) return false
