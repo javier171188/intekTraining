@@ -5,14 +5,17 @@ const readline = require("readline");
 function getFirstPrimes() {
     const { stdin, stdout } = process;
     const rl = readline.createInterface({ input: stdin, output: stdout });
+    let primeNumbers;
     rl.question('How many prime numbers do you want? ', (N) => {
-        computePrimes(N);
+        primeNumbers = computePrimes(N);
         rl.close()
     });
+    return primeNumbers;
 }
 
 function computePrimes(N) {
-    let NInt = parseInt(N);
+    let NInt = Math.abs(parseInt(N));
+    if (!NInt) return [];
     let primeNumbers = [];
     let propose = 2;
     logBar(0);
@@ -27,6 +30,7 @@ function computePrimes(N) {
     }
     console.log('');
     console.log(primeNumbers);
+    return primeNumbers;
 }
 
 function isPrime(number) {
@@ -40,9 +44,13 @@ function isPrime(number) {
 function logBar(prop) {
     let size = 40;
     let propTotal = parseInt(prop * size);
-    const dots = "█".repeat(propTotal);
+    const done = "█".repeat(propTotal);
     const empty = "░".repeat(size - propTotal);
-    process.stdout.write(colors.blue(colors.bgBlack(`\r[${dots}${empty}] `)) + colors.bgBlack(colors.green(`${Math.round(prop * 100)}% `)));
+    process.stdout.write(colors.blue(colors.bgBlack(`\r[${done}${empty}] `)) + colors.bgBlack(colors.green(`${Math.round(prop * 100)}% `)));
 }
 
-module.exports = { getFirstPrimes };
+module.exports = {
+    getFirstPrimes,
+    computePrimes,
+    logBar
+};
