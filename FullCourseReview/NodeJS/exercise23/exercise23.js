@@ -1,18 +1,25 @@
 'use strict';
-import chalk from 'chalk';
-import * as readline from "readline";
+//const chalk = require("chalk");
+const colors = require('colors/safe');
+const readline = require("readline");
 
 
-const rl = readline.createInterface({
+/*const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
-});
-rl.question('How many prime numbers do you want? ', (N) => {
+});*/
 
-    computePrimes(N);
+function getFirstPrimes() {
+    const { stdin, stdout } = process;
+    const rl = readline.createInterface({ input: stdin, output: stdout });
+    //console.log(rl);
+    rl.question('How many prime numbers do you want? ', (N) => {
+        computePrimes(N);
+        rl.close()
+    });
+}
 
-    rl.close()
-});
+//getFirstPrimes();
 
 function computePrimes(N) {
     let NInt = parseInt(N);
@@ -45,5 +52,7 @@ function logBar(prop) {
     let propTotal = parseInt(prop * size);
     const dots = "█".repeat(propTotal);
     const empty = "░".repeat(size - propTotal);
-    process.stdout.write(chalk.blue.bgBlack.bold(`\r[${dots}${empty}] `) + chalk.greenBright.bgBlack(`${Math.round(prop * 100)}% `));
+    process.stdout.write(colors.blue(colors.bgBlack(`\r[${dots}${empty}] `)) + colors.bgBlack(colors.green(`${Math.round(prop * 100)}% `)));
 }
+
+module.exports = { getFirstPrimes };
