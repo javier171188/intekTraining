@@ -1,25 +1,15 @@
 'use strict';
-//const chalk = require("chalk");
 const colors = require('colors/safe');
 const readline = require("readline");
-
-
-/*const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});*/
 
 function getFirstPrimes() {
     const { stdin, stdout } = process;
     const rl = readline.createInterface({ input: stdin, output: stdout });
-    //console.log(rl);
     rl.question('How many prime numbers do you want? ', (N) => {
         computePrimes(N);
         rl.close()
     });
 }
-
-//getFirstPrimes();
 
 function computePrimes(N) {
     let NInt = parseInt(N);
