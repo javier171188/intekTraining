@@ -1,18 +1,19 @@
 form{
+    --unit: 0.2vw;
+    --button-height:calc(23*var(--unit));
+    --hint-elevation: 10px;
+    
+
     margin: 50px;
-    border: solid;
     width: 310px;
     height: 100px;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    --button-height:35px;
-    --hint-elevation: 10px;
 }
 
 label{
     float: left;
-    //margin-top: 20px;
     font-size: 15px;
     color: #000;
     font-weight: 600;
@@ -22,7 +23,6 @@ label{
 }
 
 .form-field{
-    //float: right;
     width: 200px;
     height: 50px;
     position: relative;
@@ -34,36 +34,37 @@ label{
 .form-field::before{
     content: attr(data-hint);
     border: 1px solid rgba(0,0,0,255);    
-    font-size: 9px;
+    font-size: 8px;
     text-align: center;
-    width: 108px;
+    width: 106px;
     color: rgba(247,247,247,255);
     background: rgba(0,0,0,255);
     border-width: 5px;
-    box-shadow: 2px 2px 6px 1px rgba(0,0,0,0.75);   
+    box-shadow: 2px 2px 3px 0px rgba(0,0,0,0.75);   
     font-family: Arial, sans-serif;
 
     display: inline-block;
     position: relative;
     top: -12px;
     left: -1px;
+    z-index: 1;
 }
-/*
+
 .form-field::after{
     content: 'arr';
     font-size: 5px;
     border: solid;
     border-color: rgba(0,0,0,255) rgba(0,0,0,255) rgba(0,0,0,255) rgba(0,0,0,255);
     background: rgba(0,0,0,255);
-    box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.75);   
+    box-shadow: 0px 0px 3px 2px rgba(0,0,0,0.75);   
     color: rgba(0,0,0,0.75);
-    display: block;
+    display: inline-block;
     transform: rotate(45deg);
     width: 5px ;
     position: relative;
-    bottom: 0;
-    left: 0;
-}*/
+    bottom: 32px;
+    left: 20px;
+}
 
 input{
     border: none;
@@ -79,12 +80,16 @@ input{
 
 button{
     position: relative;
-    bottom: -20px;
+    //bottom: -0px;
+    //display: inline-block;
+    left: 90px;
+
     background-color: rgba(255,99,72,255);
     border: none;
     color: rgba(255,255,255,255);
     height: var(--button-height);
-    width: 120px;
+    width: calc(95*var(--unit));
     border-radius: calc(0.5*var(--button-height));
     font-weight: 905;
+    font-size: calc(11*var(--unit));
 }
