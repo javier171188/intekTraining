@@ -1,12 +1,12 @@
 form{
     --unit: 0.2vw;
     --button-height:calc(23*var(--unit));
-    --hint-elevation: 10px;
+    --hint-elevation: calc(10*var(--unit));
     
 
-    margin: 50px;
-    width: 310px;
-    height: 100px;
+    margin: calc(50*var(--unit));
+    width: calc(310*var(--unit));
+    height: calc(100*var(--unit));
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -14,75 +14,74 @@ form{
 
 label{
     float: left;
-    font-size: 15px;
+    font-size: calc(15*var(--unit));
     color: #000;
     font-weight: 600;
     position: relative;
-    top: 20px;
+    top: calc(20*var(--unit));
     font-family: Arial, sans-serif;
 }
 
 .form-field{
-    width: 200px;
-    height: 50px;
+    width: calc(200*var(--unit));
+    height: calc(50*var(--unit));
     position: relative;
-    bottom: 11px;
-    left: 120px;
+    bottom: calc(11*var(--unit));
+    left: calc(120*var(--unit));
 }
 
 
 .form-field::before{
     content: attr(data-hint);
-    border: 1px solid rgba(0,0,0,255);    
-    font-size: 8px;
+    border: calc(1*var(--unit)) solid rgba(0,0,0,255);    
+    font-size: calc(8*var(--unit));
     text-align: center;
-    width: 106px;
+    width: calc(106*var(--unit));
     color: rgba(247,247,247,255);
     background: rgba(0,0,0,255);
-    border-width: 5px;
-    box-shadow: 2px 2px 3px 0px rgba(0,0,0,0.75);   
+    border-width: calc(5*var(--unit));
+    box-shadow: calc(2*var(--unit)) calc(2*var(--unit)) calc(3*var(--unit)) calc(0*var(--unit)) rgba(0,0,0,0.75);   
     font-family: Arial, sans-serif;
 
     display: inline-block;
     position: relative;
-    top: -12px;
-    left: -1px;
+    top: calc(-12*var(--unit));
+    left: calc(-1*var(--unit));
     z-index: 1;
 }
 
 .form-field::after{
     content: 'arr';
-    font-size: 5px;
+    font-size: calc(5*var(--unit));
     border: solid;
+    border-width: calc(1*var(--unit));
     border-color: rgba(0,0,0,255) rgba(0,0,0,255) rgba(0,0,0,255) rgba(0,0,0,255);
     background: rgba(0,0,0,255);
-    box-shadow: 0px 0px 3px 2px rgba(0,0,0,0.75);   
+    box-shadow: calc(0*var(--unit)) calc(0*var(--unit)) calc(3*var(--unit)) calc(2*var(--unit)) rgba(0,0,0,0.75);   
     color: rgba(0,0,0,0.75);
     display: inline-block;
     transform: rotate(45deg);
-    width: 5px ;
+    width: calc(5*var(--unit));
     position: relative;
-    bottom: 32px;
-    left: 20px;
+    bottom: calc(32*var(--unit));
+    left: calc(20*var(--unit));
 }
 
 input{
     border: none;
-    border-bottom: 1px solid;
+    border-bottom: calc(1*var(--unit)) solid;
 
     display: block;
     position: relative;
-    top: -3px;
-    right: 0px;
-    font-size: 11px;
-    padding: 0px;
+    top: calc(-3*var(--unit));
+    right: calc(0*var(--unit));
+    font-size: calc(11*var(--unit));
+    padding: calc(0*var(--unit));
 }
 
 button{
     position: relative;
-    //bottom: -0px;
-    //display: inline-block;
-    left: 90px;
+    left: calc(90*var(--unit));
 
     background-color: rgba(255,99,72,255);
     border: none;
@@ -92,4 +91,5 @@ button{
     border-radius: calc(0.5*var(--button-height));
     font-weight: 905;
     font-size: calc(11*var(--unit));
+    padding: calc(0*var(--unit));
 }
