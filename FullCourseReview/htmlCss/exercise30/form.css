@@ -1,7 +1,8 @@
 form{
-    margin: 20px;
+    margin: 50px;
     border: solid;
     width: 310px;
+    height: 100px;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -11,40 +12,69 @@ form{
 
 label{
     float: left;
-    margin-top: 20px;
+    //margin-top: 20px;
     font-size: 15px;
     color: #000;
     font-weight: 600;
+    position: relative;
+    top: 20px;
+    font-family: Arial, sans-serif;
 }
 
 .form-field{
-    float: right;
+    //float: right;
     width: 200px;
+    height: 50px;
+    position: relative;
+    bottom: 11px;
+    left: 120px;
 }
+
 
 .form-field::before{
     content: attr(data-hint);
     border: 1px solid rgba(0,0,0,255);    
-    font-size: 12px;
-    width: 500px;
+    font-size: 9px;
+    text-align: center;
+    width: 108px;
     color: rgba(247,247,247,255);
     background: rgba(0,0,0,255);
     border-width: 5px;
-}
+    box-shadow: 2px 2px 6px 1px rgba(0,0,0,0.75);   
+    font-family: Arial, sans-serif;
 
-.form-field::after{
-    content: '';
+    display: inline-block;
     position: relative;
-    left: -80%;
-    top: 5px;
-    border: solid;
-    border-color: rgba(0,0,0,255) transparent transparent transparent;
-    border-width: 10px;
+    top: -12px;
+    left: -1px;
 }
+/*
+.form-field::after{
+    content: 'arr';
+    font-size: 5px;
+    border: solid;
+    border-color: rgba(0,0,0,255) rgba(0,0,0,255) rgba(0,0,0,255) rgba(0,0,0,255);
+    background: rgba(0,0,0,255);
+    box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.75);   
+    color: rgba(0,0,0,0.75);
+    display: block;
+    transform: rotate(45deg);
+    width: 5px ;
+    position: relative;
+    bottom: 0;
+    left: 0;
+}*/
 
 input{
     border: none;
     border-bottom: 1px solid;
+
+    display: block;
+    position: relative;
+    top: -3px;
+    right: 0px;
+    font-size: 11px;
+    padding: 0px;
 }
 
 button{
