@@ -1,62 +1,14 @@
 body{
     display: flex;
     justify-content: center;
-    //align-items: center;
+    align-items: center;
     flex-direction: column;
     font-size: 1.5vw;
     color:rgb(71,71,71);
-    --star-color: rgba(136,136,136,255);
-    --start-separation: 0.5em;
-    --button-width: 50vw;
-    --button-height:calc(0.16*var(--button-width));
-    
 }
 
 h1{
     font-size: 5vw;
     color: gray;
     margin: 3vh;
-}
-
-.fancy-button{
-    margin: 1em;
-    background: linear-gradient(0, rgba(174,174,174,255), rgba(192,192,192,255)  50%, rgba(210,210,210,255) 50%, rgba(226,226,226,255));
-    color: rgba(85,85,85,255);
-    
-    padding: .5em;
-
-    width: var(--button-width);
-    height: var(--button-height);
-
-    border-radius: 0.5em;
-    box-shadow: rgba(97,97,97,255) 0 calc(0.03*var(--button-height)) calc(0.21*var(--button-height)) calc(0.04*var(--button-height)), 
-    rgba(203,203,203,255) 0 0 0 calc(0.17*var(--button-height)), 
-    rgba(255,255,255,255) 0 0 0 calc(0.22*var(--button-height)), 
-    rgba(102,102,102,255) 0 0 0 calc(0.27*var(--button-height)), 
-    rgba(97,97,97,255) 0 calc(0.02*var(--button-height)) calc(0.08*var(--button-height)) calc(0.27*var(--button-height));
-
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    text-transform: uppercase;
-    font-family:Arial, Helvetica, sans-serif;
-    font-size: 3.8em;
-    text-decoration: none;
-    font-weight: 905;
-    text-shadow: 0 calc(0.01*var(--button-height)) 0 rgba(255,255,255,.9);
-}
-
-a::after {
-    content: "★";
-    margin-left: var(--start-separation);
-    color: var(--star-color);
-  }
-
-a::before{
-    content: "★";
-    margin-right: var(--start-separation);
-    color: var(--star-color)
-
 }

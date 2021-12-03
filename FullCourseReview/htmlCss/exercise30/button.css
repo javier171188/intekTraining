@@ -1,0 +1,51 @@
+body{
+    --star-color: rgba(136,136,136,255);
+    --button-width: 30vw;
+    --start-separation: calc(0.05*var(--button-width));
+    --start-size: calc(0.2*var(--button-width));
+    --button-height:calc(0.2*var(--button-width));
+}
+
+.fancy-button{
+    margin: calc(0.03*var(--button-width));
+    background: linear-gradient(0, rgba(174,174,174,255), rgba(192,192,192,255)  50%, rgba(210,210,210,255) 50%, rgba(226,226,226,255));
+    color: rgba(85,85,85,255);
+    
+    padding: calc(0.015*var(--button-width));
+
+    width: var(--button-width);
+    height: var(--button-height);
+
+    border-radius: calc(0.03*var(--button-width));
+    box-shadow: rgba(97,97,97,255) 0 calc(0.03*var(--button-height)) calc(0.21*var(--button-height)) calc(0.04*var(--button-height)), 
+    rgba(203,203,203,255) 0 0 0 calc(0.17*var(--button-height)), 
+    rgba(255,255,255,255) 0 0 0 calc(0.21*var(--button-height)), 
+    rgba(102,102,102,255) 0 0 0 calc(0.25*var(--button-height)), 
+    rgba(97,97,97,255) 0 calc(0.02*var(--button-height)) calc(0.08*var(--button-height)) calc(0.27*var(--button-height));
+
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-transform: uppercase;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: calc(0.1*var(--button-width));
+    text-decoration: none;
+    font-weight: 900;
+    text-shadow: 0 calc(0.01*var(--button-height)) 0 rgba(255,255,255,.9);
+}
+
+a::after {
+    content: "★";
+    margin-left: var(--start-separation);
+    color: var(--star-color);
+    font: var(--star-size);
+  }
+
+a::before{
+    content: "★";
+    margin-right: var(--start-separation);
+    color: var(--star-color);
+    font-size: var(--star-size);
+}

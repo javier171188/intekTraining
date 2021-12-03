@@ -1,0 +1,60 @@
+form{
+    margin: 20px;
+    border: solid;
+    width: 310px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    --button-height:35px;
+    --hint-elevation: 10px;
+}
+
+label{
+    float: left;
+    margin-top: 20px;
+    font-size: 15px;
+    color: #000;
+    font-weight: 600;
+}
+
+.form-field{
+    float: right;
+    width: 200px;
+}
+
+.form-field::before{
+    content: attr(data-hint);
+    border: 1px solid rgba(0,0,0,255);    
+    font-size: 12px;
+    width: 500px;
+    color: rgba(247,247,247,255);
+    background: rgba(0,0,0,255);
+    border-width: 5px;
+}
+
+.form-field::after{
+    content: '';
+    position: relative;
+    left: -80%;
+    top: 5px;
+    border: solid;
+    border-color: rgba(0,0,0,255) transparent transparent transparent;
+    border-width: 10px;
+}
+
+input{
+    border: none;
+    border-bottom: 1px solid;
+}
+
+button{
+    position: relative;
+    bottom: -20px;
+    background-color: rgba(255,99,72,255);
+    border: none;
+    color: rgba(255,255,255,255);
+    height: var(--button-height);
+    width: 120px;
+    border-radius: calc(0.5*var(--button-height));
+    font-weight: 905;
+}
