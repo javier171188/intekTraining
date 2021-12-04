@@ -3,7 +3,6 @@ form{
     --button-height:calc(23*var(--unit));
     --hint-elevation: calc(10*var(--unit));
     
-
     margin: calc(50*var(--unit));
     width: calc(310*var(--unit));
     height: calc(100*var(--unit));
@@ -16,7 +15,7 @@ label{
     float: left;
     font-size: calc(15*var(--unit));
     color: #000;
-    font-weight: 600;
+    font-weight: 500;
     position: relative;
     top: calc(20*var(--unit));
     font-family: Arial, sans-serif;
@@ -27,19 +26,20 @@ label{
     height: calc(50*var(--unit));
     position: relative;
     bottom: calc(11*var(--unit));
-    left: calc(120*var(--unit));
+    left: calc(110*var(--unit));
 }
 
 
 .form-field::before{
+    visibility: visible;
     content: attr(data-hint);
     border: calc(1*var(--unit)) solid rgba(0,0,0,255);    
-    font-size: calc(8*var(--unit));
+    font-size: calc(7*var(--unit));
     text-align: center;
-    width: calc(106*var(--unit));
+    width: calc(82*var(--unit));
     color: rgba(247,247,247,255);
     background: rgba(0,0,0,255);
-    border-width: calc(5*var(--unit));
+    border-width:  calc(5*var(--unit));
     box-shadow: calc(2*var(--unit)) calc(2*var(--unit)) calc(3*var(--unit)) calc(0*var(--unit)) rgba(0,0,0,0.75);   
     font-family: Arial, sans-serif;
 
@@ -51,6 +51,7 @@ label{
 }
 
 .form-field::after{
+    visibility: visible;
     content: 'arr';
     font-size: calc(5*var(--unit));
     border: solid;
@@ -67,6 +68,7 @@ label{
     left: calc(20*var(--unit));
 }
 
+
 input{
     border: none;
     border-bottom: calc(1*var(--unit)) solid;
@@ -77,6 +79,10 @@ input{
     right: calc(0*var(--unit));
     font-size: calc(11*var(--unit));
     padding: calc(0*var(--unit));
+}
+
+input:-webkit-autofill::first-line {
+    font-size: calc(11*var(--unit)) !important;
 }
 
 button{
