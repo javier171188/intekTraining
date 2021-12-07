@@ -227,7 +227,7 @@ footer div ul li{
 //}
 
 
-@media (min-width: 641px) and (max-width: 1007px) {
+@media (min-width: 641px){
     .main-bar{
         flex-direction: row;
         justify-content: space-between;
@@ -304,8 +304,103 @@ footer div ul li{
     .newsletter form button{
         width: max-content;
     }
+
+    .histories{
+        display: flex;
+    }
+
+    .histories article{
+        margin: 1em;
+        border: none;
+    }
 }
 
 @media (min-width: 1008px){
+    .main{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        //justify-content: flex-start;
+        //align-items: flex-start;
+    }
 
+    .main-bar{
+        //grid-column: 1 / 2;
+
+        width: 18vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .main-logo{
+        align-self: flex-start;
+        margin-left: 1em;
+        height: 100px;
+
+    }
+
+    .main-sections{
+        flex-direction: column;
+        width: min-content;
+    }
+
+    .main-sections li{
+        flex-direction: row;
+        width: max-content;
+        margin-bottom: 1em;
+    }
+
+    .main-sections li img{
+        margin: 0 1em;
+    }
+
+    .main-tweeter{
+        display: block;
+    }
+
+    .main-facebook{
+        display: inline;
+    }
+
+    .main-content{
+        //grid-column: 2 / 5;
+        
+    }
+
+    .main-tweeter, .main-facebook{
+       margin: 1em;
+    }
+
+    .main-tweeter button img{
+        filter: hue-rotate(-33deg);
+     }
+
+    .main-tweeter{
+        font-family: 'Charm', cursive;
+    }
+
+    .main-facebook button img{
+        filter: hue-rotate(-25deg);
+     }
+
+    .main h2{
+        border-bottom: 1px dashed;
+    }
+
+    .main button{
+        background-color: rgba(254,254,254,255);
+        border:none;
+        border: 1px solid rgba(211,208,208,255);
+        border-radius: 2px;
+        color: rgba(132,216,217,255);
+        padding: 0.5em;
+    }
+
+    .main-image{
+        width: 80vw;
+    }
+
+    footer{
+        border-top: 1px dashed;
+    }
 }
