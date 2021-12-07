@@ -20,8 +20,7 @@
     align-items: center;
     justify-content: center;
 
-    margin-left: auto;
-    margin-right: auto;
+    align-self: center;
 }
 
 .main-logo p{
@@ -56,6 +55,9 @@ li{
     list-style-type: none;
 }
 
+li img{
+    display: none;
+}
 
 .main-tweeter, .main-facebook{
     display: none;
@@ -124,6 +126,10 @@ li.second-bar-topic__selected{
     padding-bottom: 1em;
 }
 
+.newsletter-message img{
+    width: 150px;
+}
+
 .newsletter-message p{
     font-size: small;
     font-family: 'Charm', cursive;
@@ -147,6 +153,11 @@ li.second-bar-topic__selected{
     border: 1px solid rgba(210,210,210,255);
     color:rgba(184,184,184,255);
     font-size: 0.8em;
+}
+
+.newsletter form input::placeholder{
+    color: rgba(182,182,182,255)
+    ;
 }
 
 .newsletter form button{
@@ -203,16 +214,96 @@ footer div ul{
     margin-bottom: 30px;
 }
 
+footer div ul li{
+    margin-right: 1em;
+}
+
 .footer-networks{
     display: flex;
     filter: grayscale(100%);;
 }
 
-@media (max-width: 640px){
-}
+//@media (max-width: 640px){
+//}
 
 
 @media (min-width: 641px) and (max-width: 1007px) {
+    .main-bar{
+        flex-direction: row;
+        justify-content: space-between;
+
+    }
+
+    li img{
+        display: block;
+    }
+
+    .main-sections{
+        border: none;
+        width: 60vw;
+    }
+
+    .main-sections li{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .main-logo{
+       margin: 0;
+       height: 110px;
+    }
+
+    .main-image{
+        background-position: top; 
+        height: 450px;
+    }
+
+    .main-image p:nth-child(1){
+        background: rgba(255, 255, 255, 1);
+        width: max-content;
+        font-size: 1.5em;
+    }
+    
+    .main-image p:nth-child(2){
+        width: max-content;
+        margin-bottom: 60px;
+        font-size: 1.2em;
+    }
+
+    .second-bar{
+        margin-top: 1%;
+    }
+
+    .newsletter{
+        display: grid;
+        grid-template-columns: repeat(9, 1fr);
+        padding: 0;
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+
+    .newsletter p{
+        padding-right: 1em;
+        font-size: 0.9em;
+        margin-top: 0;
+        margin-bottom: 0;
+        margin-left: 2em;
+    }
+
+    .newsletter-message{
+        grid-column: 1 / 6;
+    }
+
+       
+    .newsletter form {
+        grid-column: 6 / 10;
+        height: 1.8em;
+        align-self: center;
+    }
+    .newsletter form button{
+        width: max-content;
+    }
 }
 
 @media (min-width: 1008px){
