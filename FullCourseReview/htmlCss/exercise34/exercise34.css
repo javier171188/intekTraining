@@ -1,6 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Charm&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Gwendolyn&display=swap');
 
+body{
+    margin-left: 0;
+    margin-right: 0;
+}
+
 .main-bar{
     display: flex;
     flex-direction: column-reverse;
@@ -68,7 +73,7 @@ li img{
     background-repeat: no-repeat;
     background-position: center; 
     background-size: 100%;
-    width: 100vw;
+    width: 98vw;
     height: 68vw;
 
     display: flex;
@@ -97,6 +102,11 @@ li img{
     padding: 0.3em 1em;
 }
 
+.second-bar{
+    position: sticky;
+    top:0px;
+    width: 100%;
+}
 
 .second-bar ul{
     display:flex;
@@ -156,8 +166,7 @@ li.second-bar-topic__selected{
 }
 
 .newsletter form input::placeholder{
-    color: rgba(182,182,182,255)
-    ;
+    color: rgba(182,182,182,255);
 }
 
 .newsletter form button{
@@ -169,14 +178,18 @@ li.second-bar-topic__selected{
 
 .histories{
     margin-top: 1.5em;
+    display: flex;
+    flex-direction: column;
 }
 
 .histories article{
    border-bottom: 1px dashed;
+   width: 90%;
+   align-self: center;
 }
 
 .histories article img{
-    width: 100%;
+    width: 98%;
     border: white 7px solid;
     box-shadow:  0px 5px 11px rgba(0,0,0,0.75);
     margin-top: 1em;
@@ -222,9 +235,6 @@ footer div ul li{
     display: flex;
     filter: grayscale(100%);;
 }
-
-//@media (max-width: 640px){
-//}
 
 
 @media (min-width: 641px){
