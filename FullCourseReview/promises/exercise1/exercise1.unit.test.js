@@ -1,6 +1,6 @@
 'use strict'
 const runBatches = require("./exercise1");
-jest.setTimeout(7100);
+jest.setTimeout(10700);
 const taskFactorySample = (delay, resolve, val) => {
     return () => {
         return new Promise((res, rej) => setTimeout(resolve ? res : rej, delay, val))
@@ -22,15 +22,15 @@ test('Basic test', () => {
             expect(results).toEqual([
                 { value: 1 },
                 { value: 2 },
-                { error: 'error' },
                 { value: 4 },
+                { error: 'error' },
                 { error: 'error' },
                 { error: 'error' }
             ])
         })
 });
 
-test('Larger pool than tasks', () => {
+test('Pool larger than number of tasks', () => {
     let pool_size = 200;
     return runBatches(tasks, pool_size)
         .then(results => {
@@ -38,8 +38,8 @@ test('Larger pool than tasks', () => {
                 { value: 1 },
                 { value: 2 },
                 { error: 'error' },
-                { value: 4 },
                 { error: 'error' },
+                { value: 4 },
                 { error: 'error' }
             ])
         })
@@ -47,6 +47,21 @@ test('Larger pool than tasks', () => {
 
 test('Pool of size 0', () => {
     let pool_size = 0;
+    return runBatches(tasks, pool_size)
+        .then(results => {
+            expect(results).toEqual([
+                { value: 1 },
+                { value: 2 },
+                { error: 'error' },
+                { error: 'error' },
+                { value: 4 },
+                { error: 'error' }
+            ])
+        })
+})
+
+test('Pool of size 1', () => {
+    let pool_size = 1;
     return runBatches(tasks, pool_size)
         .then(results => {
             expect(results).toEqual([
