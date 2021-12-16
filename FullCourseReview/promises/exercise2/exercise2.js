@@ -1,13 +1,8 @@
 'use strict'
+require('regenerator-runtime/runtime');
 
 function wait(milliseconds) {
-    var start = new Date().getTime();
-    let waiting = true;
-    while (waiting) {
-        if ((new Date().getTime() - start) > milliseconds) {
-            waiting = false
-        }
-    }
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
 async function queryRetry(request, maxRetry, delay, useIncrement) {
@@ -19,7 +14,7 @@ async function queryRetry(request, maxRetry, delay, useIncrement) {
             return result
         } catch (e) {
             if (i !== maxRetry - 1) {
-                wait(waitTime);
+                await wait(waitTime);
             }
             if (useIncrement) {
                 waitTime += delay

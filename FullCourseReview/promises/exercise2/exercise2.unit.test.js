@@ -9,7 +9,6 @@ const useIncrement = true;
 const delay = 1000;
 
 
-
 test('Success in the first try.', () => {
     expect.assertions(1);
     return expect(queryRetry(urlQuery('https://www.google.com/'), maxRetry, delay, useIncrement))
