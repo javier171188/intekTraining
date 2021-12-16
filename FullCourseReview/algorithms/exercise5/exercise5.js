@@ -4,12 +4,14 @@ function reverseBlocks(arr, blockSize) {
     if (blockSize < 1) {
         blockSize = 1;
     }
-    let resultingArray = [];
     for (let i = 0; i < arr.length; i += blockSize) {
         let currentBlock = arr.slice(i, i + blockSize);
-        resultingArray = resultingArray.concat(currentBlock.reverse());
+        currentBlock.reverse();
+        for (let j = 0; j < currentBlock.length; j++) {
+            arr[i + j] = currentBlock[j]
+        }
     }
-    return resultingArray;
+    return arr
 }
 
-module.exports = reverseBlocks;
+export default reverseBlocks;
