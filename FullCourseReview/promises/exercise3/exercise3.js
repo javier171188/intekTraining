@@ -3,7 +3,7 @@ require('isomorphic-fetch');
 
 function cancellableFetch(url) {
     let cancel;
-    let request = new Promise((resolve, reject) => resolve(fetch(url)));
+    let request = fetch(url);
     let cancelPromise = new Promise((resolve, reject) => {
         cancel = () => reject({ reason: 'cancelled' })
     });
