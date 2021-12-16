@@ -11,6 +11,10 @@ function mergeArrays(largeArray, smallArray) {
     for (let i = 0; i < smallArraySize; i++) {
         if (smallArray[i] < largeArray[j]) {
             console.log(smallArray[i]);
+            largeArray.slice(j + 1, largeArray.length - i - 1) = largeArray.slice(j, largeArray.length - i);
+            //https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
+            largeArray[j] = smallArray[i];
+            j += 1;
         } else {
             while (largeArray[j] <= smallArray[i]) {
                 console.log(largeArray[j]);
