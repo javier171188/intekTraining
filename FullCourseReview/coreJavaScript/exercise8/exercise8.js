@@ -1,27 +1,31 @@
-'use strict'
+'use strict';
 
 function flattenFun(oldObject, parentName) {
-    let newObject = new Object();
-    Object.keys(oldObject).forEach((t) => {
+    let newObject = Object.keys(oldObject).reduce((withNewKeys, t) => {
         if (typeof oldObject[t] === 'object' && Object.prototype.toString.call(oldObject[t]) !== '[object Array]') {
-            let subOject = flattenFun(oldObject[t], t);
+            let subObject = flattenFun(oldObject[t], t);
 
-            Object.keys(subOject).forEach(key => {
-                newObject[parentName + '_' + key] = subOject[key];
-            })
+            let withParentName = Object.keys(subObject).reduce((innerObj, key) => {
+                innerObj[`${parentName}_${key}`] = subObject[key];
+                return innerObj;
+            }, {})
+
+            Object.assign(withNewKeys, withParentName);
+
         } else {
-            newObject[parentName + '_' + t] = oldObject[t];
+            withNewKeys[`${parentName}_${t}`] = oldObject[t];
         }
-    })
+        return withNewKeys;
+    }, {})
     return newObject;
 }
 
 function flattenImp(oldObj, parentName) {
-    let newObject = new Object();
+    let newObject = {};
     let objElements = { ...oldObj };
 
     for (let n in objElements) {
-        objElements[parentName + '_' + n] = objElements[n];
+        objElements[`${parentName}_${n}`] = objElements[n];
         delete objElements[n];
     }
 
@@ -29,7 +33,7 @@ function flattenImp(oldObj, parentName) {
         for (let t in objElements) {
             if (typeof objElements[t] === 'object' && Object.prototype.toString.call(objElements[t]) !== '[object Array]') {
                 for (let key in objElements[t]) {
-                    objElements[t + '_' + key] = typeof objElements[t][key] === 'object' && Object.prototype.toString.call(objElements[t][key]) !== '[object Array]' ?
+                    objElements[`${t}_${key}`] = typeof objElements[t][key] === 'object' && Object.prototype.toString.call(objElements[t][key]) !== '[object Array]' ?
                         { ...objElements[t][key] } :
                         objElements[t][key];
                 }

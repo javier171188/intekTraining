@@ -1,5 +1,5 @@
-'use strict'
-const { flattenImp, flattenFun } = require('./exercise8')
+'use strict';
+const { flattenImp, flattenFun } = require('./exercise8');
 
 test('Basic test', () => {
     const oldObj = {
