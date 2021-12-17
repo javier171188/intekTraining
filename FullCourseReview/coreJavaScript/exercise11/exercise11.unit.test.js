@@ -25,7 +25,7 @@ test('Basic selectors', () => {
     ]);
 
     let section = querySelectorAll('section');
-    section = section.map(s => s.replace(/\s/g, ''))
+    section = section.map(s => s.replace(/\s/g, ''))//<----Avoid Regex
     expect(section).toEqual([
         `<section>
             <div id="1" class="note"><input type="checkbox" class="is-complete" checked> </div>
@@ -36,7 +36,7 @@ test('Basic selectors', () => {
             <div id="6" class="note"><input type="checkbox" class="is-complete" ></div>
             <div class="otherclass"></div>
             <div></div>
-            </section>`.replace(/\s/g, '')
+            </section>`.replace(/\s/g, '')//<----Avoid Regex
     ])
 
     let empty = querySelectorAll('');

@@ -11,19 +11,44 @@ let html =
     <div></div>
     </section>`;
 
+//let html = '<div id="1" class="note"><input type="checkbox" class="is-complete" checked> </div>';
+
+let selector = "div.note < input.is-complete[checked]";
+let result = querySelectorAll(selector);
+console.log(result);
+
 
 function simpleSelector(selector, htmlStr) {
     let [elementType, elementClass] = selector.split('.');
 
-    let propertyPattern = new RegExp(/\[.*?\]/, 'g');
+    //let propertyPattern = new RegExp(/\[.*?\]/, 'g');
     let fullPattern = new RegExp(`<${elementType}.*?\/${elementType}>`, 'gs');
     let openingPattern = new RegExp(`<${elementType}.*?/?>`, 'g');
 
     let property = '';
     if (elementClass) {
-        var propertyIt = elementClass.matchAll(propertyPattern);
+        /*var propertyIt = elementClass.matchAll(propertyPattern);
         let propertyLi = [...propertyIt];
         propertyLi = propertyLi.map(p => p[0]);
+
+        console.log(propertyLi);*/
+
+        let openingIndex = [];
+        let closingIndex = [];
+        for (let i in elementClass) {
+            if (elementClass[i] === '[') {
+                openingIndex.push(i);
+            }
+            else if (elementClass[i] === ']') {
+                closingIndex.push(i);
+            }
+        }
+
+        let propertyLi = [];
+        for (let i in openingIndex) {
+            propertyLi.push(elementClass.slice(openingIndex[i], closingIndex[i] + 1));
+        }
+
 
         if (propertyLi.length > 0) {
             property = propertyLi[0];
@@ -90,4 +115,4 @@ function querySelectorAll(selector) {
     return parentsList;
 }
 
-module.exports = { querySelectorAll };
+//module.exports = { querySelectorAll };
