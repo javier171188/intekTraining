@@ -1,28 +1,11 @@
 'use strict';
 
-//let tree = '(A,(B,(D),(E)),(C,(F,(H),(I)),(G,,(J))),(K,(L),(M)))';
-//let tree = '(A,(B,(D),(E)),(C,(F,(H),(I)),(G,,(J))))'
-//let tree = '(AB,(C)';
-
-
-//let tree = '(A,,,)';
-//let infix = printTree(tree);
-//console.log(infix);
-
-//checkSyntax(tree);
-
-
 function checkSyntax(tree) {
     if (tree.length < 1) return true;
     if (tree.length === 1) return false;
     if (tree[0] !== '(' || tree[tree.length - 1] !== ')') return false
     let noParents = tree.slice(1, -1);
     let root = noParents.split(',')[0];
-    //let branches = noParents.replace(root, '');
-
-    /*console.log('tree', tree);
-    console.log('root', root);
-    console.log('branches', branches);*/
 
     if (root.includes(')') || root.includes('(')) return false
 
@@ -30,18 +13,26 @@ function checkSyntax(tree) {
 }
 
 
+
+
 function printTree(tree, order = 'infix') {
 
     let transverse = '';
     function transverseTree(tree, order) {
+
         let correctSyntax = checkSyntax(tree);
 
         if (!correctSyntax) {
             throw new SyntaxError('The three syntax is not correct.')
-            //console.log('incorrect', tree);
         }
 
         tree = tree.slice(1, -1);
+
+        if (!tree.includes('(')) {
+            let elements = tree.split(',');
+            if (elements.length > 3) throw new SyntaxError('The three syntax is not correct.');
+            tree = elements[0];
+        }
 
         let firstComaIndex = tree.indexOf(',');
         if (firstComaIndex < 0) {
