@@ -1,39 +1,48 @@
 'use strict';
 
-//let tree = '(A,(B,(D),(E)),(C,(F,(H),(I)),(G,,(J))))';
-let tree = ' (A,,) ';
-//let infix = printTree(tree);
+//let tree = '(A,(B,(D),(E)),(C,(F,(H),(I)),(G,,(J))),(K,(L),(M)))';
+//let tree = '(A,(B,(D),(E)),(C,(F,(H),(I)),(G,,(J))))'
+//let tree = '(AB,(C)';
 
-let goodSyntax = checkSyntax('');
-console.log(goodSyntax);
+
+//let tree = '(A,,,)';
+//let infix = printTree(tree);
+//console.log(infix);
+
+//checkSyntax(tree);
+
 
 function checkSyntax(tree) {
     if (tree.length < 1) return true;
     if (tree.length === 1) return false;
+    if (tree[0] !== '(' || tree[tree.length - 1] !== ')') return false
+    let noParents = tree.slice(1, -1);
+    let root = noParents.split(',')[0];
+    //let branches = noParents.replace(root, '');
 
-    if 
+    /*console.log('tree', tree);
+    console.log('root', root);
+    console.log('branches', branches);*/
+
+    if (root.includes(')') || root.includes('(')) return false
+
+    return true;
 }
 
 
 function printTree(tree, order = 'infix') {
-    /*if (tree === '(AB,(C)') {
-        throw new SyntaxError('Hi')
-    }*/
-
-
-
-
 
     let transverse = '';
-
     function transverseTree(tree, order) {
-        while (tree.includes(' ')) {
-            tree = tree.replace(' ', '');
+        let correctSyntax = checkSyntax(tree);
+
+        if (!correctSyntax) {
+            throw new SyntaxError('The three syntax is not correct.')
+            //console.log('incorrect', tree);
         }
 
-        console.log(tree)
         tree = tree.slice(1, -1);
-        console.log(tree)
+
         let firstComaIndex = tree.indexOf(',');
         if (firstComaIndex < 0) {
             transverse += ',' + tree;
@@ -89,8 +98,22 @@ function printTree(tree, order = 'infix') {
         }
     }
 
+    while (tree.includes(' ')) {
+        tree = tree.replace(' ', '');
+    }
+
     transverseTree(tree, order);
-    return transverse.slice(1);
+    transverse = transverse.slice(1);
+
+    if (transverse.startsWith(',') || transverse.endsWith(',')) {
+        throw new SyntaxError('The three syntax is not correct.')
+    }
+
+
+    while (transverse.includes(',,')) {
+        transverse = transverse.replace(',,', ',');
+    }
+    return transverse
 }
 
-//module.exports = { printTree };
+module.exports = { printTree };
