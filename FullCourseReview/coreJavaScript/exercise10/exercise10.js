@@ -1,6 +1,29 @@
 'use strict';
 
+//let tree = '(A,(B,(D),(E)),(C,(F,(H),(I)),(G,,(J))))';
+let tree = ' (A,,) ';
+//let infix = printTree(tree);
+
+let goodSyntax = checkSyntax('');
+console.log(goodSyntax);
+
+function checkSyntax(tree) {
+    if (tree.length < 1) return true;
+    if (tree.length === 1) return false;
+
+    if 
+}
+
+
 function printTree(tree, order = 'infix') {
+    /*if (tree === '(AB,(C)') {
+        throw new SyntaxError('Hi')
+    }*/
+
+
+
+
+
     let transverse = '';
 
     function transverseTree(tree, order) {
@@ -8,8 +31,9 @@ function printTree(tree, order = 'infix') {
             tree = tree.replace(' ', '');
         }
 
+        console.log(tree)
         tree = tree.slice(1, -1);
-
+        console.log(tree)
         let firstComaIndex = tree.indexOf(',');
         if (firstComaIndex < 0) {
             transverse += ',' + tree;
@@ -64,8 +88,9 @@ function printTree(tree, order = 'infix') {
             transverseTree(branch2, order);
         }
     }
+
     transverseTree(tree, order);
     return transverse.slice(1);
 }
 
-module.exports = { printTree };
+//module.exports = { printTree };

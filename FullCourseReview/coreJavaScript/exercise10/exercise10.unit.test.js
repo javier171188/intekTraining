@@ -19,3 +19,11 @@ test('Default to infix', () => {
     let infix = printTree(tree);
     expect(infix).toEqual('D,B,E,A,H,F,I,C,,G,J');
 })
+
+test('Reject invalid syntax', () => {
+    let tree = '(AB,(C)';
+
+    expect(() => printTree(tree)).toThrow(SyntaxError);
+    expect(() => printTree(tree)).toThrow("Hi");
+
+})
