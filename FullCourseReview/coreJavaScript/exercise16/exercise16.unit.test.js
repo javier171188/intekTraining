@@ -33,4 +33,8 @@ test('Small lists', () => {
     head.next = head;
     loopNode = findLoopNode(head);
     expect(loopNode).toBe(head);
+
+    head = null;
+    loopNode = findLoopNode(head);
+    expect(loopNode).toBe(null);
 })

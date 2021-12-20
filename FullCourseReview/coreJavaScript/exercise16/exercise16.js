@@ -1,20 +1,28 @@
 'use strict';
+//https://www.geeksforgeeks.org/find-first-node-of-loop-in-a-linked-list/
 
 function findLoopNode(head) {
-    if (!head.next) {
+    if (!head || !head.next || !head.next.next) {
         return null;
     }
-    let nodes = new Set();
-    nodes.add(head)
-    let temp = head.next;
-    while (temp.next) {
-        if (nodes.has(temp)) {
-            return temp;
+
+    let slow = head;
+    let fast = head;
+
+    while (fast.next) {
+        slow = slow.next;
+        fast = fast.next.next;
+        if (slow === fast) {
+            break;
         }
-        nodes.add(temp)
-        temp = temp.next;
     }
-    return null;
+    if (!fast.next) return null
+    slow = head;
+    while (slow !== fast) {
+        slow = slow.next;
+        fast = fast.next;
+    }
+    return fast;
 }
 
 module.exports = { findLoopNode };
