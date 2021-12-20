@@ -1,17 +1,30 @@
 'use strict';
+//https://www.geeksforgeeks.org/find-element-array-sum-left-array-equal-sum-right-array/
+//Method 4
 
 function balanceIndex(array) {
-    for (let i in array) {
-        let index = parseInt(i);
-        let firstArray = array.slice(0, index);
-        let secondArray = array.slice(index);
-        let firstSum = firstArray.reduce((p, c) => p + c, 0);
-        let secondSum = secondArray.reduce((p, c) => p + c, 0);
-        if (firstSum === secondSum) {
-            return index - 1;
+    let leftSum = 0;
+    let rightSum = 0;
+
+    let i, j;
+    for (i = 0, j = array.length - 1; i < j; i++, j--) {
+        leftSum += array[i];
+        rightSum += array[j];
+
+        while (leftSum < rightSum && i < j) {
+            i += 1;
+            leftSum += array[i];
+        }
+
+        while (rightSum < leftSum && i < j) {
+            j -= 1;
+            rightSum += array[j]
         }
     }
-    return -1;
+    if (leftSum === rightSum && i - 1 === j) {
+        return j
+    }
+    return -1
 }
 
 module.exports = { balanceIndex };
