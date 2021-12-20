@@ -51,4 +51,8 @@ test('Accept equivalent syntax', () => {
     tree = '(A,,)';
     transverse = printTree(tree);
     expect(transverse).toEqual('A');
+
+    let rootStr = '(1,(2,(3,,),(4,(5,,),)),(2,(4,,(5,,)),(3,,)))';
+    transverse = printTree(rootStr);
+    expect(transverse).toEqual('3,2,5,4,1,4,5,2,3');
 })

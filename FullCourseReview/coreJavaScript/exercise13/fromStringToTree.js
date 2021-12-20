@@ -14,8 +14,36 @@ let root = {
                 left: {},
                 right: {}
             },
-            right: {}
+            right: null
         }
     },
-    right: {}
+    right: {
+        value: 2,
+        left: {
+            value: 4,
+            left: null,
+            right: {
+                value: 5,
+                left: null,
+                right: null
+            }
+        },
+        right: {
+            value: 3,
+            left: null,
+            right: null
+        }
+    }
 }
+
+let rootStr = '(1,(2,(3,,),(4,(5,,),)),(2,(4,,(5,,)),(3,,)))';
+
+function fromTreeToString(treeObj) {
+    if (!treeObj) return '';
+    if (!treeObj.value) return '';
+
+    let treeStr = `(${treeObj.value},${fromTreeToString(treeObj.left)},${fromTreeToString(treeObj.right)})`;
+    return treeStr;
+}
+
+console.log(fromTreeToString(root))

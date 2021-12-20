@@ -12,9 +12,6 @@ function checkSyntax(tree) {
     return true;
 }
 
-
-
-
 function printTree(tree, order = 'infix') {
 
     let transverse = '';
@@ -69,6 +66,9 @@ function printTree(tree, order = 'infix') {
         let branch2;
         if (closingParIndex === 0) {
             [branch1, branch2] = branches.split(',')
+            if (branch1 === '') {
+                branch2 = branches.slice(1);
+            }
         } else {
             branch1 = branches.substring(0, closingParIndex + 1);
             branch2 = branches.slice(closingParIndex + 2);

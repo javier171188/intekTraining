@@ -1,12 +1,35 @@
 'use strict';
-function printTree(tree, order = 'infix') {
-    let transverse = '';
 
+function checkSyntax(tree) {
+    if (tree.length < 1) return true;
+    if (tree.length === 1) return false;
+    if (tree[0] !== '(' || tree[tree.length - 1] !== ')') return false
+    let noParents = tree.slice(1, -1);
+    let root = noParents.split(',')[0];
+
+    if (root.includes(')') || root.includes('(')) return false
+
+    return true;
+}
+
+function printTree(tree, order = 'infix') {
+
+    let transverse = '';
     function transverseTree(tree, order) {
-        while (tree.includes(' ')) {
-            tree = tree.replace(' ', '');
+
+        let correctSyntax = checkSyntax(tree);
+        console.log(tree);
+        if (!correctSyntax) {
+            throw new SyntaxError('The three syntax is not correct.')
         }
+
         tree = tree.slice(1, -1);
+
+        if (!tree.includes('(')) {
+            let elements = tree.split(',');
+            if (elements.length > 3) throw new SyntaxError('The three syntax is not correct.');
+            tree = elements[0];
+        }
 
         let firstComaIndex = tree.indexOf(',');
         if (firstComaIndex < 0) {
@@ -62,12 +85,36 @@ function printTree(tree, order = 'infix') {
             transverseTree(branch2, order);
         }
     }
+
+    while (tree.includes(' ')) {
+        tree = tree.replace(' ', '');
+    }
+
     transverseTree(tree, order);
-    return transverse.slice(1);
+    transverse = transverse.slice(1);
+
+    if (transverse.startsWith(',') || transverse.endsWith(',')) {
+        throw new SyntaxError('The three syntax is not correct.')
+    }
+
+
+    while (transverse.includes(',,')) {
+        transverse = transverse.replace(',,', ',');
+    }
+    return transverse
+}
+
+function fromTreeToString(treeObj) {
+    if (!treeObj) return '';
+    if (!treeObj.value) return '';
+
+    let treeStr = `(${treeObj.value},${fromTreeToString(treeObj.left)},${fromTreeToString(treeObj.right)})`;
+    return treeStr;
 }
 
 function isSymmetric(tree) {
-    let traverseTree = printTree(tree);
+    let treeStr = fromTreeToString(tree);
+    let traverseTree = printTree(treeStr);
     let traverseList = traverseTree.split(',');
     let reversedList = traverseList.reverse();
     let reversedTree = reversedList.join(',');
