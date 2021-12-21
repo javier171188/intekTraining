@@ -13,9 +13,11 @@ test('Check the bar', () => {
     expect(barrSpy).toHaveBeenCalledWith(colors.blue(colors.bgBlack(`\r[████████████████████████████████████████] `)) + colors.bgBlack(colors.green(`100% `)));
 })
 
-jest.mock("readline");
-test('Test users input and log the results', () => {
+
+test('Test args input and log the results', () => {
     //Input: '5'
+    process.argv[2] = 5;
+
     const consoleSpy = jest.spyOn(console, 'log');
     const barrSpy = jest.spyOn(console._stdout, 'write')
     let primeNumbers = getFirstPrimes();

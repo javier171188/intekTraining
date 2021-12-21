@@ -1,15 +1,12 @@
 'use strict';
 const colors = require('colors/safe');
-const readline = require("readline");
+
+getFirstPrimes();
 
 function getFirstPrimes() {
-    const { stdin, stdout } = process;
-    const rl = readline.createInterface({ input: stdin, output: stdout });
-    let primeNumbers;
-    rl.question('How many prime numbers do you want? ', (N) => {
-        primeNumbers = computePrimes(N);
-        rl.close()
-    });
+    let N = process.argv[2];
+    let primeNumbers = computePrimes(N);
+
     return primeNumbers;
 }
 
