@@ -1,19 +1,28 @@
 'use strict';
 
+function getNthValue(head, n) {
+    let temp = head;
+    for (let i = 0; i < n; i++) {
+        temp = temp.next;
+    }
+    return temp.data;
+}
+
 function isPalindrome(head) {
-    if (!head.next) return true;
-    let values = [head.data];
+    if (!head || !head.next) return true;
+    let numberNodes = 0;
     let temp = head;
     while (temp.next) {
+        numberNodes += 1;
         temp = temp.next;
-        values.push(temp.data)
     }
-    for (let i = 0; i < values.length / 2; i++) {
-        if (values[i] !== values[values.length - i - 1]) {
-            return false;
-        };
+
+    temp = head;
+    for (let n = numberNodes; numberNodes / 2 < n; n--) {
+        if (temp.data !== getNthValue(head, n)) return false
+        temp = temp.next;
     }
-    return true;
+    return true
 }
 
 module.exports = { isPalindrome };

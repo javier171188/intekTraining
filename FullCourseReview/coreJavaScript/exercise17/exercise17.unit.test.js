@@ -37,7 +37,7 @@ test('Small lists', () => {
     palindromeBool = isPalindrome(head);
     expect(palindromeBool).toBe(false);
 
-    head = createLinkedList(['A']);
+    head = createLinkedList([]);
     palindromeBool = isPalindrome(head);
     expect(palindromeBool).toBe(true);
 })
