@@ -8,7 +8,7 @@ body{
 
 .fancy-button{
     margin: calc(0.03*var(--button-width));
-    background: linear-gradient(0, rgba(174,174,174,255), rgba(192,192,192,255)  50%, rgba(210,210,210,255) 50%, rgba(226,226,226,255));
+    background: rgba(182,182,182,255);
     color: rgba(85,85,85,255);
     
     padding: calc(0.015*var(--button-width));
@@ -21,7 +21,8 @@ body{
     rgba(203,203,203,255) 0 0 0 calc(0.17*var(--button-height)), 
     rgba(255,255,255,255) 0 0 0 calc(0.21*var(--button-height)), 
     rgba(102,102,102,255) 0 0 0 calc(0.25*var(--button-height)), 
-    rgba(97,97,97,255) 0 calc(0.02*var(--button-height)) calc(0.08*var(--button-height)) calc(0.27*var(--button-height));
+    rgba(97,97,97,255) 0 calc(0.02*var(--button-height)) calc(0.08*var(--button-height)) calc(0.27*var(--button-height)),
+    inset 0px calc(var(--button-height)*0.53) 0px 0px rgba(222,222,222,255);
 
 
     display: flex;
@@ -33,7 +34,9 @@ body{
     font-size: calc(0.1*var(--button-width));
     text-decoration: none;
     font-weight: 900;
-    text-shadow: 0 calc(0.01*var(--button-height)) 0 rgba(255,255,255,.9);
+    text-shadow: 0 calc(0.01*var(--button-height)) 0 rgba(255,255,255,.9),
+    calc(-0.01*var(--button-height)) 0px 0px rgba(141,89,84,255),
+    calc(0.01*var(--button-height)) 0px 0px rgba(105,143,184,255);
 }
 
 a::after {

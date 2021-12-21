@@ -99,3 +99,7 @@ button{
     font-size: calc(11*var(--unit));
     padding: calc(0*var(--unit));
 }
+
+button:hover{
+    cursor: pointer;
+}
