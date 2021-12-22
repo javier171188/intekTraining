@@ -54,7 +54,21 @@
         function setTimeout(...params) {
             console.log(params);
             console.log(parent);
-            setTimeout(assert, 500, true, "test delayed B");
+            const timeInterval = params[1];
+            let pass, message;
+            let savingAssert = global.assert;
+            if (params.length > 2) {
+                pass = params[2];
+                message = params[3];
+            } else {
+                pass = true;
+                message = "test delayed A";
+            }
+            function assert(pass, message) {
+                return parent.appendChild(result(message, pass));
+            }
+            originalSetTimeout(assert, timeInterval, pass, message);
+            global.assert = savingAssert;
         }
         global.setTimeout = setTimeout;
         testBlock();
