@@ -32,38 +32,59 @@
 })(window);*/
 
 // Works without arrow functions
-/*
+
 (function (global) {
-    //let root = document.getElementById('results');
+    let root = document.getElementById('results');
+
     const result = function (text, pass) {
         const el = document.createElement('li');
         el.textContent = text;
         pass !== undefined && (el.style.color = pass ? 'green' : 'red');
         return el;
     }
+
+    let originalSetTimeout = global.setTimeout;
+
     let assert = function (pass, message) {
         let root = document.getElementById('results');
         return root.appendChild(result(message, pass))
     };
-    global.assert = assert;
+
+    let setTimeout = function (fn, delay, ...params) {
+        global.assert = function (pass, message) { //root.appendChild(result(message, pass)) 
+            let node = global.node;
+
+            node.appendChild(result(message, pass));
+            console.log(node);
+        };
+        originalSetTimeout(() => { fn(...params) }, delay)
+    }
+
+    global.setTimeout = setTimeout;
+
+    //global.assert = assert;
 
     function test(description, testBlock) {
         let saving = assert;
-        let parent = assert(undefined, description)
+        let root = assert(undefined, description)
             .appendChild(document.createElement('ul'));
 
-        (function (parent) {
-            global.assert = function (pass, message) {
-                return parent.appendChild(result(message, pass))
-            }
-            testBlock();
-        })(parent)
 
-        global.assert = saving;
+        (function (root) {
+            global.assert = function (pass, message) {
+                const node = root.appendChild(result(message, pass));
+                global.node = root;
+                return node;
+            }
+
+            testBlock();
+        })(root)
+
+        //global.assert = saving;
     }
     global.test = test;
 })(window);
-*/
+
 
 /*(function (global) {
     const result = (text, pass) => {
@@ -106,6 +127,7 @@
     global.test = test;
 })(window);*/
 
+/*
 (function (global) {
     let parent = document.getElementById('results');
     const result = function (text, pass, parent) {
@@ -136,13 +158,14 @@
                 console.log('inside', parent)
                 return parent.appendChild(result(message, pass, parent))
             }
-
+            global.assert = assert;
+            testBlock();
         })(inner)
 
 
-        testBlock();
+
         //parent = document.getElementById('results');
         //global.assert = saving;
     }
     global.test = test;
-})(window);
+})(window);*/

@@ -5,7 +5,7 @@
 
     test("TestBlock A", function () {
         assert(true, "Inside TestBlock A");
-        setTimeout(() => assert(true, "test delayed A"), 1000);
+        setTimeout(function () { assert(true, "test delayed A") }, 1000);
     });
     //assert(true, "Outside and after the TestBlock A");
     test("TestBlock B", function () {
