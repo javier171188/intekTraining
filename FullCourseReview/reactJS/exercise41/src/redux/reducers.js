@@ -1,17 +1,15 @@
 import dataState from "./state";
 
-
-const chatAreaReducer = (state = dataState, action) => {
+const reducers = (state = dataState, action) => {
     switch (action.type) {
         case "SET_NEW_DATA":
-
             return {
                 ...state,
-                currentUserChat: action.payload,
+                data: action.payload,
             };
         default:
             return state;
     }
 }
 
-export default chatAreaReducer;
+export default reducers;

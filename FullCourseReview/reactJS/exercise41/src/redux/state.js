@@ -1,6 +1,8 @@
 let dataState = {
     data: [
-        { argument: null, value: null },
+        { argument: 1, value: 1 },
+        { argument: 2, value: 2 },
+        { argument: 25, value: 1 },
     ]
 }
 

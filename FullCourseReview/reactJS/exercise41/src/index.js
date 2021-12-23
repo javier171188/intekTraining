@@ -1,12 +1,14 @@
 import { render } from "react-dom";
-import Chart from "./LineChart";
+import LineChart from "./LineChart";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 const App = () => {
     return (
-        <div>
+        <Provider store={store}>
             <h1>Chart</h1>
-            <Chart />
-        </div>
+            <LineChart />
+        </Provider>
     );
 };
 

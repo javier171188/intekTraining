@@ -8,21 +8,31 @@ import {
     Chart,
     LineSeries,
 } from '@devexpress/dx-react-chart-material-ui';
-import data from './mockData.js';
+import { connect } from "react-redux";
+
+import { getDataAction } from './redux/actions';
+
+let LineChart = (props) => {
+    let { data, getDataAction } = props;
+    setTimeout(getDataAction, 1000);
+    return (
+        <Paper>
+            <Chart data={data}            >
+                <ArgumentAxis />
+                <ValueAxis />
+                <LineSeries valueField="value" argumentField="argument" />
+            </Chart>
+        </Paper>
+    );
+}
 
 
-let LineChart = () => (
-    <Paper>
-        <Chart
-            data={data}
-        >
-            <ArgumentAxis />
-            <ValueAxis />
+const mapStateToProps = (state) => ({
+    data: state.data
+});
 
-            <LineSeries valueField="value" argumentField="argument" />
-        </Chart>
-    </Paper>
-);
+const mapDispatchToProps = {
+    getDataAction
+};
 
-
-export default LineChart;
+export default connect(mapStateToProps, mapDispatchToProps)(LineChart);
