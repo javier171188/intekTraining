@@ -8,3 +8,5 @@ coverage/
 .vscode/
 .env
 .DS_Store
+.parcel-cache/
+dist/
