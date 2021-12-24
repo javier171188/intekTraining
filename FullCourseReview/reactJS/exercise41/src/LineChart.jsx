@@ -14,7 +14,7 @@ import { getDataAction } from './redux/actions';
 
 let LineChart = (props) => {
     let { data, getDataAction } = props;
-    setTimeout(getDataAction, 1000);
+    //setTimeout(getDataAction, 1000);
     return (
         <Paper>
             <Chart data={data}            >
