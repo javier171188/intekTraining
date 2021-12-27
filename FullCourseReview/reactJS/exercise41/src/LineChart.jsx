@@ -35,4 +35,5 @@ const mapDispatchToProps = {
     getDataAction
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LineChart);
+export default LineChart
+//export default connect(mapStateToProps, mapDispatchToProps)(LineChart);
