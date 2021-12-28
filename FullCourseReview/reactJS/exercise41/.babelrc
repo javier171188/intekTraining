@@ -1,16 +1,4 @@
 {
-    "presets": [
-        [
-            "@babel/preset-react",
-            {
-                "runtime": "automatic"
-            }
-        ],
-        "@babel/preset-env"
-    ],
-    "plugins": [
-        "@babel/plugin-proposal-class-properties"
-    ],
     "env": {
         "test": {
             "presets": [
@@ -20,6 +8,12 @@
                         "targets": {
                             "node": "current"
                         }
+                    }
+                ],
+                [
+                    "@babel/preset-react",
+                    {
+                        "runtime": "classic"
                     }
                 ]
             ]
