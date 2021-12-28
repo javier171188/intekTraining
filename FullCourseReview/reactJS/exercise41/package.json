@@ -6,15 +6,22 @@
   "scripts": {
     "dev": "parcel src/index.html",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.16.5",
     "@babel/preset-react": "^7.16.5",
+    "@storybook/addon-actions": "^6.4.9",
+    "@storybook/addon-essentials": "^6.4.9",
+    "@storybook/addon-links": "^6.4.9",
+    "@storybook/react": "^6.4.9",
     "@testing-library/react": "^12.1.2",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.6",
+    "babel-loader": "^8.2.3",
     "enzyme": "^3.11.0",
     "jest": "^27.4.5",
     "parcel": "^2.0.1"
