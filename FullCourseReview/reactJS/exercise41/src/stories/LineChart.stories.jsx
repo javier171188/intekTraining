@@ -7,18 +7,19 @@ export default {
     title: 'Chart',
     component: LineChart,
     argTypes: {
-        backgroundColor: { control: 'color' },
+        height: { control: 'number' },
+        width: { control: 'number' },
     },
 };
 
-const Template = () => (
-    <Provider store={store}>
-        <LineChart />
+const Template = (args) => (
+    <Provider store={store} >
+        <LineChart {...args} />
     </Provider>
 )
 
 export const Primary = Template.bind({});
 Primary.args = {
-    size: 'small',
-    label: 'Button',
+    seriesName: "Noisy Series",
+    title: "Line Chart",
 };

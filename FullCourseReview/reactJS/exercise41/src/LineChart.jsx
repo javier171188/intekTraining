@@ -7,19 +7,31 @@ import {
     ValueAxis,
     Chart,
     LineSeries,
+    Legend,
+    Title,
+
 } from '@devexpress/dx-react-chart-material-ui';
 import { connect } from "react-redux";
 
 import { getDataAction } from './redux/actions';
 
 let LineChart = (props) => {
-    let { data } = props;
+    let { data, seriesName, title, width, height } = props;
     return (
         <Paper>
-            <Chart data={data}            >
+            <Chart
+                data={data}
+                width={width}
+                height={height} >
                 <ArgumentAxis />
                 <ValueAxis />
-                <LineSeries valueField="value" argumentField="argument" />
+                <LineSeries
+                    name={seriesName || 'Main Series'}
+                    valueField="value"
+                    argumentField="argument"
+                />
+                <Legend />
+                <Title text={title} />
             </Chart>
         </Paper>
     );
