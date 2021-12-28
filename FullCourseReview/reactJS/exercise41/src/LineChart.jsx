@@ -13,8 +13,7 @@ import { connect } from "react-redux";
 import { getDataAction } from './redux/actions';
 
 let LineChart = (props) => {
-    let { data, getDataAction } = props;
-    //setTimeout(getDataAction, 1000);
+    let { data } = props;
     return (
         <Paper>
             <Chart data={data}            >
@@ -35,5 +34,4 @@ const mapDispatchToProps = {
     getDataAction
 };
 
-export default LineChart
-//export default connect(mapStateToProps, mapDispatchToProps)(LineChart);
+export default connect(mapStateToProps, mapDispatchToProps)(LineChart);
