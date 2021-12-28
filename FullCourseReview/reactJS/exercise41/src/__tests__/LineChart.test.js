@@ -7,6 +7,8 @@ import ProviderMock from '../__mocks__/ProviderMock';
 import { getDataAction } from '../redux/actions';
 import reducers from '../redux/reducers';
 import LineChart from '../LineChart';
+import store from '../redux/store';
+import dataState from '../redux/state';
 
 const chart = shallow(
     <ProviderMock>
@@ -41,5 +43,20 @@ describe('Check the reducers', () => {
             payload: { x: 1, y: 1 }
         }
         expect(reducers(state, action)).toEqual(newState);
+    })
+})
+
+test('Check the saga', () => {
+    let initialState = store.getState();
+    expect(initialState).toEqual(dataState);
+    return new Promise((res, rej) => {
+        setTimeout(() => {
+            let state = store.getState();
+            expect(state.data.length).toEqual(100);
+            expect(state.data[0].argument).toEqual(1);
+            expect(state.data[99].argument).toEqual(100);
+            expect(state).not.toEqual(initialState);
+            res();
+        }, 1000);
     })
 })
