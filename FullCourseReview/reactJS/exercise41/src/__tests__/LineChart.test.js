@@ -4,7 +4,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import ProviderMock from '../__mocks__/ProviderMock';
-const LineChart = require('../LineChart');
+import { getDataAction } from '../redux/actions';
+import LineChart from '../LineChart';
 
 const chart = shallow(
     <ProviderMock>
@@ -16,3 +17,13 @@ test("Basic test", () => {
     expect(LineChart).toBeTruthy();
     expect(chart.length).toEqual(1);
 });
+
+test("Check the action", () => {
+    const payload = undefined;
+    const expected = {
+        type: "GET_NEW_DATA",
+        payload
+    }
+
+    expect(getDataAction()).toEqual(expected);
+})
