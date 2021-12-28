@@ -1,5 +1,5 @@
 'use strict';
-import { eventChannel, END } from 'redux-saga';
+import { eventChannel } from 'redux-saga';
 
 function sendData() {
     let data = [];

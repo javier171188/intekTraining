@@ -1,6 +1,5 @@
-import { all, call, put, take, takeEvery } from "redux-saga/effects";
+import { call, put, take } from "redux-saga/effects";
 import subscriber from './customDataSource';
-import { eventChannel, runSaga } from 'redux-saga'
 
 
 function* getData() {
