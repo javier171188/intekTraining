@@ -2,11 +2,12 @@ import { render } from "react-dom";
 import LineChart from "./LineChart";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import Box from '@mui/material/Box';
 
 const App = () => {
     return (
         <Provider store={store}>
-            <h1>Chart</h1>
+            <Box component="h1" color="brown">Chart</Box>
             <LineChart />
         </Provider>
     );

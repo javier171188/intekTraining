@@ -11,3 +11,4 @@ coverage/
 **/.parcel-cache/
 dist/
 FullCourseReview/reactJS/exercise41/.parcel-cache/data.mdb
+node_modules
