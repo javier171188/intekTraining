@@ -8,6 +8,6 @@ coverage/
 .vscode/
 .env
 .DS_Store
-.parcel-cache/
+**/.parcel-cache/
 dist/
-.parcel-cache/
+FullCourseReview/reactJS/exercise41/.parcel-cache/data.mdb
