@@ -2,9 +2,13 @@ import Image from 'material-ui-image'
 import { Box } from '@material-ui/core';
 
 
-//Remember to check the sizes height > width?
+//Remember to check the sizes height = 2* width
 const IndividualPhoto = (props) => {
     let { src, width, height } = props;
+    let widthStr = '100%';
+    let heightStr = 'auto';
+    if (width < height) [widthStr, heightStr] = [heightStr, widthStr];
+
     return <Box sx={{
         width: "30vw",
         height: "30vw",
@@ -16,8 +20,8 @@ const IndividualPhoto = (props) => {
         <Image
             src={src}
             imageStyle={{
-                width: "100%",
-                height: "auto",
+                width: widthStr,
+                height: heightStr,
                 left: '50%',
                 top: '50%',
                 transform: 'translate(-50%, -50%)'
