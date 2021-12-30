@@ -32,9 +32,7 @@ const Gallery = () => {
         let response = await getPhotos(galleryID, page);
         setPhotos(response.images);
     }
-    function handleReachButton() {
 
-    }
 
     return <>
         <Photos photos={photos} />
