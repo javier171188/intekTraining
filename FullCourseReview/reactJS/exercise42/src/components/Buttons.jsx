@@ -1,8 +1,7 @@
 import AppBar from '@mui/material/AppBar';
 import { Button } from '@mui/material';
 
-
-const Buttons = () => {
+const Buttons = ({ page, handlePrevious, handleNext }) => {
     return <AppBar position="fixed" color="primary"
         sx={{
             top: 'auto',
@@ -13,7 +12,20 @@ const Buttons = () => {
             padding: "5px",
         }}
     >
-        <Button variant="contained">Previous</Button>  <Button variant="contained">Next</Button>
+        <Button
+            variant="contained"
+            disabled={page === 1}
+            onClick={handlePrevious}
+        >
+            Previous
+        </Button>
+        Page: {page}
+        <Button
+            variant="contained"
+            onClick={handleNext}
+        >
+            Next
+        </Button>
     </AppBar >
 }
 
