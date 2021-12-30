@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axios from '../mockCall';
 import Photos from './Photos';
 import Buttons from './Buttons';
@@ -11,8 +11,12 @@ const Gallery = () => {
     }
 
     const [photos, setPhotos] = useState([]);
+    const [nextPhotos, setNextPhotos] = useState([]);
     const [page, setPage] = useState(1);
     const [galleryID, setGalleryID] = useState(1);
+    const [maxPages, setMaxPages] = useState(10);
+
+    const photosRef = useRef()
 
     useEffect(async () => {
         let response = await getPhotos(1, 1);
@@ -25,21 +29,36 @@ const Gallery = () => {
         setPhotos([]);
         let response = await getPhotos(galleryID, page);
         setPhotos(response.images);
+        setNextPhotos([]);
     }
     async function handleNext() {
         setPage(page + 1);
-        setPhotos([]);
-        let response = await getPhotos(galleryID, page);
-        setPhotos(response.images);
+        if (nextPhotos.length > 0) {
+            setPhotos(nextPhotos);
+            photosRef.current.scrollTo(0, 0);
+
+        } else {
+            setPhotos([]);
+            let response = await getPhotos(galleryID, page);
+            setPhotos(response.images);
+        }
+        setNextPhotos([]);
     }
 
 
     return <>
-        <Photos photos={photos} />
+        <Photos photos={photos}
+            getPhotos={getPhotos}
+            setNextPhotos={setNextPhotos}
+            page={page}
+            galleryID={galleryID}
+            maxPages={maxPages}
+            ref={photosRef} />
         <Buttons
             page={page}
             handlePrevious={handlePrevious}
-            handleNext={handleNext} />
+            handleNext={handleNext}
+            maxPages={maxPages} />
     </>
 }
 

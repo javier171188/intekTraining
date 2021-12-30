@@ -1,16 +1,21 @@
 import IndividualPhoto from './IndividualPhoto';
 import Box from '@mui/material/Box';
+import { forwardRef } from 'react';
 
 
-const Photos = ({ photos }) => {
-    function handleReachButton(event) {
+const Photos = forwardRef((props, ref) => {
+    let { photos, getPhotos, setNextPhotos, page, galleryID, maxPages } = props;
+    async function handleReachButton(event) {
         var node = event.target;
         const bottom = node.scrollHeight - node.scrollTop === node.clientHeight;
         if (bottom) {
-            console.log("BOTTOM REACHED:", bottom);
+            node.scrollHeight
+            if (maxPages > page) {
+                let nextData = await getPhotos(galleryID, page + 1);
+                setNextPhotos(nextData.images);
+            }
         }
     }
-
     return <Box
         component="div"
         sx={{
@@ -20,9 +25,10 @@ const Photos = ({ photos }) => {
             width: "99vw"
         }}
         onScroll={handleReachButton}
+        ref={ref}
     >
         {photos.map((p, i) => <IndividualPhoto src={p.src} key={i} {...p} />)}
     </Box>
 }
-
+)
 export default Photos;
