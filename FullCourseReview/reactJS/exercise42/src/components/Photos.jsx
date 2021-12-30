@@ -1,4 +1,5 @@
 import IndividualPhoto from './IndividualPhoto';
+import LoadingTemplate from './LoadingTemplate';
 import Box from '@mui/material/Box';
 import { forwardRef } from 'react';
 
@@ -28,6 +29,7 @@ const Photos = forwardRef((props, ref) => {
         ref={ref}
     >
         {photos.map((p, i) => <IndividualPhoto src={p.src} key={i} {...p} />)}
+        {photos.length < 1 && <LoadingTemplate />}
     </Box>
 }
 )
