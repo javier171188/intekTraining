@@ -53,6 +53,14 @@ class makeRequest {
             src: "https://images.pexels.com/photos/9554219/pexels-photo-9554219.jpeg",
             width: 477, height: 636
         },
+        {
+            src: "https://images.pexels.com/photos/2556000/pexels-photo-2556000.jpeg",
+            width: 400, height: 800
+        },
+        {
+            src: "https://images.pexels.com/photos/7492227/pexels-photo-7492227.jpeg",
+            width: 800, height: 400
+        }
         ];
 
     }

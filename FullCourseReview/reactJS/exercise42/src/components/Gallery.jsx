@@ -22,11 +22,13 @@ const Gallery = () => {
 
     async function handlePrevious() {
         setPage(page - 1);
+        setPhotos([]);
         let response = await getPhotos(galleryID, page);
         setPhotos(response.images);
     }
     async function handleNext() {
         setPage(page + 1);
+        setPhotos([]);
         let response = await getPhotos(galleryID, page);
         setPhotos(response.images);
     }

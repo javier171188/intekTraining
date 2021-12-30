@@ -9,31 +9,34 @@ const IndividualPhoto = (props) => {
     let heightStr = 'auto';
     if (width < height) [widthStr, heightStr] = [heightStr, widthStr];
 
-    return <Box sx={{
-        width: "30vw",
-        height: "30vw",
-        border: "solid",
-        margin: 5,
-        float: "left",
-        alignItems: "center"
-    }} >
-        <Image
-            src={src}
-            imageStyle={{
-                width: widthStr,
-                height: heightStr,
-                left: '50%',
-                top: '50%',
-                transform: 'translate(-50%, -50%)'
-            }}
-            style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+    let boxWidth = "30vw";
+    let boxHeight = "30vw";
+    if (width === height * 2)
+        return <Box sx={{
+            width: boxWidth,
+            height: boxHeight,
+            border: "solid",
+            margin: 5,
+            float: "left",
+            alignItems: "center"
+        }} >
+            <Image
+                src={src}
+                imageStyle={{
+                    width: widthStr,
+                    height: heightStr,
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%, -50%)'
+                }}
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
 
-            }}
-        />
-    </Box>
+                }}
+            />
+        </Box>
 }
 
 export default IndividualPhoto;
