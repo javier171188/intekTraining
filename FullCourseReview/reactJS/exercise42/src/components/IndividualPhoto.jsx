@@ -14,16 +14,16 @@ const IndividualPhoto = (props) => {
     let percentageToPlace = "50%";
     let paddingTop = '100%';
     if (width === height * 2) {
-        boxWidth = "60vw";
-        widthStr = "60vw";
+        boxWidth = "calc(60vw + 12px)";
+        widthStr = "calc(60vw + 12px)";
         heightStr = "30vw";
         percentageToPlace = '0';
         paddingTop = '0%';
     }
     else if (2 * width === height) {
-        boxHeight = "60vw";
+        boxHeight = "calc(60vw + 12px)";
         widthStr = "30vw";
-        heightStr = "60vw";
+        heightStr = "calc(60vw + 12px)";
         percentageToPlace = '0';
     }
     return <Box sx={{
