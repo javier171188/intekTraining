@@ -1,3 +1,4 @@
+import React from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 
@@ -9,7 +10,7 @@ const LoadingTemplate = () => {
         <Box sx={{
             display: 'flex',
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "space-around"
         }}>
             <CircularProgress />
             <CircularProgress />

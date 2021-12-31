@@ -1,3 +1,4 @@
+import React from 'react';
 import IndividualPhoto from './IndividualPhoto';
 import LoadingTemplate from './LoadingTemplate';
 import Box from '@mui/material/Box';

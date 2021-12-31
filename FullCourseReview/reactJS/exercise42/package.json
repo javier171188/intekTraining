@@ -4,12 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "dev": "parcel src/index.html"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/preset-react": "^7.16.5",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.6",
+    "enzyme": "^3.11.0",
+    "jest": "^27.4.5",
     "parcel": "^2.0.1"
   },
   "dependencies": {
@@ -19,5 +24,10 @@
     "material-ui-image": "^3.3.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/__test__/setupTest.js"
+    ]
   }
 }

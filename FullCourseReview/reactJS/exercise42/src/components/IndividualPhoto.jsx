@@ -1,8 +1,8 @@
-import Image from 'material-ui-image'
+import React from 'react';
+import Image from 'material-ui-image';
 import { Box } from '@material-ui/core';
 
 
-//Remember to check the sizes height = 2* width
 const IndividualPhoto = (props) => {
     let { src, width, height } = props;
     let widthStr = '100%';
