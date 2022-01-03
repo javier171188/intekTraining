@@ -3,7 +3,7 @@ import AppBar from '@mui/material/AppBar';
 import { Button } from '@mui/material';
 
 const Buttons = ({ page, handlePrevious, handleNext, maxPages }) => {
-    return <AppBar position="fixed" color="primary"
+    return <AppBar position="fixed" color="primary" className="buttons"
         sx={{
             top: 'auto',
             bottom: 0,
@@ -12,11 +12,13 @@ const Buttons = ({ page, handlePrevious, handleNext, maxPages }) => {
             justifyContent: "space-around",
             padding: "5px",
         }}
+        enableColorOnDark={true}
     >
         <Button
             variant="contained"
             disabled={page === 1}
             onClick={handlePrevious}
+            className='previous-button'
         >
             Previous
         </Button>
@@ -25,6 +27,7 @@ const Buttons = ({ page, handlePrevious, handleNext, maxPages }) => {
             variant="contained"
             onClick={handleNext}
             disabled={page === maxPages}
+            className='next-button'
         >
             Next
         </Button>
