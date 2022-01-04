@@ -26,15 +26,18 @@ const IndividualPhoto = (props) => {
         heightStr = "calc(60vw + 12px)";
         percentageToPlace = '0';
     }
-    return <Box sx={{
-        width: boxWidth,
-        height: boxHeight,
-        border: "solid",
-        margin: 5,
-        float: "left",
-        alignItems: "center",
-        paddingTop: 0
-    }} >
+    return <Box className='photo'
+        sx={{
+            width: boxWidth,
+            height: boxHeight,
+            border: "solid",
+            margin: 5,
+            float: "left",
+            alignItems: "center",
+            paddingTop: 0
+        }}
+
+    >
         <Image
             src={src}
             imageStyle={{

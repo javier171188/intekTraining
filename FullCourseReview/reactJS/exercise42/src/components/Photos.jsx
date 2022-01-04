@@ -19,6 +19,7 @@ const Photos = forwardRef((props, ref) => {
         }
     }
     return <Box
+        id="photos"
         component="div"
         sx={{
             height: "80vh",
@@ -31,6 +32,7 @@ const Photos = forwardRef((props, ref) => {
     >
         {photos.map((p, i) => <IndividualPhoto src={p.src} key={i} {...p} />)}
         {photos.length < 1 && <LoadingTemplate />}
+
     </Box>
 }
 )

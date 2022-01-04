@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 
 const LoadingTemplate = () => {
     return <>
-        <Box component='h1'>
+        <Box component='h1' className="waiting-title">
             Loading the photos...
         </Box>
         <Box sx={{

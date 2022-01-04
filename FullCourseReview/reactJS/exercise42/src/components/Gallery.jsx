@@ -1,15 +1,9 @@
 import React from 'react';
 import { useEffect, useRef, useState } from 'react';
-import axios from '../mockCall';
 import Photos from './Photos';
 import Buttons from './Buttons';
 
-const Gallery = () => {
-    async function getPhotos(galleryID, page) {
-        let responseJSON = await axios.get(`/gallery/${galleryID}/?count=10&page=${page}`)
-        let responseObj = JSON.parse(responseJSON);
-        return responseObj;
-    }
+const Gallery = ({ getPhotos }) => {
 
     const [photos, setPhotos] = useState([]);
     const [nextPhotos, setNextPhotos] = useState([]);
@@ -60,6 +54,7 @@ const Gallery = () => {
             handlePrevious={handlePrevious}
             handleNext={handleNext}
             maxPages={maxPages} />
+
     </>
 }
 
