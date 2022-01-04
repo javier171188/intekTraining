@@ -39,12 +39,11 @@ describe('<Gallery />', () => {
         });*/
 
     test('Check one click', async () => {
-        render(<Gallery />)
+        render(<Gallery getPhotos={getPhotos} />)
 
-        waitForElementToBeRemoved(() => {
-            screen.queryByText('Loading the photos...');
-        })
-        expect(screen.queryAllByRole('button').length).toBe(10);
+        //https://www.youtube.com/watch?v=uemxzfs_uqA
+        await waitForElementToBeRemoved(screen.queryByText('Loading the photos...'))
+        expect(screen.queryAllByRole('img').length).toBe(10);
         /* buttonNext.simulate('click');
  
          let navBarText = navBar.text().replace('Previous', '').replace('Next', '');
