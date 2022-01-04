@@ -83,7 +83,7 @@ class makeRequest {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve(returnJSON);
-            }, 0);
+            }, 900);
         })
     }
 }
