@@ -20,6 +20,7 @@ const Photos = forwardRef((props, ref) => {
     }
     return <Box
         data-testid="photos"
+        id='photos'
         component="div"
         sx={{
             height: "80vh",
