@@ -1,8 +1,4 @@
-/**
- * @jest-environment puppeteer
- */
-
-import React from 'react';
+/*import React from 'react';
 import { mount } from 'enzyme';
 import Gallery from '../components/Gallery';
 import getPhotos from '../utils/getPhotos';
@@ -16,6 +12,40 @@ function wait(time) {
     return new Promise((res, rej) => setTimeout(res, time)
     )
 }
+*/
+
+describe('Check the loading', () => {
+    beforeAll(async () => {
+        await page.goto('http://localhost:1234/');
+    });
+
+    test('should be titled "Photos"', async () => {
+        await expect(page.title()).resolves.toMatch('Photos');
+        //expect(Object.keys(page)).toEqual(true)
+        let texts = await page.evaluate(() => {
+            let element = document.querySelector('#photos');
+
+            return element.textContent;
+        });
+        expect(texts).toEqual('Loading the photos...');
+
+        let checkDisappear = await page.evaluate(async () => {
+            let element = document.querySelector('#photos');
+            await wait(2000);
+            return element.textContent;
+        });
+        expect(checkDisappear).toEqual(true);
+        texts = await page.evaluate(() => {
+            let element = document.querySelector('#photos');
+
+            return element.textContent;
+        });
+        expect(texts).toEqual('Loading the photos');
+        //let container = await page.getElementById("photos").innerHTML
+        //expect(container).toEqual('here')
+    });
+});
+
 
 describe('<Gallery />', () => {
     describe('Check initial State', () => {
@@ -99,8 +129,10 @@ describe('<Gallery />', () => {
         })
     })
 
+
     test('Check the photos loading when reaching the bottom', async () => {
         expect(true).toEqual(true);
+
         /* render(<Gallery getPhotos={getPhotos} />)
  
          let nextButton = screen.queryByText('Next');
