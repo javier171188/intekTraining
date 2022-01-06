@@ -4,7 +4,7 @@ import { Box } from '@material-ui/core';
 
 
 const IndividualPhoto = (props) => {
-    let { src, width, height } = props;
+    let { src, width, height, borderColor } = props;
     let widthStr = '100%';
     let heightStr = 'auto';
     if (width < height) [widthStr, heightStr] = [heightStr, widthStr];
@@ -34,7 +34,9 @@ const IndividualPhoto = (props) => {
             margin: 5,
             float: "left",
             alignItems: "center",
-            paddingTop: 0
+            paddingTop: 0,
+            borderColor: borderColor || 'blue'
+
         }}
 
     >
@@ -54,7 +56,7 @@ const IndividualPhoto = (props) => {
                 paddingTop
             }}
         />
-    </Box>
+    </Box >
 }
 
 export default IndividualPhoto;

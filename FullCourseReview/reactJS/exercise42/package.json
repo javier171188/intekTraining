@@ -6,14 +6,22 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "dev": "parcel src/index.html"
+    "dev": "parcel src/index.html",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.16.7",
     "@babel/preset-react": "^7.16.5",
+    "@storybook/addon-actions": "^6.4.9",
+    "@storybook/addon-essentials": "^6.4.9",
+    "@storybook/addon-links": "^6.4.9",
+    "@storybook/react": "^6.4.9",
     "@testing-library/cypress": "^8.0.2",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.6",
+    "babel-loader": "^8.2.3",
     "cypress": "^9.2.0",
     "enzyme": "^3.11.0",
     "jest": "^27.4.5",
@@ -22,6 +30,8 @@
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
     "@mui/material": "^5.2.6",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",

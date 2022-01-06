@@ -6,7 +6,7 @@ import { forwardRef } from 'react';
 
 
 const Photos = forwardRef((props, ref) => {
-    let { photos, getPhotos, setNextPhotos, page, galleryID, maxPages } = props;
+    let { photos, getPhotos, setNextPhotos, page, galleryID, maxPages, borderColor } = props;
     async function handleReachButton(event) {
         var node = event.target;
         const bottom = node.scrollHeight - node.scrollTop === node.clientHeight;
@@ -31,7 +31,7 @@ const Photos = forwardRef((props, ref) => {
         onScroll={handleReachButton}
         ref={ref}
     >
-        {photos.map((p, i) => <IndividualPhoto src={p.src} key={i} {...p} />)}
+        {photos.map((p, i) => <IndividualPhoto src={p.src} key={i} borderColor={borderColor} {...p} />)}
         {photos.length < 1 && <LoadingTemplate />}
 
     </Box>
