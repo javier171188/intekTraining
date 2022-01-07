@@ -1,14 +1,25 @@
 'use strict'
 const mergeArrays = require('./exercise4');
 
-test('Basic test', () => {
-    const largeArray = [1, 3, 5, 7, 9].concat(new Array(5));
-    const smallArray = [0, 2, 4, 6, 8];
-    const largeArraySize = largeArray.length;
-    mergeArrays(largeArray, smallArray);
-    expect(largeArray).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-    expect(largeArraySize === largeArray.length).toBe(true);
+describe('Basic tests', () => {
+    test('Higher value in the large array', () => {
+        const largeArray = [1, 3, 5, 7, 9].concat(new Array(5));
+        const smallArray = [0, 2, 4, 6, 8];
+        const largeArraySize = largeArray.length;
+        mergeArrays(largeArray, smallArray);
+        expect(largeArray).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+        expect(largeArraySize === largeArray.length).toBe(true);
+    })
+    test('Higher value in the small array', () => {
+        const largeArray = [0, 2, 4, 6, 8].concat(new Array(5));
+        const smallArray = [1, 3, 5, 7, 9];
+        const largeArraySize = largeArray.length;
+        mergeArrays(largeArray, smallArray);
+        expect(largeArray).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+        expect(largeArraySize === largeArray.length).toBe(true);
+    })
 })
+
 
 
 test('Empty arrays', () => {
