@@ -13,9 +13,11 @@ async function getBatches(tasks, pool_size) {
   let results = [];
   let outsideResolve;
 
+  //This check could be in the runBatches function
   if (pool_size > tasks.length || pool_size < 1) {
     pool_size = tasks.length;
   }
+
   async function startNewTask(r) {
     pendingTasks -= 1;
     if (r === 'error') {

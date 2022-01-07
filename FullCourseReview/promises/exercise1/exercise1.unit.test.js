@@ -22,8 +22,8 @@ test('Basic test', () => {
             expect(results).toEqual([
                 { value: 1 },
                 { value: 2 },
-                { value: 4 },
                 { error: 'error' },
+                { value: 4 },
                 { error: 'error' },
                 { error: 'error' }
             ])
@@ -38,8 +38,8 @@ test('Pool larger than number of tasks', () => {
                 { value: 1 },
                 { value: 2 },
                 { error: 'error' },
-                { error: 'error' },
                 { value: 4 },
+                { error: 'error' },
                 { error: 'error' }
             ])
         })
@@ -53,8 +53,8 @@ test('Pool of size 0', () => {
                 { value: 1 },
                 { value: 2 },
                 { error: 'error' },
-                { error: 'error' },
                 { value: 4 },
+                { error: 'error' },
                 { error: 'error' }
             ])
         })
