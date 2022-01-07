@@ -1,11 +1,13 @@
 import { useState } from 'react';
 
-function useLocalStorage(key, initialValue) {
-    const localStorageItem = localStorage.getItem(key);
+
+
+function useLocalStorage(itemName, initialValue) {
+    const localStorageItem = localStorage.getItem(itemName);
 
     let parsedItem;
     if (!localStorageItem) {
-        localStorage.setItem(key, JSON.stringify(initialValue));
+        localStorage.setItem(itemName, JSON.stringify(initialValue));
         parsedItem = initialValue;
     } else {
         parsedItem = JSON.parse(localStorageItem);
@@ -15,7 +17,7 @@ function useLocalStorage(key, initialValue) {
 
     function saveItem(newItem) {
         const stringifiedItem = JSON.stringify(newItem);
-        localStorage.setItem(key, stringifiedItem);
+        localStorage.setItem(itemName, stringifiedItem);
         setItem(newItem);
     };
 
@@ -25,12 +27,12 @@ function useLocalStorage(key, initialValue) {
     ];
 }
 
-function useSessionStorage(key, initialValue) {
-    const sessionStorageItem = sessionStorage.getItem(key);
+function useSessionStorage(itemName, initialValue) {
+    const sessionStorageItem = sessionStorage.getItem(itemName);
 
     let parsedItem;
     if (!sessionStorageItem) {
-        sessionStorage.setItem(key, JSON.stringify(initialValue));
+        sessionStorage.setItem(itemName, JSON.stringify(initialValue));
         parsedItem = initialValue;
     } else {
         parsedItem = JSON.parse(sessionStorageItem);
@@ -40,7 +42,7 @@ function useSessionStorage(key, initialValue) {
 
     function saveItem(newItem) {
         const stringifiedItem = JSON.stringify(newItem);
-        sessionStorage.setItem(key, stringifiedItem);
+        sessionStorage.setItem(itemName, stringifiedItem);
         setItem(newItem);
     };
 
@@ -50,11 +52,17 @@ function useSessionStorage(key, initialValue) {
     ];
 }
 
-function useIndexDB(index, initialIndex) {
-    cons[indexDB, setIndexDB] = useState(initialIndex);
+function useIndexDB(initialIndex = '0') {
+    const [indexDB, setIndexDB] = useState(initialIndex);
 
     return [
         indexDB,
         setIndexDB
     ]
+}
+
+module.exports = {
+    useLocalStorage,
+    useSessionStorage,
+    useIndexDB
 }
