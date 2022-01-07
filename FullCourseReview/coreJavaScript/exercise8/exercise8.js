@@ -2,7 +2,7 @@
 
 function flattenFun(oldObject, parentName) {
     let newObject = Object.keys(oldObject).reduce((withNewKeys, t) => {
-        if (typeof oldObject[t] === 'object' && Object.prototype.toString.call(oldObject[t]) !== '[object Array]') {
+        if (typeof oldObject[t] === 'object' && !Array.isArray(oldObject[t])) {
             let subObject = flattenFun(oldObject[t], t);
 
             let withParentName = Object.keys(subObject).reduce((innerObj, key) => {
@@ -31,9 +31,9 @@ function flattenImp(oldObj, parentName) {
 
     while (Object.keys(objElements).length > 0) {
         for (let t in objElements) {
-            if (typeof objElements[t] === 'object' && Object.prototype.toString.call(objElements[t]) !== '[object Array]') {
+            if (typeof objElements[t] === 'object' && !Array.isArray(objElements[t])) {
                 for (let key in objElements[t]) {
-                    objElements[`${t}_${key}`] = typeof objElements[t][key] === 'object' && Object.prototype.toString.call(objElements[t][key]) !== '[object Array]' ?
+                    objElements[`${t}_${key}`] = typeof objElements[t][key] === 'object' && !Array.isArray(objElements[t][key]) ?
                         { ...objElements[t][key] } :
                         objElements[t][key];
                 }
