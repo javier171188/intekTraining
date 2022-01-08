@@ -43,20 +43,34 @@ test('Reject invalid syntax', () => {
     expect(() => printTree(tree)).toThrow("The three syntax is not correct.");*/
 })
 
-test('Accept equivalent syntax', () => {
+fit('Accept equivalent syntax', () => {
     let tree = '(A)';
     let transverse = printTree(tree);
     expect(transverse).toEqual('A');
 
     tree = '(A,)';
     transverse = printTree(tree);
-    expect(transverse).toEqual('A');
+    //expect(transverse).toEqual('A');
 
     tree = '(A,,)';
     transverse = printTree(tree);
     expect(transverse).toEqual('A');
 
-    let rootStr = '(1,(2,(3,,),(4,(5,,),)),(2,(4,,(5,,)),(3,,)))';
-    transverse = printTree(rootStr);
-    expect(transverse).toEqual('3,2,5,4,1,4,5,2,3');
+    tree = '(,A,)';
+    transverse = printTree(tree);
+    expect(transverse).toEqual('A');
+
+    tree = '(A,(B))';
+    transverse = printTree(tree);
+    expect(transverse).toEqual('B,A')
+
+    /* tree = '(A,,(C))';
+     transverse = printTree(tree);
+     expect(transverse).toEqual('AC')
+ 
+     
+ 
+     let rootStr = '(1,(2,(3,,),(4,(5,,),)),(2,(4,,(5,,)),(3,,)))';
+     transverse = printTree(rootStr);
+     expect(transverse).toEqual('3,2,5,4,1,4,5,2,3');*/
 })
