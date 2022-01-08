@@ -1,5 +1,9 @@
 'use strict';
 
+let tree = '(A,B,)';
+
+console.log(printTree(tree));
+
 function checkSyntax(tree) {
     if (tree.length < 1) return true;
     if (tree.length === 1) return false;
@@ -8,15 +12,13 @@ function checkSyntax(tree) {
     let root = noParents.split(',')[0];
 
     if (root.includes(')') || root.includes('(')) return false
-
     return true;
 }
 
 function printTree(tree, order = 'infix') {
-
     let transverse = '';
     function transverseTree(tree, order) {
-
+        console.log(tree);
         let correctSyntax = checkSyntax(tree);
 
         if (!correctSyntax) {
@@ -24,7 +26,7 @@ function printTree(tree, order = 'infix') {
         }
 
         tree = tree.slice(1, -1);
-
+        console.log(tree);
         if (!tree.includes('(')) {
             let elements = tree.split(',');
             if (elements.length > 3) throw new SyntaxError('The three syntax is not correct.');

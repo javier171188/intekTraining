@@ -37,6 +37,10 @@ test('Reject invalid syntax', () => {
     tree = '(A,,,)';
     expect(() => printTree(tree)).toThrow(SyntaxError);
     expect(() => printTree(tree)).toThrow("The three syntax is not correct.");
+
+    /*tree = '(A,B,)';
+    expect(() => printTree(tree)).toThrow(SyntaxError);
+    expect(() => printTree(tree)).toThrow("The three syntax is not correct.");*/
 })
 
 test('Accept equivalent syntax', () => {
