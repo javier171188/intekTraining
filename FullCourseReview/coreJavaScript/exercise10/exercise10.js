@@ -1,10 +1,5 @@
 'use strict';
 
-let tree = '(A,B)';
-//tree = '(A,(B,(D),(E)),(C,(F,(H),(I)),(G,,(J))))';
-
-console.log(printTree(tree));
-
 function checkSyntax(tree) {
     if (tree.length < 1) return true;
     if (tree.length === 1) return false;
@@ -14,13 +9,11 @@ function checkSyntax(tree) {
     let pieces = noParenthesis.split(',');
 
     if (!pieces[0]) {
-        //Is this redundant?
         pieces = pieces.filter(p => p)
         if (pieces.length > 1) return false
     }
 
     let root = noParenthesis.split(',')[0];
-
 
     if (root.includes(')') || root.includes('(')) return false
     return true;
@@ -31,19 +24,19 @@ function printTree(tree, order = 'infix') {
 
     function transverseTree(tree, order) {
         let correctSyntax = checkSyntax(tree);
-        console.log(transverse)
         if (!correctSyntax) {
-            throw new SyntaxError('The three syntax is not correct.')
+            throw new SyntaxError('The three syntax is not correct.');
         }
 
         tree = tree.slice(1, -1);
         if (!tree.includes('(')) {
             let elements = tree.split(',');
+            if (elements.length > 3) throw new SyntaxError('The three syntax is not correct.');
             let pieces = elements.filter(p => p);
-            if (pieces.length > 3) throw new SyntaxError('The three syntax is not correct.')
+
+            if (pieces.length > 1) throw new SyntaxError('The three syntax is not correct.');
             tree = pieces[0] || '';
         }
-
 
         let firstComaIndex = tree.indexOf(',');
         if (firstComaIndex < 0) {
@@ -53,7 +46,6 @@ function printTree(tree, order = 'infix') {
 
         let root = tree.slice(0, firstComaIndex);
         let branches = tree.slice(firstComaIndex + 1);
-
         if (branches.length < 1) {
             transverse += ',' + root;
             return;
@@ -74,7 +66,6 @@ function printTree(tree, order = 'infix') {
                 break;
             }
         }
-
         closingParIndex = parseInt(closingParIndex);
         let branch1;
         let branch2;
@@ -87,7 +78,6 @@ function printTree(tree, order = 'infix') {
             branch1 = branches.substring(0, closingParIndex + 1);
             branch2 = branches.slice(closingParIndex + 2);
         }
-
         if (order === 'prefix') {
             transverse += ',' + root;
             transverseTree(branch1, order);
@@ -97,9 +87,9 @@ function printTree(tree, order = 'infix') {
             transverseTree(branch2, order);
             transverse += ',' + root;
         } else {
-            transverseTree(branch1, order);
+            if (branch1 !== '') transverseTree(branch1, order);
             transverse += ',' + root;
-            transverseTree(branch2, order);
+            if (branch2 !== '') transverseTree(branch2, order);
         }
     }
 
@@ -111,9 +101,8 @@ function printTree(tree, order = 'infix') {
     transverse = transverse.slice(1);
 
     if (transverse.startsWith(',') || transverse.endsWith(',')) {
-        throw new SyntaxError('The three syntax is not correct.')
+        throw new SyntaxError('The three syntax is not correct.');
     }
-
 
     while (transverse.includes(',,')) {
         transverse = transverse.replace(',,', ',');

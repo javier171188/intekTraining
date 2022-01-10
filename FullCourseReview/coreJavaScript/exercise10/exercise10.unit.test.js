@@ -29,7 +29,6 @@ test('Reject invalid syntax', () => {
     tree = '(A))';
     expect(() => printTree(tree)).toThrow(SyntaxError);
     expect(() => printTree(tree)).toThrow("The three syntax is not correct.");
-
     tree = '(A,(B),(C),(D))';
     expect(() => printTree(tree)).toThrow(SyntaxError);
     expect(() => printTree(tree)).toThrow("The three syntax is not correct.");
@@ -38,19 +37,19 @@ test('Reject invalid syntax', () => {
     expect(() => printTree(tree)).toThrow(SyntaxError);
     expect(() => printTree(tree)).toThrow("The three syntax is not correct.");
 
-    /*tree = '(A,B,)';
+    tree = '(A,B,)';
     expect(() => printTree(tree)).toThrow(SyntaxError);
-    expect(() => printTree(tree)).toThrow("The three syntax is not correct.");*/
+    expect(() => printTree(tree)).toThrow("The three syntax is not correct.");
 })
 
-fit('Accept equivalent syntax', () => {
+test('Accept equivalent syntax', () => {
     let tree = '(A)';
     let transverse = printTree(tree);
     expect(transverse).toEqual('A');
 
     tree = '(A,)';
     transverse = printTree(tree);
-    //expect(transverse).toEqual('A');
+    expect(transverse).toEqual('A');
 
     tree = '(A,,)';
     transverse = printTree(tree);
@@ -60,17 +59,23 @@ fit('Accept equivalent syntax', () => {
     transverse = printTree(tree);
     expect(transverse).toEqual('A');
 
+    tree = '(,A)';
+    transverse = printTree(tree);
+    expect(transverse).toEqual('A');
+
+    tree = '(,,A)';
+    transverse = printTree(tree);
+    expect(transverse).toEqual('A');
+
     tree = '(A,(B))';
     transverse = printTree(tree);
     expect(transverse).toEqual('B,A')
 
-    /* tree = '(A,,(C))';
-     transverse = printTree(tree);
-     expect(transverse).toEqual('AC')
- 
-     
- 
-     let rootStr = '(1,(2,(3,,),(4,(5,,),)),(2,(4,,(5,,)),(3,,)))';
-     transverse = printTree(rootStr);
-     expect(transverse).toEqual('3,2,5,4,1,4,5,2,3');*/
+    tree = '(A,,(C))';
+    transverse = printTree(tree);
+    expect(transverse).toEqual('A,C')
+
+    let rootStr = '(1,(2,(3,,),(4,(5,,),)),(2,(4,,(5,,)),(3,,)))';
+    transverse = printTree(rootStr);
+    expect(transverse).toEqual('3,2,5,4,1,4,5,2,3');
 })
