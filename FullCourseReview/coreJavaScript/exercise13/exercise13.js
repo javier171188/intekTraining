@@ -45,36 +45,6 @@ function fromTreeToString(treeObj) {
     return treeStr;
 }
 
-let objTree = {
-    value: '0',
-    branch1: {
-        value: '1'
-    },
-    branch2: {
-        value: '2',
-        branch1: { value: '1' },
-        branch2: {
-            value: '5',
-            branch1: { value: '3' },
-            branch2: { value: '5', branch1: { value: '6' } },
-            branch3: { value: '9' }
-        }
-    },
-    branch3: { value: '3', branch1: { value: '0' } },
-    branch4: { value: '5' },
-    branch5: {
-        value: '7',
-        branch1: {
-            value: '3',
-            branch1: { value: '3' },
-            branch2: {
-                value: '0',
-                branch1: { value: '9' },
-                branch2: { value: '4' }
-            }
-        }
-    }
-}
 
 function isSameLevel(treeObj, number1, number2) {
     let tree = fromTreeToString(treeObj);
