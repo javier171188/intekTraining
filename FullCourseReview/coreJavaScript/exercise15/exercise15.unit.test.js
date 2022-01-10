@@ -29,3 +29,10 @@ test('Small arrays', () => {
     balancingIndex = balanceIndex(arrayToBalance);
     expect(balancingIndex).toBe(1);
 })
+
+
+test('Bug', () => {
+    let arrayToBalance = [4, 2, 4, 2];
+    let balancingIndex = balanceIndex(arrayToBalance);
+    expect(balancingIndex).toBe(1);
+})
