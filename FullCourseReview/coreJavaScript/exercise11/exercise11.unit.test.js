@@ -12,6 +12,9 @@ document.body.innerHTML = `<section>
 <div id="6" class="note"><input type="checkbox" class="is-complete" ></div>
 <div class="anotherclass"></div>
 <div></div>
+<div id="A">
+<p><span class="B">selected</span></p>
+</div>
 </section>`
 
 let mainSection = [...document.querySelectorAll('section')];
@@ -39,7 +42,10 @@ test('Basic selectors', () => {
     expect(other).toEqual([divs[6]])
 })
 
-
+test('Just direct parents', () => {
+    let elements = querySelectorAll('#A < .B');
+    expect(elements).toEqual([]);
+})
 
 test('No checked', () => {
     let parents = querySelectorAll("div.note < input.is-complete");
