@@ -15,11 +15,10 @@ function querySelectorAll(selector) {
     let children = document.querySelectorAll(childrenSelector);
 
     parents = [...parents].filter((p) => {
-        //let children = p.querySelectorAll(childrenSelector);
-        //return children.length > 0;
+        let currentChildren = p.children;
 
         for (let child of children) {
-            if (child === p) return true;
+            if ([...currentChildren].includes(child)) return true;
         }
 
         return false;

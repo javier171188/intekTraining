@@ -1,8 +1,8 @@
 /**
  * @jest-environment jsdom
  */
-const { querySelectorAll } = require('./exercise11');
 
+const { querySelectorAll } = require('./exercise11');
 document.body.innerHTML = `<section>
 <div id="1" class="note"><input type="checkbox" class="is-complete" checked> </div>
 <div id="2" class="note"></div>
@@ -26,7 +26,6 @@ test('Simple test', () => {
         divs[0], divs[2], divs[4]
     ])
 })
-
 
 test('Basic selectors', () => {
     let elements = querySelectorAll("div");
