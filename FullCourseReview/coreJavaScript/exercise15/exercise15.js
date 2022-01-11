@@ -2,28 +2,33 @@
 //https://www.geeksforgeeks.org/find-element-array-sum-left-array-equal-sum-right-array/
 //Method 4
 
+/*let index = balanceIndex([4, 2, 4, 2]);
+console.log(index);
+index = balanceIndex([1, 4, 3, 2]);
+console.log(index);*/
+let index = balanceIndex([1, 0, 1]);
+console.log(index);
+
 function balanceIndex(array) {
-    let leftSum = 0;
-    let rightSum = 0;
+    let leftSum = array[0];
+    let rightSum = array[array.length - 1];
+    let leftIndex = 1;
+    let rightIndex = array.length - 2;
 
-    let i, j;
-    for (i = 0, j = array.length - 1; i < j; i++, j--) {
-        leftSum += array[i];
-        rightSum += array[j];
-
-        while (leftSum < rightSum && i < j) {
-            i += 1;
-            leftSum += array[i];
+    while (leftIndex <= rightIndex) {
+        console.log(leftSum, rightSum);
+        if (leftSum < rightSum) {
+            leftSum += array[leftIndex];
+            leftIndex += 1;
         }
-
-        while (rightSum < leftSum && i < j) {
-            j -= 1;
-            rightSum += array[j]
+        if (rightSum < leftSum) {
+            rightSum += array[rightIndex];
+            rightIndex -= 1;
         }
+        console.log(leftSum, rightSum, rightIndex, leftIndex);
+        if (rightSum === leftSum && rightIndex + 1 === leftIndex) return rightIndex;
     }
-    if (leftSum === rightSum && i - 1 === j) {
-        return j
-    }
+
     return -1
 }
 

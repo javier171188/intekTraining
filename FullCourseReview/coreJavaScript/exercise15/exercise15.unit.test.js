@@ -32,7 +32,11 @@ test('Small arrays', () => {
 
 
 test('Bug', () => {
-    let arrayToBalance = [4, 2, 4, 2];
+    let arrayToBalance = [0, 5, 3, 2];
     let balancingIndex = balanceIndex(arrayToBalance);
+    expect(balancingIndex).toBe(1);
+
+    arrayToBalance = [4, 2, 4, 2];
+    balancingIndex = balanceIndex(arrayToBalance);
     expect(balancingIndex).toBe(1);
 })
