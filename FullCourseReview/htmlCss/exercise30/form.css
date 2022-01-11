@@ -27,13 +27,15 @@ label{
     position: relative;
     bottom: calc(11*var(--unit));
     left: calc(110*var(--unit));
+    background-color: red;
 }
 
 
 .form-field::before{
     visibility: visible;
     content: attr(data-hint);
-    border: calc(1*var(--unit)) solid rgba(0,0,0,255);    
+    /*border: calc(1*var(--unit)) solid rgba(0,0,0,255);*/
+    padding: calc(5*var(--unit));
     font-size: calc(7*var(--unit));
     text-align: center;
     width: calc(82*var(--unit));
@@ -42,7 +44,6 @@ label{
     border-width:  calc(5*var(--unit));
     box-shadow: calc(2*var(--unit)) calc(2*var(--unit)) calc(3*var(--unit)) calc(0*var(--unit)) rgba(0,0,0,0.75);   
     font-family: Arial, sans-serif;
-
     display: inline-block;
     position: relative;
     top: calc(-12*var(--unit));
@@ -54,9 +55,10 @@ label{
     visibility: visible;
     content: 'arr';
     font-size: calc(5*var(--unit));
-    border: solid;
-    border-width: calc(1*var(--unit));
-    border-color: rgba(0,0,0,255) rgba(0,0,0,255) rgba(0,0,0,255) rgba(0,0,0,255);
+    /*border: solid;*/
+    /*border-width: calc(1*var(--unit));*/
+    /*border-color: rgba(0,0,0,255) rgba(0,0,0,255) rgba(0,0,0,255) rgba(0,0,0,255);*/
+    padding: calc(1*var(--unit));
     background: rgba(0,0,0,255);
     box-shadow: calc(0*var(--unit)) calc(0*var(--unit)) calc(3*var(--unit)) calc(2*var(--unit)) rgba(0,0,0,0.75);   
     color: rgba(0,0,0,0.75);
@@ -68,11 +70,15 @@ label{
     left: calc(20*var(--unit));
 }
 
+@media (max-width: 200px) {
+    form{
+        --unit: 0.4px;
+    }
+}
 
 input{
     border: none;
     border-bottom: calc(1*var(--unit)) solid;
-
     display: block;
     position: relative;
     top: calc(-3*var(--unit));
