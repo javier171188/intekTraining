@@ -6,8 +6,10 @@
 console.log(index);
 index = balanceIndex([1, 4, 3, 2]);
 console.log(index);*/
-let index = balanceIndex([1, 0, 1]);
+
+let index = balanceIndex([1, 1]);
 console.log(index);
+
 
 function balanceIndex(array) {
     let leftSum = array[0];
@@ -26,9 +28,11 @@ function balanceIndex(array) {
             rightIndex -= 1;
         }
         console.log(leftSum, rightSum, rightIndex, leftIndex);
-        if (rightSum === leftSum && rightIndex + 1 === leftIndex) return rightIndex;
+        if (rightSum === leftSum) {
+            if (rightIndex + 1 === leftIndex) return rightIndex;
+            leftIndex += 1;
+        }
     }
-
     return -1
 }
 
