@@ -4,8 +4,11 @@ const { balanceIndex } = require('./exercise15');
 test('Basic test', () => {
     let arrayToBalance = [1, 2, 3, 4, 9, 9, 2, 7, 10, 13];
     let balancingIndex = balanceIndex(arrayToBalance);
-
     expect(balancingIndex).toBe(6);
+
+    arrayToBalance = [1, 4, 3, 2];
+    balancingIndex = balanceIndex(arrayToBalance);
+    expect(balancingIndex).toBe(1);
 })
 
 test('Small arrays', () => {
@@ -31,12 +34,8 @@ test('Small arrays', () => {
 })
 
 
-test('Bug', () => {
-    let arrayToBalance = [0, 5, 3, 2];
+test('Not working in previous versions', () => {
+    let arrayToBalance = [4, 2, 4, 2];
     let balancingIndex = balanceIndex(arrayToBalance);
-    expect(balancingIndex).toBe(1);
-
-    arrayToBalance = [4, 2, 4, 2];
-    balancingIndex = balanceIndex(arrayToBalance);
     expect(balancingIndex).toBe(1);
 })
