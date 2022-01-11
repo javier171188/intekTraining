@@ -1,28 +1,37 @@
 'use strict';
 
-function getNthValue(head, n) {
-    let temp = head;
-    for (let i = 0; i < n; i++) {
-        temp = temp.next;
-    }
-    return temp.data;
-}
-
 function isPalindrome(head) {
     if (!head || !head.next) return true;
-    let numberNodes = 0;
-    let temp = head;
-    while (temp.next) {
-        numberNodes += 1;
-        temp = temp.next;
+
+    if (!head.next.next) {
+        if (head.data === head.next.data) return true;
+        return false;
     }
 
-    temp = head;
-    for (let n = numberNodes; numberNodes / 2 < n; n--) {
-        if (temp.data !== getNthValue(head, n)) return false
-        temp = temp.next;
+    let firstValues = []
+    let fastPointer = head;
+    let slowPointer = head;
+    let firstValuesSize;
+
+    while (fastPointer.next && fastPointer.next.next) {
+        firstValues.push(slowPointer.data);
+        fastPointer = fastPointer.next.next;
+        slowPointer = slowPointer.next;
     }
-    return true
+    slowPointer = slowPointer.next;
+    if (fastPointer.next) {//This means the number of nodes is odd.
+        slowPointer = slowPointer.next;
+    }
+
+    firstValuesSize = firstValues.length
+
+    for (let i = 0; i < firstValuesSize; i++) {
+        if (slowPointer.data !== firstValues[firstValuesSize - 1 - i]) {
+            return false;
+        }
+        slowPointer = slowPointer.next;
+    }
+    return true;
 }
 
 module.exports = { isPalindrome };
