@@ -27,14 +27,12 @@ label{
     position: relative;
     bottom: calc(11*var(--unit));
     left: calc(110*var(--unit));
-    background-color: red;
 }
 
 
 .form-field::before{
     visibility: visible;
     content: attr(data-hint);
-    /*border: calc(1*var(--unit)) solid rgba(0,0,0,255);*/
     padding: calc(5*var(--unit));
     font-size: calc(7*var(--unit));
     text-align: center;
@@ -46,19 +44,18 @@ label{
     font-family: Arial, sans-serif;
     display: inline-block;
     position: relative;
-    top: calc(-12*var(--unit));
+    top: calc(-13*var(--unit));
     left: calc(-1*var(--unit));
     z-index: 1;
 }
 
 .form-field::after{
     visibility: visible;
-    content: 'arr';
+    content: 'ar';
     font-size: calc(5*var(--unit));
-    /*border: solid;*/
-    /*border-width: calc(1*var(--unit));*/
-    /*border-color: rgba(0,0,0,255) rgba(0,0,0,255) rgba(0,0,0,255) rgba(0,0,0,255);*/
-    padding: calc(1*var(--unit));
+    border: solid;
+    border-width: calc(1*var(--unit));
+    border-color: rgba(0,0,0,255) rgba(0,0,0,255) rgba(0,0,0,255) rgba(0,0,0,255);
     background: rgba(0,0,0,255);
     box-shadow: calc(0*var(--unit)) calc(0*var(--unit)) calc(3*var(--unit)) calc(2*var(--unit)) rgba(0,0,0,0.75);   
     color: rgba(0,0,0,0.75);
@@ -66,13 +63,13 @@ label{
     transform: rotate(45deg);
     width: calc(5*var(--unit));
     position: relative;
-    bottom: calc(32*var(--unit));
+    bottom: calc(33*var(--unit));
     left: calc(20*var(--unit));
 }
 
-@media (max-width: 200px) {
+@media (max-width: 360px) {
     form{
-        --unit: 0.4px;
+        --unit: 0.7px;
     }
 }
 
@@ -94,7 +91,6 @@ input:-webkit-autofill::first-line {
 button{
     position: relative;
     left: calc(90*var(--unit));
-
     background-color: rgba(255,99,72,255);
     border: none;
     color: rgba(255,255,255,255);
