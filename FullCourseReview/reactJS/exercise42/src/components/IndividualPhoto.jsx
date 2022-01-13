@@ -1,6 +1,8 @@
 import React from 'react';
 import Image from 'material-ui-image';
-import { Box } from '@material-ui/core';
+import { Box, Container } from '@material-ui/core';
+import Grid from '@mui/material/Grid';
+//https://codepen.io/iamsaief/pen/jObaoKo?editors=0100
 
 
 const IndividualPhoto = (props) => {
@@ -9,12 +11,8 @@ const IndividualPhoto = (props) => {
     let heightStr = 'auto';
     if (width < height) [widthStr, heightStr] = [heightStr, widthStr];
 
-    let boxWidth = "30vw";
-    let boxHeight = "30vw";
     let percentageToPlace = "50%";
     let paddingTop = '100%';
-    let gridColumn = "span 1";
-    let gridRow = "span 1";
     let containerClass = 'normal';
 
     if (width === height * 2) {
@@ -27,15 +25,49 @@ const IndividualPhoto = (props) => {
         containerClass = "wide";
     }
     else if (2 * width === height) {
-        boxHeight = "calc(60vw + 12px)";
         widthStr = "30vw";
         heightStr = "calc(60vw + 12px)";
         percentageToPlace = '0';
         gridRow = "span 2";
         containerClass = "tall";
     }
-    return <Box className={containerClass}    >
-        {/*<Image src={src} className='=imageclass' />*/}
+    return <Box className={containerClass}
+        sx={{ /*display: 'flex'*/ }}
+    >
+
+        {/* <Container sx={
+            {
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                justify: "center",
+            }
+        }>*/}
+        {<Image
+            src={src}
+            imageStyle={{
+                width: widthStr,
+                height: heightStr,
+                position: "absolute",
+                left: percentageToPlace,
+                top: percentageToPlace,
+                transform: `translate(-${percentageToPlace}, -${percentageToPlace})`
+
+                //top: "50%",
+                //transform: "translateY(-50%)"
+            }}
+            style={{
+                //padding: 0,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                justify: "center",
+                paddingTop,
+            }}
+        />}
+        {/*</Container>*/}
+
     </Box >
 }
 
