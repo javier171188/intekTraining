@@ -13,49 +13,29 @@ const IndividualPhoto = (props) => {
     let boxHeight = "30vw";
     let percentageToPlace = "50%";
     let paddingTop = '100%';
+    let gridColumn = "span 1";
+    let gridRow = "span 1";
+    let containerClass = 'normal';
+
     if (width === height * 2) {
         boxWidth = "calc(60vw + 12px)";
         widthStr = "calc(60vw + 12px)";
         heightStr = "30vw";
         percentageToPlace = '0';
         paddingTop = '0%';
+        gridColumn = "span 2";
+        containerClass = "wide";
     }
     else if (2 * width === height) {
         boxHeight = "calc(60vw + 12px)";
         widthStr = "30vw";
         heightStr = "calc(60vw + 12px)";
         percentageToPlace = '0';
+        gridRow = "span 2";
+        containerClass = "tall";
     }
-    return <Box className='photo'
-        sx={{
-            width: boxWidth,
-            height: boxHeight,
-            border: "solid",
-            margin: 5,
-            float: "left",
-            alignItems: "center",
-            paddingTop: 0,
-            borderColor: borderColor || 'blue'
-
-        }}
-
-    >
-        <Image
-            src={src}
-            imageStyle={{
-                width: widthStr,
-                height: heightStr,
-                left: percentageToPlace,
-                top: percentageToPlace,
-                transform: `translate(-${percentageToPlace}, -${percentageToPlace})`
-            }}
-            style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                paddingTop
-            }}
-        />
+    return <Box className={containerClass}    >
+        {/*<Image src={src} className='=imageclass' />*/}
     </Box >
 }
 

@@ -7,6 +7,7 @@ import { forwardRef } from 'react';
 
 const Photos = forwardRef((props, ref) => {
     let { photos, getPhotos, setNextPhotos, page, galleryID, maxPages, borderColor } = props;
+
     async function handleReachButton(event) {
         var node = event.target;
         const bottom = node.scrollHeight - node.scrollTop === node.clientHeight;
@@ -22,14 +23,9 @@ const Photos = forwardRef((props, ref) => {
         data-testid="photos"
         id='photos'
         component="div"
-        sx={{
-            height: "80vh",
-            overflow: "scroll",
-            display: "block",
-            width: "99vw"
-        }}
         onScroll={handleReachButton}
         ref={ref}
+        className='grid-wrapper'
     >
         {photos.map((p, i) => <IndividualPhoto src={p.src} key={i} borderColor={borderColor} {...p} />)}
         {photos.length < 1 && <LoadingTemplate />}
