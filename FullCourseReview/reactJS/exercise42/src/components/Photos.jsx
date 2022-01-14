@@ -36,7 +36,7 @@ const Photos = forwardRef((props, ref) => {
             gridAutoFlow: "dense"
         }}
     >
-        {photos.map((p, i) => <IndividualPhoto src={p.src} key={i} borderColor={borderColor} {...p} />)}
+        {photos.map((p, i) => <IndividualPhoto src={p.src} key={i} borderColor={borderColor || 'peru'} {...p} />)}
         {photos.length < 1 && <LoadingTemplate />}
 
     </Box>

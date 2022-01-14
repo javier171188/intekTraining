@@ -38,13 +38,15 @@ const IndividualPhoto = (props) => {
         containerClass = "tall";
         gridRow = "span 2";
     }
+
     return <Box
         className={containerClass}
         sx={{
             border: "solid",
             borderWidth: "0.3vw",
             gridColumn,
-            gridRow
+            gridRow,
+            borderColor
         }}   >
 
         {<Image
