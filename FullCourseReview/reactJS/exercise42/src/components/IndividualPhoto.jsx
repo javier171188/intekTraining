@@ -1,3 +1,4 @@
+'use strict';
 import React from 'react';
 import Image from 'material-ui-image';
 import { Box, Container } from '@material-ui/core';
@@ -12,20 +13,21 @@ const IndividualPhoto = (props) => {
     let percentageToPlaceH = "50%";
     let paddingTop = '100%';
     let containerClass = 'normal';
+    let gridColumn, gridRow;
     if (width < height) [widthStr, heightStr] = [heightStr, widthStr];
 
 
 
 
     if (width === height * 2) {
-        boxWidth = "63.6vw";
-        widthStr = "63.6vw";
+        widthStr = "64vw";
         heightStr = "auto";
         percentageToPlaceH = '0';
         percentageToPlaceV = '0';
         paddingTop = '0%';
         gridColumn = "span 2";
         containerClass = "wide";
+        gridColumn = "span 2";
     }
     else if (2 * width === height) {
         widthStr = "auto";
@@ -34,14 +36,25 @@ const IndividualPhoto = (props) => {
         percentageToPlaceV = '0';
         gridRow = "span 2";
         containerClass = "tall";
+        gridRow = "span 2";
     }
-    return <Box className={containerClass}   >
+    return <Box
+        className={containerClass}
+        sx={{
+            border: "solid",
+            borderWidth: "0.3vw",
+            gridColumn,
+            gridRow
+        }}   >
 
         {<Image
             src={src}
             imageStyle={{
                 width: widthStr,
                 height: heightStr,
+                maxWidth: "100%",
+                verticalAlign: "middle",
+                display: "inline-block",
                 position: "absolute",
                 left: percentageToPlaceH,
                 top: percentageToPlaceV,
@@ -53,6 +66,7 @@ const IndividualPhoto = (props) => {
                 alignItems: "center",
                 justify: "center",
                 paddingTop,
+                height: "6%"
             }}
         />}
     </Box >

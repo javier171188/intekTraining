@@ -26,6 +26,15 @@ const Photos = forwardRef((props, ref) => {
         onScroll={handleReachButton}
         ref={ref}
         className='grid-wrapper'
+        sx={{
+            height: "435px",
+            overflowY: "scroll",
+            display: "grid",
+            gridGap: "1vw",
+            gridTemplateColumns: "repeat(auto-fit, 30vw)",
+            gridAutoRows: "calc(31.8vw)",
+            gridAutoFlow: "dense"
+        }}
     >
         {photos.map((p, i) => <IndividualPhoto src={p.src} key={i} borderColor={borderColor} {...p} />)}
         {photos.length < 1 && <LoadingTemplate />}
