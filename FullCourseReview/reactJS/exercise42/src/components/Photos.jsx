@@ -6,22 +6,19 @@ import { forwardRef } from 'react';
 
 
 const Photos = forwardRef((props, ref) => {
-    let { photos, getPhotos, setNextPhotos, page, galleryID, maxPages, borderColor, nextPhotos } = props;
+    let { photos, getPhotos, setNextPhotos, page, galleryID, maxPages, borderColor } = props;
 
     async function handleReachButton(event) {
         var node = event.target;
         const componentBottom = node.scrollHeight - node.scrollTop === node.clientHeight;
         if (componentBottom) {
-            //node.scrollHeight
+            node.scrollHeight
             if (maxPages > page) {
                 let nextData = await getPhotos(galleryID, page + 1);
                 setNextPhotos(nextData.images);
-                console.log(nextData.images);
-                console.log(nextPhotos);
             }
         }
     }
-    //console.log(photos);
     return <Box
         data-testid="photos"
         id='photos'
