@@ -58,7 +58,7 @@ class makeRequest {
             width: 400, height: 800
         },
         {
-            src: "https://images.pexels.com/photos/7492227/pexels-photo-7492227.jpeg",
+            src: "https://neiloseman.com/wp-content/uploads/2017/06/jurassic-world-trailer-jurassic-park-4-jurassic.jpg",
             width: 800, height: 400
         }
         ];
