@@ -10,8 +10,8 @@ const Photos = forwardRef((props, ref) => {
 
     async function handleReachButton(event) {
         var node = event.target;
-        const bottom = node.scrollHeight - node.scrollTop === node.clientHeight;
-        if (bottom) {
+        const componentBottom = node.scrollHeight - node.scrollTop === node.clientHeight;
+        if (componentBottom) {
             node.scrollHeight
             if (maxPages > page) {
                 let nextData = await getPhotos(galleryID, page + 1);

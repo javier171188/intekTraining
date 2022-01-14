@@ -6,22 +6,20 @@ import { Box, Container } from '@material-ui/core';
 
 const IndividualPhoto = (props) => {
     let { src, width, height, borderColor } = props;
-    let widthStr = '103%';
+    let widthStr = '100%';
     let heightStr = 'auto';
     let percentageToPlaceV = "50%";
     let percentageToPlaceH = "50%";
     let paddingTop = '100%';
     let containerClass = 'normal';
-    if (width < height) {
-        [widthStr, heightStr] = [heightStr, widthStr];
-        percentageToPlaceV = '10%';
-    }
+    if (width < height) [widthStr, heightStr] = [heightStr, widthStr];
+
 
 
 
     if (width === height * 2) {
-        boxWidth = "calc(60vw + 12px)";
-        widthStr = "calc(60vw + 12px)";
+        boxWidth = "63.6vw";
+        widthStr = "63.6vw";
         heightStr = "auto";
         percentageToPlaceH = '0';
         percentageToPlaceV = '0';
@@ -31,7 +29,7 @@ const IndividualPhoto = (props) => {
     }
     else if (2 * width === height) {
         widthStr = "auto";
-        heightStr = "calc(60vw + 12px)";
+        heightStr = "63.6vw";
         percentageToPlaceH = '0';
         percentageToPlaceV = '0';
         gridRow = "span 2";
