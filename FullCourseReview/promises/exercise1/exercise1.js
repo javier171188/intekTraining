@@ -22,9 +22,9 @@ async function getBatches(tasks, pool_size) {
   async function startNewTask(r, position) {
     pendingTasks -= 1;
     if (r === 'error') {
-      results[position] = { error: 'error', position };
+      results[position] = { error: 'error' };
     } else {
-      results[position] = { value: r, position };
+      results[position] = { value: r };
     }
     let task = tasks.shift();
     if (task) {
@@ -47,9 +47,6 @@ async function getBatches(tasks, pool_size) {
 
   await new Promise((res, rej) => outsideResolve = res);
 
-  results.map(r => {
-    return delete r.position
-  })
   return results;
 }
 
