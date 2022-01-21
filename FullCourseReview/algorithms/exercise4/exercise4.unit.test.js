@@ -38,6 +38,13 @@ test('Empty arrays', () => {
     expect(largeArray).toEqual([]);
     expect(largeArraySize === largeArray.length).toBe(true);
 
+    largeArray = [].concat(new Array(5));
+    smallArray = [0, 2, 4, 6, 8];
+    largeArraySize = largeArray.length;
+    mergeArrays(largeArray, smallArray);
+    expect(largeArray).toEqual([0, 2, 4, 6, 8]);
+    expect(largeArraySize === largeArray.length).toBe(true);
+
 })
 
 test('Same array', () => {
