@@ -4,18 +4,18 @@ function querySelectorAll(selector) {
     if (!selector) {
         return [];
     }
-    while (selector.includes(' ')) {
-        selector = selector.replace(' ', '');
-    }
+
     const [parentSelector, childrenSelector] = selector.split('<');
 
     let parents = document.querySelectorAll(parentSelector);
     if (!childrenSelector) return [...parents];
 
-    let children = document.querySelectorAll(childrenSelector);
+
+    let normalSelector = selector.replace('<', '>');
+    let children = querySelectorAll(normalSelector);
 
     parents = [...parents].filter((p) => {
-        let currentChildren = p.children;
+        let currentChildren = p.querySelectorAll(childrenSelector);
 
         for (let child of children) {
             if ([...currentChildren].includes(child)) return true;

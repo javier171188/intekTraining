@@ -28,17 +28,21 @@ test('Simple test', () => {
 })
 
 test('Basic selectors', () => {
-    let elements = querySelectorAll("div");
+    const elements = querySelectorAll("div");
     expect(elements).toEqual(divs);
 
-    let section = querySelectorAll('section');
+    const section = querySelectorAll('section');
     expect(section).toStrictEqual(mainSection)
 
-    let empty = querySelectorAll('');
+    const empty = querySelectorAll('');
     expect(empty).toEqual([]);
 
-    let other = querySelectorAll('div.anotherclass');
-    expect(other).toEqual([divs[6]])
+    const other = querySelectorAll('div.anotherclass');
+    expect(other).toEqual([divs[6]]);
+
+    const divSpan = querySelectorAll("#A < p .B");
+    expect(divSpan).toEqual([divs[8]]);
+
 })
 
 test('Just direct parents', () => {
