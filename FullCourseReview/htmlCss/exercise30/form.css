@@ -1,5 +1,5 @@
 form{
-    --unit: 0.2vw;
+    --unit: 1px;
     --button-height:calc(23*var(--unit));
     --hint-elevation: calc(10*var(--unit));
     
