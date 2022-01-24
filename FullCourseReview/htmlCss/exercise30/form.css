@@ -1,9 +1,9 @@
 form{
-    --unit: 1px;
+    --unit: 0.15vw;
     --button-height:calc(23*var(--unit));
     --hint-elevation: calc(10*var(--unit));
     
-    margin: calc(50*var(--unit));
+    margin: calc(60*var(--unit));
     width: calc(310*var(--unit));
     height: calc(100*var(--unit));
     flex-direction: row;
@@ -16,8 +16,7 @@ label{
     font-size: calc(15*var(--unit));
     color: #000;
     font-weight: 500;
-    position: relative;
-    top: calc(20*var(--unit));
+    position: absolute;
     font-family: Arial, sans-serif;
 }
 
@@ -25,8 +24,8 @@ label{
     width: calc(200*var(--unit));
     height: calc(50*var(--unit));
     position: relative;
-    bottom: calc(11*var(--unit));
-    left: calc(110*var(--unit));
+    top: calc(5*var(--unit));
+    left: calc(78*var(--unit));
 }
 
 
@@ -43,9 +42,9 @@ label{
     box-shadow: calc(2*var(--unit)) calc(2*var(--unit)) calc(3*var(--unit)) calc(0*var(--unit)) rgba(0,0,0,0.75);   
     font-family: Arial, sans-serif;
     display: inline-block;
-    position: relative;
-    top: calc(-13*var(--unit));
-    left: calc(-1*var(--unit));
+    position: absolute;
+    top: calc(-29*var(--unit));
+    left: calc(31*var(--unit));
     z-index: 1;
 }
 
@@ -53,33 +52,25 @@ label{
     visibility: visible;
     content: 'ar';
     font-size: calc(5*var(--unit));
-    border: solid;
-    border-width: calc(1*var(--unit));
-    border-color: rgba(0,0,0,255) rgba(0,0,0,255) rgba(0,0,0,255) rgba(0,0,0,255);
     background: rgba(0,0,0,255);
     box-shadow: calc(0*var(--unit)) calc(0*var(--unit)) calc(3*var(--unit)) calc(2*var(--unit)) rgba(0,0,0,0.75);   
     color: rgba(0,0,0,0.75);
     display: inline-block;
     transform: rotate(45deg);
-    width: calc(5*var(--unit));
-    position: relative;
-    bottom: calc(33*var(--unit));
-    left: calc(20*var(--unit));
+    width: calc(7*var(--unit));
+    position: absolute;
+    top: calc(-15*var(--unit));
+    left: calc(45*var(--unit));
 }
 
-@media (max-width: 360px) {
-    form{
-        --unit: 0.7px;
-    }
-}
 
 input{
     border: none;
     border-bottom: calc(1*var(--unit)) solid;
     display: block;
-    position: relative;
+    position: absolute;
     top: calc(-3*var(--unit));
-    right: calc(0*var(--unit));
+    left: calc(32*var(--unit));
     font-size: calc(11*var(--unit));
     padding: calc(0*var(--unit));
 }
@@ -91,6 +82,7 @@ input:-webkit-autofill::first-line {
 button{
     position: relative;
     left: calc(90*var(--unit));
+    top: calc(-20*var(--unit));
     background-color: rgba(255,99,72,255);
     border: none;
     color: rgba(255,255,255,255);
@@ -105,3 +97,4 @@ button{
 button:hover{
     cursor: pointer;
 }
+
