@@ -10,7 +10,6 @@ function sendData() {
     return data;
 }
 
-
 function subscriber() {
     return eventChannel(emitter => {
         const iv = setInterval(() => {

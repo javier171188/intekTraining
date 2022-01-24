@@ -13,7 +13,9 @@ import {
 } from '@devexpress/dx-react-chart-material-ui';
 import { connect } from "react-redux";
 
-import { getDataAction } from './redux/actions';
+const defaultName = 'Main Series';
+const valueField = "value";
+const argumentField = "argument";
 
 let LineChart = (props) => {
     let { data, seriesName, title, width, height } = props;
@@ -26,9 +28,9 @@ let LineChart = (props) => {
                 <ArgumentAxis />
                 <ValueAxis />
                 <LineSeries
-                    name={seriesName || 'Main Series'}
-                    valueField="value"
-                    argumentField="argument"
+                    name={seriesName || defaultName}
+                    valueField={valueField}
+                    argumentField={argumentField}
                 />
                 <Legend />
                 <Title text={title} />
@@ -42,8 +44,5 @@ const mapStateToProps = (state) => ({
     data: state.data
 });
 
-const mapDispatchToProps = {
-    getDataAction
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(LineChart);
+export default connect(mapStateToProps, null)(LineChart);

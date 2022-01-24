@@ -1,5 +1,6 @@
 import { call, put, take } from "redux-saga/effects";
 import subscriber from './customDataSource';
+import { SET_NEW_DATA } from './types';
 
 
 function* getData() {
@@ -7,7 +8,7 @@ function* getData() {
 
     while (true) {
         let newData = yield take(chan)
-        yield put({ type: "SET_NEW_DATA", payload: newData });
+        yield put({ type: SET_NEW_DATA, payload: newData });
     }
 
 }
