@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import Photos from './Photos';
 import Buttons from './Buttons';
+import '../styles/buttons.css';
 
 const Gallery = ({ getPhotos }) => {
 
@@ -46,11 +47,11 @@ const Gallery = ({ getPhotos }) => {
             galleryID={galleryID}
             maxPages={maxPages}
             ref={photosRef} />
-        <Buttons
+        {<Buttons
             page={page}
             handlePrevious={handlePrevious}
             handleNext={handleNext}
-            maxPages={maxPages} />
+            maxPages={maxPages} />}
     </>
 }
 

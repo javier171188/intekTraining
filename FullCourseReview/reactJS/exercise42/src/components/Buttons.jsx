@@ -13,6 +13,7 @@ const Buttons = ({
     theme }) => {
     return <AppBar position="fixed" color={theme || "primary"} className="buttons"
         sx={{
+            top: 'auto',
             flexDirection: flexDirection || "row",
         }}
         enableColorOnDark={true}
