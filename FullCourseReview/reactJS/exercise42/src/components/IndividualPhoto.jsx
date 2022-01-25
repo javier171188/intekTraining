@@ -39,27 +39,35 @@ const IndividualPhoto = (props) => {
         gridRow = "span 2";
     }
 
-    return <Box
-        component='img'
-        className={containerClass}
-        src={src}
-        sx={{
-            gridColumn,
-            gridRow,
-            borderColor,
-            objectFit: "scale-down",
-            width: widthStr,
-            height: heightStr,
-            maxWidth: "100%",
-        }
-        }
-    >
 
-    </Box >
+    return <Box sx={{
+        gridColumn,
+        gridRow,
+        borderColor,
+        border: 'solid',
+        margin: "0"
+    }}>
+        <Box
+            component='img'
+            className={containerClass}
+            src={src}
+            sx={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+            }
+            }
+        >
+        </Box >
+    </Box>
+
 
 }
 
 export default IndividualPhoto;
+/*width: widthStr,
+    height: heightStr,
+        ,*/
 
 /*<Box
         className={containerClass}
