@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --no-cache",
     "test:watch": "jest --watch",
     "dev": "parcel src/index.html",
     "storybook": "start-storybook -p 6006",
@@ -25,6 +25,7 @@
     "cypress": "^9.2.0",
     "enzyme": "^3.11.0",
     "jest": "^27.4.5",
+    "jest-css-modules": "^2.1.0",
     "parcel": "^2.0.1"
   },
   "dependencies": {
@@ -42,6 +43,9 @@
   "jest": {
     "setupFilesAfterEnv": [
       "<rootDir>/src/__test__/setupTest.js"
-    ]
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sss|styl)$": "<rootDir>/node_modules/jest-css-modules"
+    }
   }
 }
