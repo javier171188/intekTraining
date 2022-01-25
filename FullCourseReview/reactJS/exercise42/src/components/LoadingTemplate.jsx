@@ -1,34 +1,27 @@
 import React from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import '../styles/loadingTemplate.css';
 
 const LoadingTemplate = () => {
     return <Box
         component='div'
-        sx={{
-            width: "100vw"
-        }}
+        className={'waiting-container'}
     >
         <Box
             component='h1'
             className="waiting-title"
-            sx={{
-                textAlign: "center",
-                color: "brown",
-                marginBottom: "55px"
-            }}
         >
-            Loading the photos...
+            Getting the photos...
         </Box>
-        <Box sx={{
-            display: 'flex',
-            alignItems: "center",
-            justifyContent: "space-around"
-        }}>
+        <Box
+            className={'waiting-circles'}
+        >
             <CircularProgress />
             <CircularProgress />
             <CircularProgress />
         </Box>
+
     </ Box>
 }
 

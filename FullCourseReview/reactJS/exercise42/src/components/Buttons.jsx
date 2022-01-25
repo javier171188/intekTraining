@@ -1,6 +1,7 @@
 import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import { Button } from '@mui/material';
+import '../styles/buttons.css';
 
 const Buttons = ({
     page,
@@ -12,12 +13,7 @@ const Buttons = ({
     theme }) => {
     return <AppBar position="fixed" color={theme || "primary"} className="buttons"
         sx={{
-            top: 'auto',
-            bottom: 0,
-            display: 'inline-flex',
             flexDirection: flexDirection || "row",
-            justifyContent: "space-around",
-            padding: "5px",
         }}
         enableColorOnDark={true}
     >

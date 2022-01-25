@@ -1,0 +1,9 @@
+.grid-wrapper{
+    height: 435px;
+    overflow-y: scroll;
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: repeat(auto-fit, 30vw);
+    grid-auto-rows: 31.8vw;
+    grid-auto-flow: dense;
+}

@@ -1,0 +1,15 @@
+.waiting-container{
+    width: 100vw;
+}
+
+.waiting-title{
+    text-align: center;
+    color: brown;
+    margin-bottom: 55px;
+}
+
+.waiting-circles{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}

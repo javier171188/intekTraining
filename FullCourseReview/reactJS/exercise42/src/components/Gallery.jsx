@@ -18,7 +18,6 @@ const Gallery = ({ getPhotos }) => {
         setPhotos(response.images);
     }, [])
 
-
     async function handlePrevious() {
         setPage(page - 1);
         setPhotos([]);
@@ -39,8 +38,6 @@ const Gallery = ({ getPhotos }) => {
         }
         setNextPhotos([]);
     }
-
-
     return <>
         <Photos photos={photos}
             getPhotos={getPhotos}
@@ -54,7 +51,6 @@ const Gallery = ({ getPhotos }) => {
             handlePrevious={handlePrevious}
             handleNext={handleNext}
             maxPages={maxPages} />
-
     </>
 }
 
