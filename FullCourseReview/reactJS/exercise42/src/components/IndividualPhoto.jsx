@@ -40,6 +40,28 @@ const IndividualPhoto = (props) => {
     }
 
     return <Box
+        component='img'
+        className={containerClass}
+        src={src}
+        sx={{
+            gridColumn,
+            gridRow,
+            borderColor,
+            objectFit: "scale-down",
+            width: widthStr,
+            height: heightStr,
+            maxWidth: "100%",
+        }
+        }
+    >
+
+    </Box >
+
+}
+
+export default IndividualPhoto;
+
+/*<Box
         className={containerClass}
         sx={{
             border: "solid",
@@ -47,31 +69,33 @@ const IndividualPhoto = (props) => {
             gridColumn,
             gridRow,
             borderColor
-        }}   >
+        }}   >*/
 
-        {<Image
-            src={src}
-            imageStyle={{
-                width: widthStr,
-                height: heightStr,
-                maxWidth: "100%",
-                verticalAlign: "middle",
-                display: "inline-block",
-                position: "absolute",
-                left: percentageToPlaceH,
-                top: percentageToPlaceV,
-                transform: `translate(-${percentageToPlaceH}, -${percentageToPlaceV})`
-            }}
-            style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                justify: "center",
-                paddingTop,
-                height: "6%"
-            }}
-        />}
-    </Box >
-}
-
-export default IndividualPhoto;
+/*<Image
+src={src}
+imageStyle={{
+    /*width: widthStr,
+    height: heightStr,
+    maxWidth: "100%",
+    verticalAlign: "middle",
+    display: "inline-block",
+    position: "absolute",
+    left: percentageToPlaceH,
+    top: percentageToPlaceV,
+    transform: `translate(-${percentageToPlaceH}, -${percentageToPlaceV})`,
+    objectFit: "scale-down"
+}}
+style={{
+    /*display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    justify: "center",
+    /* paddingTop,
+     height: "6%"
+    margin: "0",
+    gridColumn,
+    gridRow,
+    border: "solid",
+    borderColor
+}}
+/>*/
