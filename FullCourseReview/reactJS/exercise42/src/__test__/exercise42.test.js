@@ -36,7 +36,7 @@ describe('<Gallery />', () => {
         test('Check after loading photos', async () => {
             render(<Gallery getPhotos={getPhotos} />)
 
-            await waitForElementToBeRemoved(screen.queryByText('Loading the photos...'))
+            await waitForElementToBeRemoved(screen.queryByText('Getting the photos...'))
             expect(screen.queryAllByRole('img').length).toBe(10);
 
             let nextButton = screen.queryByText('Next');
@@ -62,7 +62,7 @@ describe('<Gallery />', () => {
 
             fireEvent.click(nextButton);
 
-            await waitForElementToBeRemoved(screen.queryByText('Loading the photos...'))
+            await waitForElementToBeRemoved(screen.queryByText('Getting the photos...'))
             expect(screen.queryAllByRole('img').length).toBe(10);
             expect(nextButton).not.toBeDisabled();
             expect(previousButton).not.toBeDisabled();
@@ -79,7 +79,7 @@ describe('<Gallery />', () => {
             for (let i = 0; i < 10; i++) {
                 fireEvent.click(nextButton);
             }
-            await waitForElementToBeRemoved(screen.queryByText('Loading the photos...'))
+            await waitForElementToBeRemoved(screen.queryByText('Getting the photos...'))
             expect(screen.queryAllByRole('img').length).toBe(10);
             expect(nextButton).toBeDisabled();
             expect(previousButton).not.toBeDisabled();

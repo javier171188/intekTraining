@@ -1,6 +1,7 @@
 'use strict';
 import React from 'react';
-import Image from 'mui-image';
+//import Image from 'mui-image';
+//import Image from "material-ui-image";
 import { Box } from '@material-ui/core';
 import '../styles/individualPhoto.css';
 //https://codepen.io/iamsaief/pen/jObaoKo?editors=0100
@@ -24,11 +25,12 @@ const IndividualPhoto = (props) => {
             gridRow,
             borderColor,
         }}>
-        <Image
+        <Box
+            component='img'
             src={src}
             className='photo-image'
-            showLoading={true}
-            errorIcon={true}
+        // showLoading={true}
+        // errorIcon={true}
         />
     </Box>
 }
