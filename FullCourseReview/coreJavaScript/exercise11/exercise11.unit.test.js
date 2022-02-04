@@ -4,12 +4,12 @@
 
 const { querySelectorAll } = require('./exercise11');
 document.body.innerHTML = `<section>
-<div id="1" class="note"><input type="checkbox" class="is-complete" checked> </div>
-<div id="2" class="note"></div>
-<div id="3" class="note"><input type="checkbox" class="is-complete" checked></div>
-<div id="4" class="note"></div>
-<div id="5" class="note"><input type="checkbox" class="is-complete" checked></div>
-<div id="6" class="note"><input type="checkbox" class="is-complete" ></div>
+<div id="a" class="note"><input type="checkbox" class="is-complete" checked> </div>
+<div id="b" class="note"></div>
+<div id="c" class="note"><input type="checkbox" class="is-complete" checked></div>
+<div id="d" class="note"></div>
+<div id="e" class="note"><input type="checkbox" class="is-complete" checked></div>
+<div id="f" class="note"><input type="checkbox" class="is-complete" ></div>
 <div class="anotherclass"></div>
 <div></div>
 <div id="A">
