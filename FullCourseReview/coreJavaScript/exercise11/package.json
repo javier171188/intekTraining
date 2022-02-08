@@ -1,0 +1,15 @@
+{
+  "name": "exercise11",
+  "version": "1.0.0",
+  "description": "",
+  "main": "exercise11.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^27.5.1",
+    "jest-runner-eslint": "^1.0.0"
+  }
+}

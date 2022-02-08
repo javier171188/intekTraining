@@ -1,5 +1,5 @@
 /**
- * @jest-environment jsdom
+ * @jest-environment jest-environment-jsdom
  */
 
 const { querySelectorAll } = require('./exercise11');
