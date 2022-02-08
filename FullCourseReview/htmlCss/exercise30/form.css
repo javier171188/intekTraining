@@ -1,5 +1,5 @@
 form{
-    --unit: 0.15vw;
+    --unit: 0.5px;
     --button-height:calc(23*var(--unit));
     --hint-elevation: calc(10*var(--unit));
     
@@ -10,6 +10,25 @@ form{
     align-items: center;
     justify-content: space-between;
 }
+
+@media (min-width: 325px) { 
+    form{
+        --unit: 1px;
+    }
+}
+
+
+@media (min-width: 480px) { 
+    form{
+        --unit: 1.5px;
+    }
+}
+@media (min-width: 767px) { 
+    form{
+        --unit: 2px;
+    }
+}
+
 
 label{
     float: left;
@@ -35,7 +54,7 @@ label{
     padding: calc(5*var(--unit));
     font-size: calc(7*var(--unit));
     text-align: center;
-    width: calc(82*var(--unit));
+    width: calc(100*var(--unit));
     color: rgba(247,247,247,255);
     background: rgba(0,0,0,255);
     border-width:  calc(5*var(--unit));
@@ -70,7 +89,7 @@ input{
     display: block;
     position: absolute;
     top: calc(-3*var(--unit));
-    left: calc(32*var(--unit));
+    left: calc(34*var(--unit));
     font-size: calc(11*var(--unit));
     padding: calc(0*var(--unit));
 }
