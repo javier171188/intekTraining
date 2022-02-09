@@ -31,4 +31,8 @@ function querySelectorAll(selector) {
     return parents;
 }
 
+/*let parents = querySelectorAll("div.note < input.is-complete[checked]");
+console.log(document);
+console.log(parents);*/
+
 module.exports = { querySelectorAll };

@@ -1,10 +1,12 @@
-/**
- * @jest-environment jest-environment-jsdom
- */
-
-const { querySelectorAll } = require('./exercise11');
-document.body.innerHTML = `<section>
-<div id="a" class="note"><input type="checkbox" class="is-complete" checked> </div>
+'use strict';
+///**
+//* @jest-environment jest-environment-jsdom
+//*/
+const puppeteer = require('puppeteer');
+//const { querySelectorAll } = require('./exercise11');
+//jest.setTimeout(10000);
+/*document.body.innerHTML = `<section>
+<div id="1" class="note"><input type="checkbox" class="is-complete" checked> </div>
 <div id="b" class="note"></div>
 <div id="c" class="note"><input type="checkbox" class="is-complete" checked></div>
 <div id="d" class="note"></div>
@@ -18,7 +20,11 @@ document.body.innerHTML = `<section>
 </section>`
 
 let mainSection = [...document.querySelectorAll('section')];
-let divs = [...mainSection[0].querySelectorAll('div')];
+let divs = [...mainSection[0].querySelectorAll('div')];*/
+
+
+
+
 
 test('Simple test', () => {
     let parents = querySelectorAll("div.note < input.is-complete[checked]");
@@ -60,4 +66,28 @@ test('No checked', () => {
 test('No match', () => {
     let parents = querySelectorAll("div.note < input.anotherclass");
     expect(parents).toEqual([])
-}) 
+})
+
+fit('puppeteer', async () => {
+    const browser = await puppeteer.launch({
+        headless: false
+    });
+    const targets = await browser.targets();
+    const page = await browser.newPage();
+
+    await page.goto('http://localhost:5500/coreJavaScript/exercise11/exercise11.html');
+
+
+    const jsHandle = await page.evaluateHandle(() => {
+        const elements = querySelectorAll('div.note < input.is-complete[checked]');
+        console.log(elements);
+        return elements;
+    });
+
+    const result = await page.evaluate(els => {
+        return els.map(e => e.innerHTML)
+    }, jsHandle);
+    console.log(result);
+
+    await browser.close();
+}, 30000)
