@@ -15,24 +15,8 @@ function querySelectorAll(selector) {
         return currentChildren.length > 0;
     })
 
-    // let normalSelector = selector.replace('<', '>');
-    // let children = querySelectorAll(normalSelector);
-
-    // parents = [...parents].filter((p) => {
-    //     let currentChildren = p.querySelectorAll(childrenSelector);
-
-    //     for (let child of children) {
-    //         if ([...currentChildren].includes(child)) return true;
-    //     }
-
-    //     return false;
-    // })
-
     return parents;
 }
 
-/*let parents = querySelectorAll("div.note < input.is-complete[checked]");
-console.log(document);
-console.log(parents);*/
 
 module.exports = { querySelectorAll };
