@@ -1,0 +1,14 @@
+{
+  "name": "exercise3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "exercise3.js",
+  "scripts": {
+    "test": "jest exercise3.unit.test.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^27.5.1"
+  }
+}
