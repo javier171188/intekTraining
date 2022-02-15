@@ -1,29 +1,7 @@
 'use strict';
 //https://www.youtube.com/watch?v=pV2kpPD66nE
 
-// const A = [
-//     [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-//     [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-//     [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0],
-//     [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
-//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-//     [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-//     [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
-// ]
-
-// const A = [
-//     [0, 1, 1],
-//     [1, 0, 0],
-//     [1, 0, 0]];
-
-
-
-//let coordinates = getIslands(A);
-//console.log(coordinates);
-
-function getIslands(matrix) {
+function getGroups(matrix) {
     const DIRECTIONS = [[1, 0], [-1, 0], [0, 1], [0, -1]];
     if (matrix.length < 1) {
         return {}
@@ -44,7 +22,8 @@ function getIslands(matrix) {
     }
     function exploreIsland(r, c) {
         let q = [[r, c]];
-        visited.push([r, c]);
+        islands[numberIslands] = [[r, c]];
+        visited.push(cols * r + c);
         while (q.length > 0) {
             let currentPosition = q.pop();
             for (let direction of DIRECTIONS) {
@@ -53,21 +32,14 @@ function getIslands(matrix) {
                     newC >= 0 && newC < cols &&
                     matrix[newR][newC] === 1 &&
                     !visited.includes(cols * newR + newC)) {
-
                     q.push([newR, newC]);
                     visited.push(cols * newR + newC);
-                    if (!islands[numberIslands]) {
-                        islands[numberIslands] = [[newR, newC]];
-                    } else {
-                        islands[numberIslands].push([newR, newC])
-                    }
-
+                    islands[numberIslands].push([newR, newC])
                 }
             }
         }
     }
-
     return islands;
 }
 
-module.export = getIslands;
+module.exports = { getGroups };
