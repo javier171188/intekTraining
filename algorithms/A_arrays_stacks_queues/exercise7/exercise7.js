@@ -1,15 +1,5 @@
 'use strict';
 
-const A = [
-    [2, 4, 6, 8, 9],
-    [1, 27, 5, 0, 7],
-    [10, 0, 15, 26, 77],
-    [12, 24, 45, 36, 10],
-    [90, 7, 6, 1, 27]
-];
-
-makeZeroes(A);
-
 function makeZeroes(matrix) {
     let columns = [];
     let rows = [];
@@ -21,7 +11,17 @@ function makeZeroes(matrix) {
             }
         }
     }
-    for (let r of rows) {
 
+    for (let r = 0; r < matrix.length; r++) {
+        if (rows.includes(r)) {
+            matrix[r].fill(0);
+        } else {
+            for (let c of columns) {
+                matrix[r][c] = 0;
+            }
+        }
     }
+    return matrix;
 }
+
+module.exports = { makeZeroes };
