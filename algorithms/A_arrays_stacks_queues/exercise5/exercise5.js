@@ -1,39 +1,40 @@
 'use strict';
 
-const A = [
-    [0, 1, 1],
-    [1, 0, 0],
-    [1, 0, 0]];
-
-console.log(A);
-
-rotateMatrix(A, true);
-console.log(A);
-
-rotateMatrix(A, false);
-rotateMatrix(A, false);
-
-console.log(A);
-
-
-
 function rotateMatrix(matrix, clockwise = true) {
+    if (matrix.length < 1 || (matrix[0].length < 1)) return matrix;
 
-    if (clockwise) {
-        matrix = matrix.reverse();
-        // for (let i = 0; i < matrix.length; i++) {
-        //     for (let j = i; j < matrix[0].length; j++) {
-        //         [matrix[matrix.length - 1 - i][matrix[0].length - 1 - j], matrix[i][j]] = [matrix[i][j], matrix[matrix.length - 1 - i][matrix[0].length - 1 - j]]
-        //     }
-        // }
-        // return matrix
-    }
-    for (let i = 0; i < matrix.length; i++) {
-        for (let j = i; j < matrix[0].length; j++) {
-            [matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]];
+    if (clockwise) matrix = matrix.reverse();
+    const numbR = matrix.length;
+    const numbC = matrix[0].length;
+
+
+    if (numbR < numbC) {
+        for (let t = numbR; t < numbC; t++) {
+            matrix.push(new Array(numbC));
         }
     }
 
+    for (let i = 0; i < numbR; i++) {
+        for (let j = i; j < Math.max(numbR, numbC); j++) {
+            [matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]];
+        }
+    }
+    if (numbC < numbR) {
+        for (let r = numbC; r < numbR; r++) {
+            matrix.pop();
+        }
+    }
     if (!clockwise) matrix = matrix.reverse();
+
+    if (numbR < numbC) {
+        for (let r of matrix) {
+            for (let c = numbR; c < numbC; c++) {
+                r.pop();
+            }
+        }
+    }
+
     return matrix
 }
+
+module.exports = { rotateMatrix };
