@@ -1,10 +1,5 @@
 'use strict';
 
-// const a = [0];
-// const b = [0];
-// const o = sumArrays(a, b);
-// console.log(o);
-
 function sumArrays(array1, array2) {
     let string1 = array1.join('');
     let number1 = parseInt(string1);
