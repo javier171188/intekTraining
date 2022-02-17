@@ -1,7 +1,12 @@
 'use strict';
+//https://www.geeksforgeeks.org/circular-queue-set-1-introduction-array-implementation/
 
 class circularQueue {
     constructor(size) {
+        if (size < 1) {
+            console.log('The minimum size is 1.');
+            size = 1;
+        }
         this.size = size;
         this.queue = new Array(size);
         this.front = -1;
@@ -52,21 +57,4 @@ class circularQueue {
     }
 }
 
-let circQue = new circularQueue(5);
-
-circQue.enqueue(14);
-circQue.enqueue(22);
-circQue.enqueue(13);
-circQue.enqueue(-6);
-circQue.enqueue(7);
-circQue.enqueue(8);
-circQue.display();
-console.log(`Element ${circQue.dequeue()} was dequeued.`);
-console.log(`Element ${circQue.dequeue()} was dequeued.`);
-console.log(`Element ${circQue.dequeue()} was dequeued.`);
-circQue.display();
-console.log('Adding')
-circQue.enqueue(1);
-circQue.enqueue(2);
-circQue.enqueue(3);
-circQue.display();
+module.exports = { circularQueue };
