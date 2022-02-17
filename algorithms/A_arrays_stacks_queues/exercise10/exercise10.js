@@ -1,11 +1,12 @@
 'use strict';
 //https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 
-// const a = [1, 7, 9, 3, 5];
-// shuffleArray(a);
-// console.log(a);
+function shuffleArray(array, seed = null) {
+    if (seed) {
+        const seedrandom = require('seedrandom');
+        Math.random = seedrandom(seed);
+    }
 
-function shuffleArray(array) {
     let currentIndex = array.length, randomIndex;
 
     while (currentIndex != 0) {
