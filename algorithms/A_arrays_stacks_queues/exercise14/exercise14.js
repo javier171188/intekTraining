@@ -1,14 +1,14 @@
 'use strict'
 //https://www.techiedelight.com/find-all-paths-from-source-to-destination-in-matrix/
 
-const A = [
-    ['a', 'b', 'c'],
-    ['d', 'e', 'f'],
-    ['g', 'h', 'i']
-]
+// const A = [
+//     ['a', 'b', 'c'],
+//     ['d', 'e', 'f'],
+//     ['g', 'h', 'i']
+// ]
 
-const paths = findRoutes(A);
-console.log(paths);
+// const paths = findRoutes(A);
+// console.log(paths);
 
 
 function findRoutes(matrix, startRow = 0, startCol = 0, endCol, endRow) {
@@ -44,3 +44,5 @@ function findRoutes(matrix, startRow = 0, startCol = 0, endCol, endRow) {
     }
     return paths;
 }
+
+module.exports = { findRoutes }
